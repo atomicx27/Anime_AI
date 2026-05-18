@@ -1,0 +1,3 @@
+# Dependencies for Anime Agents CLI
+# Example:
+# openai==1.14.0

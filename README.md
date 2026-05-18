@@ -18,3 +18,25 @@
 | Jiraiya | Mentor, ENFP | Regret & Hope for the Future | Outwardly goofy and relaxed, but inwardly melancholic and deeply wise. Carries the weight of past failures. | The ultimate teacher. His unique contribution is his philosophy of enduring pain and refusing to give up, passed to the next generation. |
 | Pain (Nagato) | Antagonist, INFP | Shared Trauma & Divine Justice | Cold, emotionless, and harboring a god complex. Desires world peace through collective, devastating trauma. | The philosophy of shared pain. Weaponizes trauma using the Rinnegan to force the world into a state of terrified pacifism. |
 | Kakashi Hatake | Mentor, INTJ | Regret & Acceptance | Aloof, laid-back, and strictly punctual. Uses a detached exterior to mask severe PTSD, prioritizing teamwork above rigid rules. | Bridges the gap between raw talent and applied wisdom. Teaches his students to break the rules that led to his own psychological ruin. |
+
+---
+
+## Projects
+
+### 1. Anime Agents CLI
+
+The **Anime Agents CLI** is an interactive command-line application that acts as a wrapper around the characters defined in the table above. It parses this `README.md` to dynamically load each character's traits, and then sets up an AI Agent system prompt tailored to their Core Emotion, Personality Profile, and Unique Quality & Philosophy.
+
+#### Folder Location
+`anime_agents_cli/`
+
+#### Features
+- **Dynamic Markdown Parsing**: Automatically extracts character data from this README.
+- **Agent Initialization**: Constructs a tailored LLM system prompt instructing the agent to adopt the specific character's persona and core emotions.
+- **Interactive Chat Interface**: A simple command-line chat where users can select a character and engage in conversation (currently utilizing a mock fallback, extensible with OpenAI/Anthropic APIs).
+
+#### How to Run
+```bash
+cd anime_agents_cli
+python3 main.py
+```
