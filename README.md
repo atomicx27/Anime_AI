@@ -40,3 +40,21 @@ The **Anime Agents CLI** is an interactive command-line application that acts as
 cd anime_agents_cli
 python3 main.py
 ```
+
+### 2. Anime Council
+
+The **Anime Council** is an interactive command-line application that convenes a council of all the anime characters defined in the table above. When presented with a topic or problem, each character gives their unique perspective based on their core emotion and philosophy.
+
+#### Folder Location
+`anime_council/`
+
+#### Features
+- **Dynamic Markdown Parsing**: Extracts all character profiles directly from this README.
+- **Council of Agents**: Simulates a discussion where every parsed character provides a personalized response to the user's input.
+- **Interactive Prompts**: Users can repeatedly present different scenarios or questions to see how the collective council reacts.
+
+#### How to Run
+```bash
+cd anime_council
+python3 main.py
+```
