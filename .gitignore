@@ -1,3 +1,6 @@
 __pycache__/
 server.log
 test.txt
+
+backend_log.txt
+react_log.txt
