@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anime Group Chat</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        discord: {
+                            darker: '#202225',
+                            dark: '#2f3136',
+                            base: '#36393f',
+                            light: '#40444b',
+                            primary: '#5865F2',
+                            text: '#dcddde',
+                            muted: '#72767d'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom scrollbar for a more discord-like feel */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #2f3136;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #202225;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #5865F2;
+        }
+
+        .typing-indicator {
+            display: inline-flex;
+            align-items: center;
+        }
+        .typing-dot {
+            width: 4px;
+            height: 4px;
+            background-color: #72767d;
+            border-radius: 50%;
+            margin: 0 2px;
+            animation: bounce 1.4s infinite ease-in-out both;
+        }
+        .typing-dot:nth-child(1) { animation-delay: -0.32s; }
+        .typing-dot:nth-child(2) { animation-delay: -0.16s; }
+        @keyframes bounce {
+            0%, 80%, 100% { transform: scale(0); }
+            40% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body class="bg-discord-base text-discord-text h-screen flex overflow-hidden font-sans">
+
+    <!-- Sidebar: Servers (Mock) -->
+    <div class="w-18 bg-discord-darker flex flex-col items-center py-3 space-y-4">
+        <div class="w-12 h-12 bg-discord-primary rounded-2xl flex items-center justify-center text-white cursor-pointer hover:rounded-xl transition-all duration-300">
+            <i class="fas fa-meteor fa-lg"></i>
+        </div>
+        <div class="w-8 h-1 bg-discord-dark rounded-full"></div>
+        <div class="w-12 h-12 bg-discord-base rounded-[24px] hover:rounded-xl flex items-center justify-center text-discord-primary cursor-pointer transition-all duration-300 hover:bg-discord-primary hover:text-white">
+            <i class="fas fa-plus"></i>
+        </div>
+    </div>
+
+    <!-- Sidebar: Channels/Online Users -->
+    <div class="w-60 bg-discord-dark flex flex-col border-l border-discord-darker">
+        <!-- Header -->
+        <div class="h-12 border-b border-discord-darker flex items-center px-4 shadow-sm hover:bg-discord-light cursor-pointer transition-colors">
+            <h1 class="font-bold text-white flex-1 truncate">Anime All-Stars</h1>
+            <i class="fas fa-chevron-down text-sm"></i>
+        </div>
+
+        <div class="flex-1 overflow-y-auto py-3 px-2">
+            <!-- Channels Section -->
+            <div class="mb-6">
+                <div class="text-xs font-semibold text-discord-muted uppercase tracking-wider mb-1 px-2">Text Channels</div>
+                <div class="flex items-center px-2 py-1 bg-discord-light text-white rounded cursor-pointer mb-1 group">
+                    <i class="fas fa-hashtag text-discord-muted group-hover:text-discord-text mr-2"></i>
+                    <span class="flex-1">general-chat</span>
+                </div>
+            </div>
+
+            <!-- Members Section -->
+            <div>
+                <div class="text-xs font-semibold text-discord-muted uppercase tracking-wider mb-2 px-2" id="online-count">Online — 0</div>
+                <div id="character-list" class="space-y-1">
+                    <!-- Characters will be populated here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- User Area -->
+        <div class="h-14 bg-discord-darker flex items-center px-2">
+            <div class="flex items-center hover:bg-discord-light p-1 rounded cursor-pointer w-full group">
+                <div class="w-8 h-8 rounded-full bg-indigo-500 flex items-center justify-center mr-2 relative">
+                    <i class="fas fa-user text-white text-xs"></i>
+                    <div class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-discord-darker"></div>
+                </div>
+                <div class="flex-1 overflow-hidden">
+                    <div class="text-white text-sm font-semibold truncate leading-tight">You</div>
+                    <div class="text-discord-muted text-xs truncate">#0001</div>
+                </div>
+                <div class="flex text-discord-muted space-x-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <i class="fas fa-microphone hover:text-white"></i>
+                    <i class="fas fa-cog hover:text-white"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Chat Area -->
+    <div class="flex-1 flex flex-col bg-discord-base relative">
+        <!-- Header -->
+        <div class="h-12 border-b border-discord-dark flex items-center px-4 shadow-sm z-10">
+            <i class="fas fa-hashtag text-discord-muted text-xl mr-3"></i>
+            <h2 class="font-bold text-white flex-1">general-chat</h2>
+            <div class="flex text-discord-muted space-x-4">
+                <i class="fas fa-bell cursor-pointer hover:text-white transition-colors"></i>
+                <i class="fas fa-thumbtack cursor-pointer hover:text-white transition-colors"></i>
+                <i class="fas fa-user-friends cursor-pointer hover:text-white transition-colors"></i>
+                <div class="relative">
+                    <input type="text" placeholder="Search" class="bg-discord-darker text-sm text-discord-text rounded px-2 py-1 w-36 focus:w-48 transition-all duration-300 outline-none border border-transparent focus:border-discord-dark placeholder-discord-muted">
+                    <i class="fas fa-search absolute right-2 top-2 text-xs text-discord-muted"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chat History -->
+        <div id="chat-history" class="flex-1 overflow-y-auto px-4 py-6 flex flex-col">
+            <!-- Welcome Message -->
+            <div class="mt-auto mb-6">
+                <div class="w-16 h-16 bg-discord-dark rounded-full flex items-center justify-center mb-4">
+                    <i class="fas fa-hashtag text-white text-3xl"></i>
+                </div>
+                <h1 class="text-white text-3xl font-bold mb-2">Welcome to #general-chat!</h1>
+                <p class="text-discord-muted">This is the start of the #general-chat channel. Say hi to the anime council!</p>
+            </div>
+
+            <div class="w-full border-t border-discord-dark/50 my-4 flex justify-center">
+                <span class="bg-discord-base px-2 text-xs text-discord-muted font-semibold -mt-2">Today</span>
+            </div>
+
+            <div id="messages-container" class="space-y-1">
+                <!-- Messages go here -->
+            </div>
+
+            <!-- Typing Indicator -->
+            <div id="typing-container" class="hidden text-xs text-discord-muted font-bold px-2 py-1 flex items-center mt-2">
+                <div class="typing-indicator mr-2">
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                </div>
+                <span id="typing-text">Several people are typing...</span>
+            </div>
+
+            <div id="chat-bottom-anchor"></div>
+        </div>
+
+        <!-- Input Area -->
+        <div class="px-4 pb-6 pt-2 relative">
+            <form id="chat-form" class="bg-discord-light rounded-lg flex items-center px-4 py-2 relative">
+                <div class="text-discord-muted hover:text-discord-text cursor-pointer w-6 h-6 flex items-center justify-center mr-3 bg-discord-darker rounded-full">
+                    <i class="fas fa-plus text-xs"></i>
+                </div>
+                <input
+                    type="text"
+                    id="message-input"
+                    placeholder="Message #general-chat"
+                    class="bg-transparent flex-1 outline-none text-discord-text text-[15px]"
+                    autocomplete="off"
+                >
+                <div class="flex text-discord-muted space-x-3 ml-3">
+                    <i class="fas fa-gift cursor-pointer hover:text-discord-text"></i>
+                    <i class="fas fa-sticky-note cursor-pointer hover:text-discord-text"></i>
+                    <i class="fas fa-smile cursor-pointer hover:text-discord-text"></i>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const DOM = {
+            characterList: document.getElementById('character-list'),
+            onlineCount: document.getElementById('online-count'),
+            chatForm: document.getElementById('chat-form'),
+            messageInput: document.getElementById('message-input'),
+            messagesContainer: document.getElementById('messages-container'),
+            typingContainer: document.getElementById('typing-container'),
+            bottomAnchor: document.getElementById('chat-bottom-anchor')
+        };
+
+        let characters = [];
+        let isTyping = false;
+
+        function formatTime() {
+            const now = new Date();
+            let hours = now.getHours();
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            hours = hours % 12;
+            hours = hours ? hours : 12;
+            return `Today at ${hours}:${minutes} ${ampm}`;
+        }
+
+        async function fetchCharacters() {
+            try {
+                const res = await fetch('/api/characters');
+                const data = await res.json();
+                characters = data.characters || [];
+                renderCharacters();
+            } catch (error) {
+                console.error("Error fetching characters:", error);
+            }
+        }
+
+        function renderCharacters() {
+            DOM.onlineCount.textContent = `Online — ${characters.length}`;
+            DOM.characterList.innerHTML = '';
+
+            characters.forEach(char => {
+                const div = document.createElement('div');
+                div.className = 'flex items-center px-2 py-1 rounded hover:bg-discord-light cursor-pointer group mb-[1px]';
+
+                div.innerHTML = `
+                    <div class="relative mr-3">
+                        <img src="${char.avatar}" alt="${char.name}" class="w-8 h-8 rounded-full bg-discord-darker object-cover">
+                        <div class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-discord-dark"></div>
+                    </div>
+                    <div class="flex-1 truncate">
+                        <div class="text-[15px] text-discord-text group-hover:text-white truncate" style="color: ${getStringColor(char.name)}">${char.name}</div>
+                        <div class="text-[11px] text-discord-muted truncate">${char.archetype}</div>
+                    </div>
+                `;
+
+                div.addEventListener('click', () => {
+                    DOM.messageInput.value = `@${char.name} ${DOM.messageInput.value}`;
+                    DOM.messageInput.focus();
+                });
+
+                DOM.characterList.appendChild(div);
+            });
+        }
+
+        // Simple hash function to generate a consistent color for a name
+        function getStringColor(str) {
+            let hash = 0;
+            for (let i = 0; i < str.length; i++) {
+                hash = str.charCodeAt(i) + ((hash << 5) - hash);
+            }
+            const h = hash % 360;
+            return `hsl(${h}, 70%, 65%)`;
+        }
+
+        function appendMessage(sender, content, avatarUrl = null, isBot = false, timeStr = null) {
+            const div = document.createElement('div');
+            div.className = 'hover:bg-discord-dark/40 px-4 py-1 flex items-start group mt-3';
+
+            const time = timeStr || formatTime();
+            const avatar = avatarUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(sender)}&background=random`;
+            const color = isBot ? getStringColor(sender) : 'white';
+
+            const botTag = isBot ? `<span class="bg-discord-primary text-white text-[10px] font-bold px-1 rounded ml-1 uppercase leading-tight relative top-[-1px]">Bot</span>` : '';
+
+            // Highlight mentions
+            let formattedContent = content.replace(/@([a-zA-Z0-9_ ]+)/g, '<span class="bg-indigo-500/30 text-indigo-300 px-1 rounded cursor-pointer hover:bg-indigo-500/50 transition-colors">@$1</span>');
+
+            // Highlight action text *...*
+            formattedContent = formattedContent.replace(/\*(.*?)\*/g, '<span class="italic text-discord-muted">* $1 *</span>');
+
+            div.innerHTML = `
+                <img src="${avatar}" alt="${sender}" class="w-10 h-10 rounded-full bg-discord-darker object-cover mr-4 cursor-pointer mt-0.5">
+                <div class="flex-1">
+                    <div class="flex items-baseline">
+                        <span class="font-medium text-[15px] cursor-pointer hover:underline" style="color: ${color}">${sender}</span>
+                        ${botTag}
+                        <span class="text-xs text-discord-muted ml-2">${time}</span>
+                    </div>
+                    <div class="text-[15px] text-discord-text leading-[1.375rem] whitespace-pre-wrap">${formattedContent}</div>
+                </div>
+            `;
+
+            DOM.messagesContainer.appendChild(div);
+            scrollToBottom();
+        }
+
+        function scrollToBottom() {
+            DOM.bottomAnchor.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function setTyping(state) {
+            isTyping = state;
+            if (state) {
+                DOM.typingContainer.classList.remove('hidden');
+                scrollToBottom();
+            } else {
+                DOM.typingContainer.classList.add('hidden');
+            }
+        }
+
+        DOM.chatForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const message = DOM.messageInput.value.trim();
+            if (!message || isTyping) return;
+
+            // Display user message
+            appendMessage("You", message, null, false);
+            DOM.messageInput.value = '';
+
+            // Extract mentions
+            const mentionMatches = message.match(/@([a-zA-Z0-9_ ]+)/g);
+            const mentionedCharacters = mentionMatches
+                ? mentionMatches.map(m => m.substring(1).trim())
+                : null;
+
+            setTyping(true);
+
+            try {
+                const res = await fetch('/api/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        message: message,
+                        mentioned_characters: mentionedCharacters
+                    })
+                });
+
+                const data = await res.json();
+
+                setTyping(false);
+
+                // Display responses with slight delays between them
+                if (data.responses && data.responses.length > 0) {
+                    for (let i = 0; i < data.responses.length; i++) {
+                        const r = data.responses[i];
+                        setTimeout(() => {
+                            appendMessage(r.sender, r.content, r.avatar, true);
+                        }, i * 1200); // 1.2s delay between each character's message
+                    }
+                }
+            } catch (error) {
+                console.error("Chat error:", error);
+                setTyping(false);
+                appendMessage("System", "Error communicating with the server.", "https://ui-avatars.com/api/?name=Sys&background=F00&color=FFF", true);
+            }
+        });
+
+        // Initialize
+        fetchCharacters();
+    </script>
+</body>
+</html>

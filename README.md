@@ -58,3 +58,28 @@ The **Anime Council AI** is a collaborative command-line agentic application whe
 cd anime_council
 python3 main.py
 ```
+
+### 3. Anime Group Chat
+
+The **Anime Group Chat** is a web-based, multi-agent application that simulates a Discord-like chat environment. Instead of talking to a single character, users interact with a simulated "server" where an Orchestrator AI dynamically selects multiple characters from the roster to respond to user messages, creating a cohesive, group-based conversational dynamic.
+
+#### Folder Location
+`anime_group_chat/`
+
+#### Features
+- **Group Conversation Dynamics**: An Orchestrator Agent reads the user's input and selects 2-4 distinct characters to provide sequential, context-aware responses.
+- **Discord-like UI/UX**: A modern, sleek frontend built with Tailwind CSS mimicking a popular chat app interface, complete with online status, custom avatars, and message formatting.
+- **Dynamic Character Loading**: Backend API automatically parses the root `README.md` to load character details and serve them to the UI.
+
+#### How to Run
+```bash
+# Install dependencies
+cd anime_group_chat/backend
+pip install -r requirements.txt
+
+# Run the server
+python3 main.py
+
+# Access the UI
+# Open your browser and navigate to http://localhost:8001/
+```
