@@ -41,17 +41,17 @@ cd anime_agents_cli
 python3 main.py
 ```
 
-### 2. Anime Council
+### 2. Anime Council AI
 
-The **Anime Council** is an interactive command-line application that convenes a council of all the anime characters defined in the table above. When presented with a topic or problem, each character gives their unique perspective based on their core emotion and philosophy.
+The **Anime Council AI** is a collaborative command-line agentic application where all characters from the table assemble as a "council". It dynamically loads character data and acts as an orchestrator (a Moderator Agent), prompting each character agent to give advice based on their core emotion, personality profile, and unique philosophy.
 
 #### Folder Location
 `anime_council/`
 
 #### Features
-- **Dynamic Markdown Parsing**: Extracts all character profiles directly from this README.
-- **Council of Agents**: Simulates a discussion where every parsed character provides a personalized response to the user's input.
-- **Interactive Prompts**: Users can repeatedly present different scenarios or questions to see how the collective council reacts.
+- **Dynamic Markdown Parsing**: Extends the original parsing logic to assemble all characters.
+- **Council Meeting Interface**: Users input a topic or problem, and each Character Agent provides templated insights rooted in their unique traits.
+- **Moderator Synthesis**: The system collects all insights and synthesizes a final resolution representing the combined philosophical angles of the entire council.
 
 #### How to Run
 ```bash

@@ -2,7 +2,7 @@ import re
 import os
 
 def parse_readme_characters(file_path="README.md"):
-    # If run from inside anime_council, look in parent directory
+    # If run from inside anime_agents_cli, look in parent directory
     if not os.path.exists(file_path):
         file_path = "../README.md"
 

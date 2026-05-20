@@ -1,12 +1,10 @@
 import sys
 from parser import parse_readme_characters
-from agent import AnimeAgent
+from moderator import ModeratorAgent
 
 def main():
-    print("========================================")
-    print("Welcome to the Anime Council!")
-    print("Gathering the council members from README.md...")
-    print("========================================")
+    print("Welcome to Anime Council AI!")
+    print("Loading characters from README.md to assemble the council...")
 
     characters = parse_readme_characters()
 
@@ -14,8 +12,9 @@ def main():
         print("No characters found. Make sure the README.md is formatted correctly.")
         sys.exit(1)
 
-    council = [AnimeAgent(char) for char in characters]
-    print(f"\nThe council of {len(council)} members is now assembled.\n")
+    print(f"Successfully assembled {len(characters)} characters for the council.")
+
+    moderator = ModeratorAgent(characters)
 
     while True:
         try:
@@ -24,18 +23,13 @@ def main():
                 continue
 
             if topic.lower() == 'quit':
-                print("The council is adjourned. Goodbye!")
+                print("Goodbye!")
                 break
 
-            print(f"\n--- Council Discussion on: '{topic}' ---\n")
-
-            for member in council:
-                response = member.council_response(topic)
-                print(response)
-                print("-" * 60)
+            moderator.discuss_topic(topic)
 
         except KeyboardInterrupt:
-            print("\nThe council is adjourned. Goodbye!")
+            print("\nGoodbye!")
             break
 
 if __name__ == "__main__":
