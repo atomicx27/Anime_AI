@@ -83,3 +83,29 @@ python3 main.py
 # Access the UI
 # Open your browser and navigate to http://localhost:8001/
 ```
+
+### 4. Anime Scenario Ranker AI
+
+The **Anime Scenario Ranker AI** is a web-based, multi-agent application that evaluates a given hypothetical scenario and dynamically ranks the anime characters into a Tier List (S, A, B, C, D) based on their Core Emotion, Personality Profile, and Unique Quality.
+
+#### Folder Location
+`anime_scenario_ranker/`
+
+#### Features
+- **Dynamic Scenario Evaluation**: A Scenario Ranker Agent reads the user's scenario input and evaluates every character in the database against it.
+- **Real-time Thought Terminal**: See the agent's thought process as it evaluates each character's traits and decides their rank.
+- **Animated Tier List UI**: A sleek, responsive frontend built with Tailwind CSS that dynamically organizes characters into a visually appealing tier list, complete with tooltips explaining the reasoning for their rank.
+- **Dynamic Character Loading**: Backend API automatically parses the root `README.md` to load character details and evaluate them.
+
+#### How to Run
+```bash
+# Install dependencies
+cd anime_scenario_ranker/backend
+pip install -r requirements.txt
+
+# Run the server
+python3 main.py
+
+# Access the UI
+# Open your browser and navigate to http://localhost:8002/
+```
