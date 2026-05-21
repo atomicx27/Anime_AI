@@ -109,3 +109,29 @@ python3 main.py
 # Access the UI
 # Open your browser and navigate to http://localhost:8002/
 ```
+
+### 5. Anime Team Builder AI
+
+The **Anime Team Builder AI** is a web-based, agentic application that acts as an intelligent squad commander. Users describe a complex mission, and the AI evaluates all characters from the table based on their Core Emotion, Personality Profile, and Unique Quality to assemble the optimal team for the job.
+
+#### Folder Location
+`anime_team_builder/`
+
+#### Features
+- **Intelligent Role Assignment**: The agent analyzes mission requirements (e.g., combat, stealth, diplomacy) and matches characters to roles like Combat Specialist, Diplomat, or Strategist based on their specific traits.
+- **Dynamic Team Composition**: Automatically selects the top candidates and provides a detailed rationale for why they are the best fit for the mission.
+- **Sleek UI/UX**: Features a modern, dark-themed interface built with Tailwind CSS, including an animated "Commander Terminal" that displays the agent's thought process in real-time.
+- **Dynamic Character Loading**: Backend API automatically parses the root `README.md` to load character details.
+
+#### How to Run
+```bash
+# Install dependencies
+cd anime_team_builder/backend
+pip install -r requirements.txt
+
+# Run the server
+python3 main.py
+
+# Access the UI
+# Open your browser and navigate to http://localhost:8004/
+```
