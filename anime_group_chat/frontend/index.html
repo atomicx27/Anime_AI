@@ -26,6 +26,15 @@
         }
     </script>
     <style>
+        .message-enter {
+            animation: slideIn 0.3s ease-out forwards;
+            opacity: 0;
+            transform: translateY(10px);
+        }
+        @keyframes slideIn {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
         /* Custom scrollbar for a more discord-like feel */
         ::-webkit-scrollbar {
             width: 8px;
@@ -86,9 +95,17 @@
             <!-- Channels Section -->
             <div class="mb-6">
                 <div class="text-xs font-semibold text-discord-muted uppercase tracking-wider mb-1 px-2">Text Channels</div>
-                <div class="flex items-center px-2 py-1 bg-discord-light text-white rounded cursor-pointer mb-1 group">
-                    <i class="fas fa-hashtag text-discord-muted group-hover:text-discord-text mr-2"></i>
+                <div class="flex items-center px-2 py-1 bg-discord-light text-white rounded cursor-pointer mb-1 group transition-colors hover:bg-discord-light">
+                    <i class="fas fa-hashtag text-discord-text mr-2 transition-colors"></i>
                     <span class="flex-1">general-chat</span>
+                </div>
+                <div class="flex items-center px-2 py-1 text-discord-muted rounded cursor-pointer mb-1 group transition-colors hover:bg-discord-light hover:text-discord-text">
+                    <i class="fas fa-hashtag mr-2 transition-colors"></i>
+                    <span class="flex-1">strategy-talk</span>
+                </div>
+                <div class="flex items-center px-2 py-1 text-discord-muted rounded cursor-pointer mb-1 group transition-colors hover:bg-discord-light hover:text-discord-text">
+                    <i class="fas fa-hashtag mr-2 transition-colors"></i>
+                    <span class="flex-1">philosophical-debates</span>
                 </div>
             </div>
 
@@ -266,7 +283,7 @@
 
         function appendMessage(sender, content, avatarUrl = null, isBot = false, timeStr = null) {
             const div = document.createElement('div');
-            div.className = 'hover:bg-discord-dark/40 px-4 py-1 flex items-start group mt-3';
+            div.className = 'hover:bg-discord-dark/40 px-4 py-1 flex items-start group mt-3 message-enter hover:translate-x-1 transition-transform duration-200';
 
             const time = timeStr || formatTime();
             const avatar = avatarUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(sender)}&background=random`;

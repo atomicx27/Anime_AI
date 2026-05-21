@@ -1,31 +1,44 @@
 from character_agent import CharacterAgent
+from rich.console import Console
+from rich.panel import Panel
+from rich.table import Table
+
+console = Console()
 
 class ModeratorAgent:
     def __init__(self, character_data_list):
         self.agents = [CharacterAgent(data) for data in character_data_list]
 
     def discuss_topic(self, topic):
-        print(f"\n--- Council Meeting on: '{topic}' ---\n")
+        console.print(f"\n[bold cyan]--- Council Meeting on: '{topic}' ---[/bold cyan]\n")
 
         insights = []
         for agent in self.agents:
-            print(f"{agent.name} is speaking...")
-            advice = agent.give_advice(topic)
+            with console.status(f"[bold yellow]{agent.name} is speaking...[/bold yellow]"):
+                advice = agent.give_advice(topic)
             insights.append(advice)
-            print("-" * 40)
+            console.print(f"[bold magenta]{agent.name}:[/bold magenta] {advice}")
+            console.print("-" * 40)
 
-        print("\n--- Moderator Synthesis ---")
-        print("The council has deliberated. Here is the synthesized resolution:")
+        console.print("\n[bold cyan]--- Moderator Synthesis ---[/bold cyan]")
+        console.print("The council has deliberated. Here is the synthesized resolution:")
 
-        resolution = "Synthesis of perspectives:\n"
+        table = Table(title="Council Perspectives")
+        table.add_column("Agent", style="cyan")
+        table.add_column("Core Emotion", style="green")
+        table.add_column("Perspective Suggestion", style="magenta")
+
         for idx, advice in enumerate(insights):
             agent_name = self.agents[idx].name
-            resolution += f"- {agent_name} suggests approaching it with their core emotion: {self.agents[idx].core_emotion}\n"
+            core_emotion = self.agents[idx].core_emotion
+            table.add_row(agent_name, core_emotion, "Approaching it with their core emotion")
 
-        resolution += f"\nFinal Verdict: By combining the insights of all these characters, we can address '{topic}' from multiple philosophical angles."
-        print(resolution)
+        console.print(table)
 
-        return resolution
+        final_verdict = f"\nFinal Verdict: By combining the insights of all these characters, we can address '{topic}' from multiple philosophical angles."
+        console.print(Panel(final_verdict, title="Resolution"))
+
+        return final_verdict
 
 if __name__ == "__main__":
     sample_data_list = [

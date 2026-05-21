@@ -3,6 +3,7 @@ import time
 
 class OrchestratorAgent:
     def __init__(self, characters):
+        self.recent_responders = []
         self.characters = characters
         self.char_map = {c["name"]: c for c in characters}
 
@@ -14,14 +15,19 @@ class OrchestratorAgent:
         # Determine sentiment based on character traits
         if "Desire for Comfort" in character["core_emotion"] or "Calm" in character["core_emotion"]:
             tone = "calmly"
+            action = "adjusts glasses"
         elif "Excitement" in character["core_emotion"] or "Fiery" in character["core_emotion"]:
             tone = "excitedly"
+            action = "clenches fist"
         elif "Pride" in character["core_emotion"] or "Arrogance" in character["core_emotion"]:
             tone = "proudly"
+            action = "crosses arms"
         elif "Grief" in character["core_emotion"] or "Regret" in character["core_emotion"]:
             tone = "solemnly"
+            action = "looks away"
         else:
             tone = "thoughtfully"
+            action = "nods slowly"
 
         # Build context from previous messages if any
         context_reaction = ""
@@ -30,7 +36,15 @@ class OrchestratorAgent:
             if last_msg["sender"] != "User":
                 context_reaction = f" Addressing {last_msg['sender']}'s point: "
 
-        return f"*Replies {tone} driven by {core_emotion}* {context_reaction}I hear what you're saying about '{prompt[:20]}...'. As someone who believes in {quality}, my perspective is that we must stay true to our path!"
+        # Dynamic injection
+        dynamic_responses = [
+            f"I hear what you're saying about '{prompt[:20]}...'. As someone who believes in {quality}, my perspective is that we must stay true to our path!",
+            f"Interesting take on '{prompt[:20]}...'. However, driven by {core_emotion}, I firmly hold that {quality} is the answer.",
+            f"When looking at '{prompt[:20]}...', one must consider {quality}. That is the reality of {core_emotion}."
+        ]
+        chosen_response = random.choice(dynamic_responses)
+
+        return f"*Replies {tone} and {action}* {context_reaction}{chosen_response}"
 
     def process_group_chat(self, user_message, selected_characters=None):
         """
@@ -39,13 +53,23 @@ class OrchestratorAgent:
         """
         if not selected_characters:
             num_responders = random.randint(2, 4)
-            # Pick distinct random characters
-            responders = random.sample(self.characters, min(num_responders, len(self.characters)))
+            available = [c for c in self.characters if c["name"] not in self.recent_responders]
+            if len(available) < num_responders:
+                available = self.characters # Reset if not enough available
+            responders = random.sample(available, min(num_responders, len(available)))
         else:
             # Use specific characters if provided (useful if user tags someone)
             responders = [self.char_map[name] for name in selected_characters if name in self.char_map]
             if not responders:
-                responders = random.sample(self.characters, 2)
+                available = [c for c in self.characters if c["name"] not in self.recent_responders]
+                if len(available) < 2:
+                     available = self.characters
+                responders = random.sample(available, min(2, len(available)))
+
+        self.recent_responders.extend([r["name"] for r in responders])
+        # keep only last 4
+        if len(self.recent_responders) > 4:
+            self.recent_responders = self.recent_responders[-4:]
 
         responses = []
 

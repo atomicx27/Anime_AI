@@ -15,16 +15,22 @@ class ScenarioRankerAgent:
         # Simple keyword matching to influence rank
         score = 0
         keywords = {
-            "fight": ["combat", "battle", "strength", "power", "protect", "will", "effort", "magic"],
-            "peace": ["peace", "diplomacy", "empathy", "talk", "calm", "understanding"],
-            "smart": ["logic", "intelligent", "calculating", "acumen", "wisdom", "strategy"],
-            "evil": ["control", "despair", "nihilism", "pain", "trauma", "genocidal"]
+            "fight": ["combat", "battle", "strength", "power", "protect", "will", "effort", "violence", "war", "martial"],
+            "peace": ["peace", "diplomacy", "empathy", "talk", "calm", "understanding", "negotiation", "trade"],
+            "smart": ["logic", "intelligent", "calculating", "acumen", "wisdom", "strategy", "politics", "political"],
+            "evil": ["control", "despair", "nihilism", "pain", "trauma", "genocidal", "manipulate", "subjugation"],
+            "magic": ["magic", "spiritual", "genjutsu", "spell", "illusion", "energy", "dimension"],
+            "leadership": ["guild", "lead", "subordinates", "king", "protect", "village", "family"]
         }
 
         for category, words in keywords.items():
             if category in scenario_lower or any(w in scenario_lower for w in words):
                 for word in words:
-                    if word in core_emotion or word in personality or word in quality:
+                    if word in core_emotion:
+                        score += 12
+                    if word in personality:
+                        score += 8
+                    if word in quality:
                         score += 10
 
         # Add some randomness to make it interesting
