@@ -1,18 +1,21 @@
 import sys
 from parser import parse_readme_characters
 from moderator import ModeratorAgent
+from rich.console import Console
+from rich.panel import Panel
+
+console = Console()
 
 def main():
-    print("Welcome to Anime Council AI!")
-    print("Loading characters from README.md to assemble the council...")
-
-    characters = parse_readme_characters()
+    console.print(Panel.fit("[bold cyan]Welcome to Anime Council AI![/bold cyan]"))
+    with console.status("[bold green]Loading characters from README.md to assemble the council...[/bold green]"):
+        characters = parse_readme_characters()
 
     if not characters:
-        print("No characters found. Make sure the README.md is formatted correctly.")
+        console.print("[bold red]No characters found. Make sure the README.md is formatted correctly.[/bold red]")
         sys.exit(1)
 
-    print(f"Successfully assembled {len(characters)} characters for the council.")
+    console.print(f"[bold green]Successfully assembled {len(characters)} characters for the council.[/bold green]")
 
     moderator = ModeratorAgent(characters)
 
@@ -23,13 +26,13 @@ def main():
                 continue
 
             if topic.lower() == 'quit':
-                print("Goodbye!")
+                console.print("[bold yellow]Goodbye![/bold yellow]")
                 break
 
             moderator.discuss_topic(topic)
 
         except KeyboardInterrupt:
-            print("\nGoodbye!")
+            console.print("\n[bold yellow]Goodbye![/bold yellow]")
             break
 
 if __name__ == "__main__":

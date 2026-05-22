@@ -1,23 +1,32 @@
 import sys
 from parser import parse_readme_characters
 from agent import AnimeAgent
+from rich.console import Console
+from rich.panel import Panel
+from rich.table import Table
+
+console = Console()
 
 def main():
-    print("Welcome to Anime Agents CLI!")
-    print("Loading characters from README.md...")
-
-    characters = parse_readme_characters()
+    console.print(Panel.fit("[bold cyan]Welcome to Anime Agents CLI![/bold cyan]"))
+    with console.status("[bold green]Loading characters from README.md..."):
+        characters = parse_readme_characters()
 
     if not characters:
-        print("No characters found. Make sure the README.md is formatted correctly.")
+        console.print("[bold red]No characters found. Make sure the README.md is formatted correctly.[/bold red]")
         sys.exit(1)
 
     while True:
-        print("\nAvailable Characters:")
-        for idx, char in enumerate(characters):
-            print(f"{idx + 1}. {char['name']} - {char['core_emotion']}")
+        table = Table(title="Available Characters")
+        table.add_column("No.", justify="right", style="cyan", no_wrap=True)
+        table.add_column("Character", style="magenta")
+        table.add_column("Core Emotion", style="green")
 
-        print("0. Exit")
+        for idx, char in enumerate(characters):
+            table.add_row(str(idx + 1), char['name'], char['core_emotion'])
+
+        console.print(table)
+        console.print("[bold yellow]0.[/bold yellow] Exit")
 
         try:
             choice = input("\nSelect a character by number to chat with them: ")
@@ -27,33 +36,31 @@ def main():
             choice_idx = int(choice) - 1
 
             if choice_idx == -1:
-                print("Goodbye!")
+                console.print("[bold yellow]Goodbye![/bold yellow]")
                 break
 
             if 0 <= choice_idx < len(characters):
                 selected_char = characters[choice_idx]
                 agent = AnimeAgent(selected_char)
 
-                print(f"\n--- Initializing Agent: {agent.name} ---")
-                print("System Prompt Generated:")
-                print("-" * 40)
-                print(agent.get_system_prompt())
-                print("-" * 40)
+                console.print(f"\n[bold green]--- Initializing Agent: {agent.name} ---[/bold green]")
+                console.print(Panel(agent.get_system_prompt(), title="System Prompt Generated", expand=False))
 
-                print(f"\nYou are now chatting with {agent.name}. Type 'quit' to select someone else.")
+                console.print(f"\nYou are now chatting with [bold cyan]{agent.name}[/bold cyan]. Type 'quit' to select someone else.")
                 while True:
                     user_msg = input("\nYou: ")
                     if user_msg.lower() == 'quit':
                         break
 
-                    response = agent.chat(user_msg)
-                    print(f"\n{response}")
+                    with console.status(f"[bold cyan]{agent.name} is thinking...[/bold cyan]"):
+                        response = agent.chat(user_msg)
+                    console.print(f"\n[bold magenta]{response}[/bold magenta]")
             else:
-                print("Invalid selection. Please try again.")
+                console.print("[bold red]Invalid selection. Please try again.[/bold red]")
         except ValueError:
-            print("Please enter a valid number.")
+            console.print("[bold red]Please enter a valid number.[/bold red]")
         except KeyboardInterrupt:
-            print("\nGoodbye!")
+            console.print("\n[bold yellow]Goodbye![/bold yellow]")
             break
 
 if __name__ == "__main__":

@@ -86,6 +86,8 @@ function App() {
               <motion.div
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
                 transition={{ duration: 0.3, delay: index * 0.05 }}
                 key={agent.name}
                 onClick={() => selectAgent(agent)}
@@ -205,18 +207,18 @@ function App() {
                   <div className="bg-gray-800/90 backdrop-blur-sm p-4 rounded-2xl rounded-tl-sm border border-gray-700 shadow-md flex items-center gap-2 h-[52px]">
                     <motion.div
                       className="w-2 h-2 bg-cyan-400 rounded-full"
-                      animate={{ scale: [1, 1.2, 1], opacity: [0.5, 1, 0.5] }}
-                      transition={{ duration: 1, repeat: Infinity, delay: 0 }}
+                      animate={{ y: [0, -5, 0], opacity: [0.5, 1, 0.5] }}
+                      transition={{ duration: 0.6, repeat: Infinity, delay: 0 }}
                     />
                     <motion.div
-                      className="w-2 h-2 bg-cyan-400 rounded-full"
-                      animate={{ scale: [1, 1.2, 1], opacity: [0.5, 1, 0.5] }}
-                      transition={{ duration: 1, repeat: Infinity, delay: 0.2 }}
+                      className="w-2 h-2 bg-blue-400 rounded-full"
+                      animate={{ y: [0, -5, 0], opacity: [0.5, 1, 0.5] }}
+                      transition={{ duration: 0.6, repeat: Infinity, delay: 0.2 }}
                     />
                     <motion.div
-                      className="w-2 h-2 bg-cyan-400 rounded-full"
-                      animate={{ scale: [1, 1.2, 1], opacity: [0.5, 1, 0.5] }}
-                      transition={{ duration: 1, repeat: Infinity, delay: 0.4 }}
+                      className="w-2 h-2 bg-indigo-400 rounded-full"
+                      animate={{ y: [0, -5, 0], opacity: [0.5, 1, 0.5] }}
+                      transition={{ duration: 0.6, repeat: Infinity, delay: 0.4 }}
                     />
                   </div>
                 </motion.div>
