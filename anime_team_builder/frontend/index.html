@@ -16,7 +16,30 @@
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
+
+        .typing-text {
+            display: inline-block;
+            overflow: hidden;
+            /* white-space: nowrap; removed to allow wrapping */
+            animation: typing 1s steps(40, end);
+        }
+        @keyframes typing {
+            from { max-width: 0; }
+            to { max-width: 100%; }
+        }
         .card-enter {
+            animation: popIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            opacity: 0;
+            transform: scale(0.9) translateY(20px);
+        }
+        @keyframes popIn {
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+
             animation: slideUp 0.5s ease-out forwards;
             opacity: 0;
             transform: translateY(20px);
@@ -130,7 +153,7 @@
                 for (let i = 0; i < data.logs.length; i++) {
                     setTimeout(() => {
                         const logEntry = document.createElement('div');
-                        logEntry.textContent = `> ${data.logs[i]}`;
+                        logEntry.innerHTML = `<span class=\"text-purple-500\">></span> <span class=\"typing-text\">${data.logs[i]}</span>`;
                         logsContainer.appendChild(logEntry);
                         logsContainer.parentElement.scrollTop = logsContainer.parentElement.scrollHeight;
                     }, i * 300);
