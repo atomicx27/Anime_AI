@@ -7,15 +7,15 @@ from rich.panel import Panel
 console = Console()
 
 def main():
-    console.print(Panel.fit("[bold cyan]Welcome to Anime Council AI![/bold cyan]"))
-    with console.status("[bold green]Loading characters from README.md to assemble the council...[/bold green]"):
+    console.print(Panel("[bold cyan]Welcome to Anime Council AI![/bold cyan]\n[italic]Where the greatest minds meet...[/italic]", title="Council", expand=False))
+    with console.status("[bold green]Gathering the council members from the README.md...[/bold green]"):
         characters = parse_readme_characters()
 
     if not characters:
         console.print("[bold red]No characters found. Make sure the README.md is formatted correctly.[/bold red]")
         sys.exit(1)
 
-    console.print(f"[bold green]Successfully assembled {len(characters)} characters for the council.[/bold green]")
+    console.print(f"\n[bold green]✓ Successfully assembled [yellow]{len(characters)}[/yellow] characters for the council.[/bold green]")
 
     moderator = ModeratorAgent(characters)
 

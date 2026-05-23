@@ -2,8 +2,18 @@ from character_agent import CharacterAgent
 from rich.console import Console
 from rich.panel import Panel
 from rich.table import Table
+import time
+import sys
 
 console = Console()
+
+def type_text(text, style="magenta", delay=0.02):
+    for char in text:
+        sys.stdout.write(char)
+        sys.stdout.flush()
+        time.sleep(delay)
+    sys.stdout.write("\n")
+
 
 class ModeratorAgent:
     def __init__(self, character_data_list):
@@ -17,7 +27,8 @@ class ModeratorAgent:
             with console.status(f"[bold yellow]{agent.name} is speaking...[/bold yellow]"):
                 advice = agent.give_advice(topic)
             insights.append(advice)
-            console.print(f"[bold magenta]{agent.name}:[/bold magenta] {advice}")
+            console.print(f"[bold magenta]{agent.name}:[/bold magenta] ", end="")
+            type_text(advice)
             console.print("-" * 40)
 
         console.print("\n[bold cyan]--- Moderator Synthesis ---[/bold cyan]")

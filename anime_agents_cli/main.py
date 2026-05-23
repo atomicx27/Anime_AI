@@ -4,8 +4,19 @@ from agent import AnimeAgent
 from rich.console import Console
 from rich.panel import Panel
 from rich.table import Table
+import time
+import sys
 
 console = Console()
+
+def type_text(text, style="magenta", delay=0.03):
+    sys.stdout.write(f"\033[35m")
+    for char in text:
+        sys.stdout.write(char)
+        sys.stdout.flush()
+        time.sleep(delay)
+    sys.stdout.write(f"\033[0m\n")
+
 
 def main():
     console.print(Panel.fit("[bold cyan]Welcome to Anime Agents CLI![/bold cyan]"))
@@ -54,7 +65,8 @@ def main():
 
                     with console.status(f"[bold cyan]{agent.name} is thinking...[/bold cyan]"):
                         response = agent.chat(user_msg)
-                    console.print(f"\n[bold magenta]{response}[/bold magenta]")
+                    print("\n")
+                    type_text(response)
             else:
                 console.print("[bold red]Invalid selection. Please try again.[/bold red]")
         except ValueError:
