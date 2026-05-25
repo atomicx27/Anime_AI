@@ -32,6 +32,9 @@ class ScenarioRankerAgent:
                         score += 8
                     if word in quality:
                         score += 10
+            # Synergistic scoring: deduct points if category is in scenario but character lacks it
+            elif (category in scenario_lower) and not any(w in core_emotion or w in personality or w in quality for w in words):
+                score -= 10
 
         # Add some randomness to make it interesting
         score += random.randint(-5, 15)
