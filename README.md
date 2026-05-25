@@ -161,3 +161,29 @@ python3 main.py
 # Access the UI
 # Open your browser and navigate to http://localhost:8005/
 ```
+
+### 7. Anime Affinity Matcher AI
+
+The **Anime Affinity Matcher AI** is a web-based, agentic application that acts as a personalized matchmaking system. Users input a self-description encompassing their personality, goals, and values. The AI evaluates this input against all characters from the table based on their Core Emotion, Personality Profile, and Unique Quality to categorize them into affinities like "Soulmate/Best Friend", "Rival", "Mentor", or "Opposite/Enemy".
+
+#### Folder Location
+`anime_affinity_matcher/`
+
+#### Features
+- **Intelligent Affinity Categorization**: The agent analyzes the user's personality traits and calculates similarity/difference scores against the characters to dynamically match them into relationship archetypes.
+- **Dynamic Reasoning**: The agent provides a detailed rationale explaining why a character matches the user's specific input.
+- **Sleek UI/UX**: Features a modern, dark-themed interface built with Tailwind CSS, including an animated "Agent Thought Process" terminal and stylish character match cards.
+- **Dynamic Character Loading**: Backend API automatically parses the root `README.md` to load character details.
+
+#### How to Run
+```bash
+# Install dependencies
+cd anime_affinity_matcher/backend
+pip install -r requirements.txt
+
+# Run the server
+python3 main.py
+
+# Access the UI
+# Open your browser and navigate to the frontend index.html file, or use a local HTTP server in the frontend directory.
+```
