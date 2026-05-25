@@ -135,3 +135,29 @@ python3 main.py
 # Access the UI
 # Open your browser and navigate to http://localhost:8004/
 ```
+
+### 6. Anime World Simulator AI
+
+The **Anime World Simulator AI** is a web-based, multi-agent application that simulates how the characters in the database would react to a global event or crisis. It dynamically evaluates their "Core Emotion", "Personality Profile", and "Unique Quality & Philosophy" to determine an "Action State" (Aggressive, Defensive, Diplomatic, etc.) and generates a personalized reaction strategy.
+
+#### Folder Location
+`anime_world_simulator/`
+
+#### Features
+- **Dynamic Scenario Processing**: An agent reads a user-inputted scenario and generates unique reactions for every character simultaneously.
+- **Action State Categorization**: Characters are assigned specific states (e.g., Strategic, Chaotic, Protective) based on their psychological profiles.
+- **Sleek, Animated UI**: A modern, dark-themed interface built with Tailwind CSS featuring an animated terminal log and responsive, color-coded character cards.
+- **Dynamic Character Loading**: Backend API automatically parses the root `README.md` to load character details.
+
+#### How to Run
+```bash
+# Install dependencies
+cd anime_world_simulator/backend
+pip install -r requirements.txt
+
+# Run the server
+python3 main.py
+
+# Access the UI
+# Open your browser and navigate to http://localhost:8005/
+```
