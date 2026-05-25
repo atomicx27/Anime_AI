@@ -27,12 +27,23 @@
     </script>
     <style>
         .message-enter {
-            animation: slideIn 0.3s ease-out forwards;
+            animation: slideInAndScale 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
             opacity: 0;
-            transform: translateY(10px);
+            transform: translateY(15px) scale(0.95);
         }
-        @keyframes slideIn {
-            to { opacity: 1; transform: translateY(0); }
+        @keyframes slideInAndScale {
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .typing-dot {
+            animation: typingBounce 1.4s infinite ease-in-out both;
+        }
+        .typing-dot:nth-child(1) { animation-delay: -0.32s; }
+        .typing-dot:nth-child(2) { animation-delay: -0.16s; }
+
+        @keyframes typingBounce {
+            0%, 80%, 100% { transform: scale(0); opacity: 0.5; }
+            40% { transform: scale(1); opacity: 1; }
         }
 
         /* Custom scrollbar for a more discord-like feel */
@@ -54,19 +65,13 @@
             display: inline-flex;
             align-items: center;
         }
+        /* Already defined typing dot above, removing duplicate */
         .typing-dot {
-            width: 4px;
-            height: 4px;
-            background-color: #72767d;
+            width: 6px;
+            height: 6px;
+            background-color: #8e9297;
             border-radius: 50%;
             margin: 0 2px;
-            animation: bounce 1.4s infinite ease-in-out both;
-        }
-        .typing-dot:nth-child(1) { animation-delay: -0.32s; }
-        .typing-dot:nth-child(2) { animation-delay: -0.16s; }
-        @keyframes bounce {
-            0%, 80%, 100% { transform: scale(0); }
-            40% { transform: scale(1); }
         }
     </style>
 </head>
