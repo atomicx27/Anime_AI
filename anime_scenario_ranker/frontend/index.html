@@ -63,6 +63,15 @@
             border-color: rgba(167, 139, 250, 0.5); /* Purple-400 */
         }
 
+        .tier-row {
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .tier-row.active-tier {
+            background-color: rgba(31, 41, 55, 0.8);
+            box-shadow: 0 0 15px rgba(167, 139, 250, 0.2) inset;
+        }
+
         .terminal-log-enter {
             animation: slideInRight 0.3s ease-out forwards;
             opacity: 0;
@@ -146,41 +155,44 @@
 
         <!-- Main Content: Tier List -->
         <div class="flex-1 bg-gray-900 p-8 overflow-y-auto custom-scrollbar flex flex-col gap-4 relative" id="tier-list-container">
+            <!-- Background Grid -->
+            <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGQ9Ik00MCAwSDBWNDBIMHoiIGZpbGw9Im5vbmUiLz4KPHBhdGggZD0iTTQwIDBoLTF2NDBoMVYwek0wIDQwaDQwdi0xSDB2MXoiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4wNSkiLz4KPC9zdmc+')] pointer-events-none opacity-50"></div>
+
             <!-- Background Decoration -->
             <div class="absolute inset-0 flex items-center justify-center pointer-events-none opacity-5">
                 <i class="fa-solid fa-ranking-star text-[20rem]"></i>
             </div>
 
             <!-- Tier Rows will be generated here -->
-            <div id="tier-S" class="flex border border-gray-700 rounded-lg overflow-hidden bg-gray-800/50 shadow-lg min-h-[100px]">
+            <div id="tier-S" class="tier-row flex border border-gray-700 rounded-lg overflow-hidden bg-gray-800/50 shadow-lg min-h-[100px] z-10 relative">
                 <div class="w-24 bg-tier-s flex items-center justify-center border-r border-gray-700 shrink-0">
                     <span class="text-3xl font-black text-gray-900 drop-shadow-sm">S</span>
                 </div>
                 <div class="flex-1 p-3 flex flex-wrap gap-3 items-center" id="row-S"></div>
             </div>
 
-            <div id="tier-A" class="flex border border-gray-700 rounded-lg overflow-hidden bg-gray-800/50 shadow-lg min-h-[100px]">
+            <div id="tier-A" class="tier-row flex border border-gray-700 rounded-lg overflow-hidden bg-gray-800/50 shadow-lg min-h-[100px] z-10 relative">
                 <div class="w-24 bg-tier-a flex items-center justify-center border-r border-gray-700 shrink-0">
                     <span class="text-3xl font-black text-gray-900 drop-shadow-sm">A</span>
                 </div>
                 <div class="flex-1 p-3 flex flex-wrap gap-3 items-center" id="row-A"></div>
             </div>
 
-            <div id="tier-B" class="flex border border-gray-700 rounded-lg overflow-hidden bg-gray-800/50 shadow-lg min-h-[100px]">
+            <div id="tier-B" class="tier-row flex border border-gray-700 rounded-lg overflow-hidden bg-gray-800/50 shadow-lg min-h-[100px] z-10 relative">
                 <div class="w-24 bg-tier-b flex items-center justify-center border-r border-gray-700 shrink-0">
                     <span class="text-3xl font-black text-gray-900 drop-shadow-sm">B</span>
                 </div>
                 <div class="flex-1 p-3 flex flex-wrap gap-3 items-center" id="row-B"></div>
             </div>
 
-            <div id="tier-C" class="flex border border-gray-700 rounded-lg overflow-hidden bg-gray-800/50 shadow-lg min-h-[100px]">
+            <div id="tier-C" class="tier-row flex border border-gray-700 rounded-lg overflow-hidden bg-gray-800/50 shadow-lg min-h-[100px] z-10 relative">
                 <div class="w-24 bg-tier-c flex items-center justify-center border-r border-gray-700 shrink-0">
                     <span class="text-3xl font-black text-gray-900 drop-shadow-sm">C</span>
                 </div>
                 <div class="flex-1 p-3 flex flex-wrap gap-3 items-center" id="row-C"></div>
             </div>
 
-            <div id="tier-D" class="flex border border-gray-700 rounded-lg overflow-hidden bg-gray-800/50 shadow-lg min-h-[100px]">
+            <div id="tier-D" class="tier-row flex border border-gray-700 rounded-lg overflow-hidden bg-gray-800/50 shadow-lg min-h-[100px] z-10 relative">
                 <div class="w-24 bg-tier-d flex items-center justify-center border-r border-gray-700 shrink-0">
                     <span class="text-3xl font-black text-gray-900 drop-shadow-sm">D</span>
                 </div>
@@ -276,10 +288,15 @@
 
                            if(ranking) {
                                setTimeout(() => {
+                                    // Highlight tier row
+                                    const tierRow = document.getElementById(`tier-${ranking.rank}`);
+                                    tierRow.classList.add('active-tier');
+                                    setTimeout(() => tierRow.classList.remove('active-tier'), 800);
+
                                     const charHtml = `
                                         <div class="tooltip relative cursor-help card-enter tier-card animate-pop-in" style="animation-delay: 0.1s">
-                                            <div class="bg-gray-700 border border-gray-600 rounded px-3 py-2 flex items-center gap-2 hover:bg-gray-600 transition-colors shadow-sm">
-                                                <div class="w-6 h-6 rounded-full bg-gray-800 flex items-center justify-center text-xs font-bold text-gray-300">
+                                            <div class="bg-gray-700 border border-gray-600 rounded px-3 py-2 flex items-center gap-2 hover:bg-gray-600 transition-colors shadow-sm shadow-purple-500/20">
+                                                <div class="w-6 h-6 rounded-full bg-gray-800 flex items-center justify-center text-xs font-bold text-gray-300 border border-gray-600">
                                                     ${getInitials(ranking.name)}
                                                 </div>
                                                 <span class="text-sm font-medium text-gray-200">${ranking.name}</span>
