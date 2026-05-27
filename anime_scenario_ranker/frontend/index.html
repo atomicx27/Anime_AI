@@ -59,8 +59,9 @@
 
         .tier-card:hover {
             transform: scale(1.05) translateY(-2px);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.1);
-            border-color: rgba(167, 139, 250, 0.5); /* Purple-400 */
+            box-shadow: 0 0 15px rgba(167, 139, 250, 0.6), 0 4px 6px -2px rgba(0, 0, 0, 0.1);
+            border-color: rgba(167, 139, 250, 0.8);
+            z-index: 10;
         }
 
         .terminal-log-enter {
@@ -89,23 +90,26 @@
             background-color: #1f2937;
             color: #fff;
             text-align: center;
-            border-radius: 6px;
-            padding: 8px;
+            border-radius: 8px;
+            padding: 10px;
             position: absolute;
             z-index: 50;
             bottom: 125%;
             left: 50%;
             margin-left: -125px;
             opacity: 0;
-            transition: opacity 0.3s;
-            border: 1px solid #374151;
+            transform: translateY(10px) scale(0.95);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid #4b5563;
             font-size: 0.875rem;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 15px 25px -5px rgba(0, 0, 0, 0.6), 0 0 10px rgba(167, 139, 250, 0.2);
+            pointer-events: none;
         }
 
         .tooltip:hover .tooltip-text {
             visibility: visible;
             opacity: 1;
+            transform: translateY(0) scale(1);
         }
     </style>
 </head>
@@ -145,10 +149,10 @@
         </div>
 
         <!-- Main Content: Tier List -->
-        <div class="flex-1 bg-gray-900 p-8 overflow-y-auto custom-scrollbar flex flex-col gap-4 relative" id="tier-list-container">
+        <div class="flex-1 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 p-8 overflow-y-auto custom-scrollbar flex flex-col gap-4 relative" id="tier-list-container">
             <!-- Background Decoration -->
-            <div class="absolute inset-0 flex items-center justify-center pointer-events-none opacity-5">
-                <i class="fa-solid fa-ranking-star text-[20rem]"></i>
+            <div class="absolute inset-0 flex items-center justify-center pointer-events-none opacity-[0.03]">
+                <i class="fa-solid fa-ranking-star text-[25rem] text-purple-300"></i>
             </div>
 
             <!-- Tier Rows will be generated here -->
