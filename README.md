@@ -161,3 +161,29 @@ python3 main.py
 # Access the UI
 # Open your browser and navigate to http://localhost:8005/
 ```
+
+### 7. Anime Power Scaler AI
+
+The **Anime Power Scaler AI** is a web-based, multi-agent application that simulates a dynamic 1v1 battle between two characters. It evaluates their "Core Emotion", "Personality Profile", and "Unique Quality & Philosophy" to determine the victor in a selected context.
+
+#### Folder Location
+`anime_power_scaler/`
+
+#### Features
+- **Dynamic Matchups**: Compare any two characters from the comprehensive table.
+- **Trait-Based Battle Simulation**: An agent analyzes and compares core traits, applying strategic weighting to determine a logical winner (or draw).
+- **Sleek, Animated UI**: A modern interface featuring an interactive terminal log that prints the battle simulation step-by-step and a responsive results display.
+- **Dynamic Character Loading**: Backend API automatically parses the root `README.md` to load character details and serve them.
+
+#### How to Run
+```bash
+# Install dependencies
+cd anime_power_scaler/backend
+pip install -r requirements.txt
+
+# Run the server
+python3 main.py
+
+# Access the UI
+# Open your browser and navigate to http://localhost:8006/
+```
