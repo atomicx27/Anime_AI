@@ -143,9 +143,9 @@
     </div>
 
     <!-- Main Chat Area -->
-    <div class="flex-1 flex flex-col bg-discord-base relative">
+    <div class="flex-1 flex flex-col bg-transparent relative">
         <!-- Header -->
-        <div class="h-12 border-b border-discord-dark flex items-center px-4 shadow-sm z-10">
+        <div class="h-12 border-b border-black/20 flex items-center px-4 shadow-sm glass-panel z-10 shrink-0">
             <i class="fas fa-hashtag text-discord-muted text-xl mr-3"></i>
             <h2 class="font-bold text-white flex-1">general-chat</h2>
             <div class="flex text-discord-muted space-x-4">
@@ -160,27 +160,30 @@
         </div>
 
         <!-- Chat History -->
-        <div id="chat-history" class="flex-1 overflow-y-auto px-4 py-6 flex flex-col">
+        <div id="chat-history" class="flex-1 overflow-y-auto px-4 py-6 flex flex-col relative z-0">
+            <!-- Background Decoration -->
+            <div class="absolute inset-0 pointer-events-none opacity-[0.03] bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4IiBoZWlnaHQ9IjgiPgo8cmVjdCB3aWR0aD0iOCIgaGVpZ2h0PSI4IiBmaWxsPSIjZmZmIj48L3JlY3Q+CjxwYXRoIGQ9Ik0wIDBMODggWk04IDBMMCA4IFoiIHN0cm9rZT0iIzAwMCIgc3Ryb2tlLXdpZHRoPSIxIj48L3BhdGg+Cjwvc3ZnPg==')] mix-blend-overlay"></div>
+
             <!-- Welcome Message -->
-            <div class="mt-auto mb-6">
-                <div class="w-16 h-16 bg-discord-dark rounded-full flex items-center justify-center mb-4">
+            <div class="mt-auto mb-6 relative z-10">
+                <div class="w-[72px] h-[72px] bg-discord-dark rounded-full flex items-center justify-center mb-4 shadow-lg border border-discord-light/30">
                     <i class="fas fa-hashtag text-white text-3xl"></i>
                 </div>
-                <h1 class="text-white text-3xl font-bold mb-2">Welcome to #general-chat!</h1>
-                <p class="text-discord-muted">This is the start of the #general-chat channel. Say hi to the anime council!</p>
+                <h1 class="text-white text-4xl font-extrabold mb-2 tracking-tight">Welcome to #general-chat!</h1>
+                <p class="text-discord-muted text-lg">This is the start of the #general-chat channel. Say hi to the anime council!</p>
             </div>
 
-            <div class="w-full border-t border-discord-dark/50 my-4 flex justify-center">
-                <span class="bg-discord-base px-2 text-xs text-discord-muted font-semibold -mt-2">Today</span>
+            <div class="w-full border-t border-discord-dark/50 my-4 flex justify-center relative z-10">
+                <span class="px-2 text-xs text-discord-muted font-semibold -mt-2 bg-[#36393f] rounded-full">Today</span>
             </div>
 
-            <div id="messages-container" class="space-y-1">
+            <div id="messages-container" class="space-y-1 relative z-10">
                 <!-- Messages go here -->
             </div>
 
             <!-- Typing Indicator -->
-            <div id="typing-container" class="hidden text-xs text-discord-muted font-bold px-2 py-1 flex items-center mt-2">
-                <div class="typing-indicator mr-2">
+            <div id="typing-container" class="hidden text-xs text-discord-muted font-bold px-4 py-2 flex items-center mt-2 relative z-10 bg-discord-darker/50 rounded-lg w-max ml-4 mb-2 shadow-sm border border-discord-light/10">
+                <div class="typing-indicator mr-3">
                     <div class="typing-dot"></div>
                     <div class="typing-dot"></div>
                     <div class="typing-dot"></div>
@@ -192,22 +195,22 @@
         </div>
 
         <!-- Input Area -->
-        <div class="px-4 pb-6 pt-2 relative">
-            <form id="chat-form" class="bg-discord-light rounded-lg flex items-center px-4 py-2 relative">
-                <div class="text-discord-muted hover:text-discord-text cursor-pointer w-6 h-6 flex items-center justify-center mr-3 bg-discord-darker rounded-full">
-                    <i class="fas fa-plus text-xs"></i>
+        <div class="px-4 pb-6 pt-2 relative z-10">
+            <form id="chat-form" class="glass-panel rounded-xl flex items-center px-4 py-3 relative shadow-lg">
+                <div class="text-discord-muted hover:text-discord-text cursor-pointer w-7 h-7 flex items-center justify-center mr-3 bg-discord-darker rounded-full transition-colors hover:bg-discord-dark">
+                    <i class="fas fa-plus text-sm"></i>
                 </div>
                 <input
                     type="text"
                     id="message-input"
                     placeholder="Message #general-chat"
-                    class="bg-transparent flex-1 outline-none text-discord-text text-[15px]"
+                    class="bg-transparent flex-1 outline-none text-discord-text text-[15px] placeholder-discord-muted"
                     autocomplete="off"
                 >
-                <div class="flex text-discord-muted space-x-3 ml-3">
-                    <i class="fas fa-gift cursor-pointer hover:text-discord-text"></i>
-                    <i class="fas fa-sticky-note cursor-pointer hover:text-discord-text"></i>
-                    <i class="fas fa-smile cursor-pointer hover:text-discord-text"></i>
+                <div class="flex text-discord-muted space-x-4 ml-3">
+                    <i class="fas fa-gift cursor-pointer hover:text-discord-text transition-transform hover:scale-110"></i>
+                    <i class="fas fa-sticky-note cursor-pointer hover:text-discord-text transition-transform hover:scale-110"></i>
+                    <i class="fas fa-smile cursor-pointer hover:text-discord-text transition-transform hover:scale-110 text-yellow-500/80 hover:text-yellow-400"></i>
                 </div>
             </form>
         </div>
