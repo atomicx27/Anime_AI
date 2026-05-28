@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anime Power Scaler AI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .win-card { border-left: 4px solid #10B981; background-color: #ECFDF5; }
+        .loss-card { border-left: 4px solid #EF4444; background-color: #FEF2F2; }
+        .draw-card { border-left: 4px solid #F59E0B; background-color: #FFFBEB; }
+        .win-text { color: #047857; font-weight: bold; }
+        .loss-text { color: #B91C1C; font-weight: bold; }
+        .draw-text { color: #B45309; font-weight: bold; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .fade-in {
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white min-h-screen font-sans antialiased">
+    <div class="container mx-auto px-4 py-8 max-w-5xl">
+        <header class="text-center mb-12">
+            <h1 class="text-4xl md:text-5xl font-extrabold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">
+                Anime Power Scaler AI
+            </h1>
+            <p class="text-gray-400 text-lg">
+                Enter a custom ability or character description, and the AI agent will simulate a 1v1 matchup against the entire anime roster.
+            </p>
+        </header>
+
+        <div class="bg-gray-800 rounded-xl p-6 shadow-lg mb-10 border border-gray-700">
+            <h2 class="text-2xl font-bold mb-4">Input Custom Ability</h2>
+            <textarea id="ability-input" class="w-full bg-gray-700 text-white border border-gray-600 rounded-lg p-4 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-shadow mb-4" rows="4" placeholder="Describe the character's abilities, power level, and unique traits..."></textarea>
+            <div class="text-right">
+                <button id="scale-btn" class="bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 px-6 rounded-lg transition-colors flex items-center justify-center ml-auto">
+                    <span id="btn-text">Scale Power</span>
+                    <svg id="btn-spinner" class="animate-spin ml-2 h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <div id="results-container" class="hidden">
+            <h2 class="text-2xl font-bold mb-6 text-center border-b border-gray-700 pb-2">Matchup Results</h2>
+            <div id="results-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Matchup cards will be injected here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('scale-btn').addEventListener('click', async () => {
+            const input = document.getElementById('ability-input').value.trim();
+            if (!input) {
+                alert('Please enter an ability description.');
+                return;
+            }
+
+            const btn = document.getElementById('scale-btn');
+            const btnText = document.getElementById('btn-text');
+            const btnSpinner = document.getElementById('btn-spinner');
+            const resultsContainer = document.getElementById('results-container');
+            const resultsGrid = document.getElementById('results-grid');
+
+            // Loading state
+            btn.disabled = true;
+            btnText.innerText = 'Evaluating...';
+            btnSpinner.classList.remove('hidden');
+            resultsGrid.innerHTML = '';
+            resultsContainer.classList.add('hidden');
+
+            try {
+                const response = await fetch('http://localhost:8006/scale', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ ability_description: input })
+                });
+
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
+                const data = await response.json();
+
+                // Render results
+                data.results.forEach((matchup, index) => {
+                    const card = document.createElement('div');
+
+                    let cardClass = '';
+                    let textClass = '';
+                    if (matchup.result === 'Win') {
+                        cardClass = 'win-card';
+                        textClass = 'win-text';
+                    } else if (matchup.result === 'Loss') {
+                        cardClass = 'loss-card';
+                        textClass = 'loss-text';
+                    } else {
+                        cardClass = 'draw-card';
+                        textClass = 'draw-text';
+                    }
+
+                    card.className = `${cardClass} text-gray-800 rounded-lg shadow p-5 fade-in`;
+                    card.style.animationDelay = `${index * 0.05}s`;
+
+                    card.innerHTML = `
+                        <div class="flex justify-between items-center mb-3">
+                            <h3 class="font-bold text-lg">${matchup.name}</h3>
+                            <span class="${textClass} uppercase text-sm px-2 py-1 bg-white rounded shadow-sm">${matchup.result}</span>
+                        </div>
+                        <p class="text-sm text-gray-700 leading-relaxed">${matchup.explanation}</p>
+                    `;
+
+                    resultsGrid.appendChild(card);
+                });
+
+                resultsContainer.classList.remove('hidden');
+
+            } catch (error) {
+                console.error('Error fetching matchup results:', error);
+                alert('An error occurred while evaluating the matchups. Make sure the backend is running.');
+            } finally {
+                // Reset loading state
+                btn.disabled = false;
+                btnText.innerText = 'Scale Power';
+                btnSpinner.classList.add('hidden');
+            }
+        });
+    </script>
+</body>
+</html>
