@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anime Power Scaler AI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .fade-in {
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+
+        .tier-Overkill { border-color: #ef4444; background: rgba(239, 68, 68, 0.1); }
+        .tier-Even-Match { border-color: #eab308; background: rgba(234, 179, 8, 0.1); }
+        .tier-Underdog { border-color: #3b82f6; background: rgba(59, 130, 246, 0.1); }
+        .tier-Support { border-color: #10b981; background: rgba(16, 185, 129, 0.1); }
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-100 min-h-screen font-sans antialiased">
+
+    <div class="container mx-auto px-4 py-12 max-w-5xl">
+        <header class="text-center mb-12">
+            <h1 class="text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-yellow-500 mb-4">
+                Anime Power Scaler AI
+            </h1>
+            <p class="text-xl text-gray-400">Evaluate the anime roster against any threat or opponent.</p>
+        </header>
+
+        <div class="bg-gray-800 rounded-xl p-8 shadow-2xl mb-12 border border-gray-700">
+            <h2 class="text-2xl font-bold mb-6">Describe the Opponent / Threat</h2>
+            <form id="scaleForm" class="space-y-4">
+                <div>
+                    <input type="text" id="opponentInput" required
+                        class="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-3 text-lg focus:outline-none focus:ring-2 focus:ring-red-500 transition-all placeholder-gray-500"
+                        placeholder="e.g. A God of Destruction, A ninja army, A political mastermind...">
+                </div>
+                <button type="submit" id="submitBtn"
+                    class="w-full bg-gradient-to-r from-red-600 to-yellow-600 hover:from-red-500 hover:to-yellow-500 text-white font-bold py-3 px-6 rounded-lg transition-all transform hover:scale-[1.02] shadow-lg">
+                    Initialize Power Scaling
+                </button>
+            </form>
+        </div>
+
+        <div id="loadingIndicator" class="hidden text-center py-12">
+            <div class="inline-block animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-red-500"></div>
+            <p class="mt-4 text-gray-400 text-lg">Agent evaluating combat scenarios...</p>
+        </div>
+
+        <div id="resultsContainer" class="hidden">
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-3xl font-bold">Scaling Results</h2>
+                <div class="text-sm text-gray-400">Opponent: <span id="displayOpponent" class="text-white font-semibold"></span></div>
+            </div>
+
+            <div id="cardsGrid" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Cards will be dynamically inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('scaleForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const opponent = document.getElementById('opponentInput').value;
+            const btn = document.getElementById('submitBtn');
+            const loading = document.getElementById('loadingIndicator');
+            const resultsContainer = document.getElementById('resultsContainer');
+            const cardsGrid = document.getElementById('cardsGrid');
+            const displayOpponent = document.getElementById('displayOpponent');
+
+            // UI State updates
+            btn.disabled = true;
+            btn.classList.add('opacity-50');
+            resultsContainer.classList.add('hidden');
+            loading.classList.remove('hidden');
+            cardsGrid.innerHTML = '';
+
+            try {
+                const response = await fetch('/api/scale', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ opponent: opponent })
+                });
+
+                if (!response.ok) throw new Error('API Error');
+
+                const data = await response.json();
+
+                loading.classList.add('hidden');
+                resultsContainer.classList.remove('hidden');
+                displayOpponent.textContent = data.opponent;
+
+                data.results.forEach((result, index) => {
+                    const safeTierClass = result.tier.split(' ')[0]; // Handle "Support / Outmatched"
+                    const card = document.createElement('div');
+                    card.className = `p-6 rounded-xl border-l-4 tier-${safeTierClass} bg-gray-800/80 backdrop-blur-sm shadow-xl fade-in`;
+                    card.style.animationDelay = `${index * 0.1}s`;
+                    card.style.opacity = '0';
+
+                    let tierColor = 'text-gray-400';
+                    if (safeTierClass === 'Overkill') tierColor = 'text-red-400';
+                    else if (safeTierClass === 'Even') tierColor = 'text-yellow-400';
+                    else if (safeTierClass === 'Underdog') tierColor = 'text-blue-400';
+                    else tierColor = 'text-green-400';
+
+                    card.innerHTML = `
+                        <div class="flex justify-between items-start mb-4">
+                            <h3 class="text-2xl font-bold text-white">${result.name}</h3>
+                            <span class="px-3 py-1 rounded-full bg-gray-900 border border-gray-700 text-sm font-bold ${tierColor}">
+                                ${result.tier}
+                            </span>
+                        </div>
+                        <p class="text-sm text-gray-400 mb-4 pb-4 border-b border-gray-700">
+                            <strong>Core:</strong> ${result.core_emotion}
+                        </p>
+                        <p class="text-gray-200 leading-relaxed">
+                            ${result.strategy}
+                        </p>
+                    `;
+                    cardsGrid.appendChild(card);
+                });
+
+            } catch (error) {
+                console.error("Failed to fetch scaling results:", error);
+                alert("An error occurred while scaling. Make sure the backend is running.");
+            } finally {
+                btn.disabled = false;
+                btn.classList.remove('opacity-50');
+                loading.classList.add('hidden');
+            }
+        });
+    </script>
+</body>
+</html>
