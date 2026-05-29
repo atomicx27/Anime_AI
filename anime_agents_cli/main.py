@@ -20,19 +20,21 @@ def main():
         sys.exit(1)
 
     while True:
-        table = Table(title="Available Characters")
+        table = Table(title="Available Characters", show_header=True, header_style="bold magenta", border_style="cyan")
         table.add_column("No.", justify="right", style="cyan", no_wrap=True)
-        table.add_column("Character", style="magenta")
+        table.add_column("Character", style="bold white")
         table.add_column("Core Emotion", style="green")
+        table.add_column("Archetype", style="yellow")
 
         for idx, char in enumerate(characters):
-            table.add_row(str(idx + 1), char['name'], char['core_emotion'])
+            table.add_row(str(idx + 1), char['name'], char['core_emotion'], char.get('archetype', 'N/A'))
 
         console.print(table)
-        console.print("[bold yellow]0.[/bold yellow] Exit")
+        console.print(Panel("[bold yellow]0.[/bold yellow] Exit", expand=False, border_style="yellow"))
 
         try:
-            choice = input("\nSelect a character by number to chat with them: ")
+            console.print("\n[bold cyan]Select a character by number to chat with them:[/bold cyan]", end=" ")
+            choice = input()
             if not choice.strip():
                 continue
 
@@ -47,15 +49,16 @@ def main():
                 agent = AnimeAgent(selected_char)
 
                 console.print(f"\n[bold green]--- Initializing Agent: {agent.name} ---[/bold green]")
-                console.print(Panel(agent.get_system_prompt(), title="System Prompt Generated", expand=False))
+                console.print(Panel(agent.get_system_prompt(), title="[bold blue]System Prompt Generated[/bold blue]", border_style="blue", expand=False))
 
-                console.print(f"\nYou are now chatting with [bold cyan]{agent.name}[/bold cyan]. Type 'quit' to select someone else.")
+                console.print(Panel(f"You are now chatting with [bold cyan]{agent.name}[/bold cyan]. Type 'quit' to select someone else.", style="bold green", expand=False))
                 while True:
-                    user_msg = input("\nYou: ")
+                    console.print("\n[bold magenta]You:[/bold magenta]", end=" ")
+                    user_msg = input()
                     if user_msg.lower() == 'quit':
                         break
 
-                    with console.status(f"[bold cyan]{agent.name} is thinking...[/bold cyan]"):
+                    with console.status(f"[bold cyan]{agent.name} is thinking...[/bold cyan]", spinner="dots"):
                         response = agent.chat(user_msg)
 
                     console.print()
@@ -63,7 +66,7 @@ def main():
                         displayed_response = ""
                         for char in response:
                             displayed_response += char
-                            live.update(Markdown(f"**{agent.name}:** {displayed_response}"))
+                            live.update(Panel(Markdown(f"**{agent.name}:** {displayed_response}"), border_style="cyan"))
                             time.sleep(0.01)
             else:
                 console.print("[bold red]Invalid selection. Please try again.[/bold red]")
