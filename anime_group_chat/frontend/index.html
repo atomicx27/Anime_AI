@@ -35,6 +35,15 @@
             to { opacity: 1; transform: translateY(0) scale(1); }
         }
 
+        .channel-enter {
+            animation: slideRight 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+
+        @keyframes slideRight {
+            from { opacity: 0; transform: translateX(-10px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
         .typing-dot {
             animation: typingBounce 1.4s infinite ease-in-out both;
         }
@@ -145,16 +154,23 @@
     <!-- Main Chat Area -->
     <div class="flex-1 flex flex-col bg-discord-base relative">
         <!-- Header -->
-        <div class="h-12 border-b border-discord-dark flex items-center px-4 shadow-sm z-10">
-            <i class="fas fa-hashtag text-discord-muted text-xl mr-3"></i>
-            <h2 class="font-bold text-white flex-1">general-chat</h2>
-            <div class="flex text-discord-muted space-x-4">
-                <i class="fas fa-bell cursor-pointer hover:text-white transition-colors"></i>
-                <i class="fas fa-thumbtack cursor-pointer hover:text-white transition-colors"></i>
-                <i class="fas fa-user-friends cursor-pointer hover:text-white transition-colors"></i>
-                <div class="relative">
-                    <input type="text" placeholder="Search" class="bg-discord-darker text-sm text-discord-text rounded px-2 py-1 w-36 focus:w-48 transition-all duration-300 outline-none border border-transparent focus:border-discord-dark placeholder-discord-muted">
-                    <i class="fas fa-search absolute right-2 top-2 text-xs text-discord-muted"></i>
+        <div class="h-12 border-b border-discord-dark flex items-center px-4 shadow-sm z-10 relative">
+            <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-1000 pointer-events-none"></div>
+            <i class="fas fa-hashtag text-discord-muted text-xl mr-3 hover:text-discord-primary transition-colors duration-300 cursor-pointer"></i>
+            <h2 class="font-bold text-white flex-1 tracking-wide">general-chat</h2>
+            <div class="flex text-discord-muted space-x-4 items-center">
+                <div class="hover:bg-discord-light p-1.5 rounded cursor-pointer transition-colors group">
+                    <i class="fas fa-bell group-hover:text-white transition-colors"></i>
+                </div>
+                <div class="hover:bg-discord-light p-1.5 rounded cursor-pointer transition-colors group">
+                    <i class="fas fa-thumbtack group-hover:text-white transition-colors"></i>
+                </div>
+                <div class="hover:bg-discord-light p-1.5 rounded cursor-pointer transition-colors group">
+                    <i class="fas fa-user-friends group-hover:text-white transition-colors"></i>
+                </div>
+                <div class="relative group">
+                    <input type="text" placeholder="Search" class="bg-discord-darker text-sm text-discord-text rounded px-2 py-1 w-36 focus:w-56 transition-all duration-300 outline-none border border-transparent focus:border-discord-primary/50 focus:ring-1 focus:ring-discord-primary/50 placeholder-discord-muted group-hover:bg-discord-dark">
+                    <i class="fas fa-search absolute right-2 top-2 text-xs text-discord-muted group-focus-within:text-discord-primary transition-colors"></i>
                 </div>
             </div>
         </div>
@@ -252,17 +268,18 @@
             DOM.onlineCount.textContent = `Online — ${characters.length}`;
             DOM.characterList.innerHTML = '';
 
-            characters.forEach(char => {
+            characters.forEach((char, index) => {
                 const div = document.createElement('div');
-                div.className = 'flex items-center px-2 py-1 rounded hover:bg-discord-light cursor-pointer group mb-[1px]';
+                div.className = 'flex items-center px-2 py-1 rounded hover:bg-discord-light cursor-pointer group mb-[1px] channel-enter opacity-0';
+                div.style.animationDelay = `${index * 0.05}s`;
 
                 div.innerHTML = `
-                    <div class="relative mr-3">
-                        <img src="${char.avatar}" alt="${char.name}" class="w-8 h-8 rounded-full bg-discord-darker object-cover">
-                        <div class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-discord-dark"></div>
+                    <div class="relative mr-3 transform group-hover:scale-105 transition-transform duration-200">
+                        <img src="${char.avatar}" alt="${char.name}" class="w-8 h-8 rounded-full bg-discord-darker object-cover ring-2 ring-transparent group-hover:ring-discord-primary/30 transition-all">
+                        <div class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-discord-dark group-hover:border-discord-light transition-colors"></div>
                     </div>
                     <div class="flex-1 truncate">
-                        <div class="text-[15px] text-discord-text group-hover:text-white truncate" style="color: ${getStringColor(char.name)}">${char.name}</div>
+                        <div class="text-[15px] text-discord-text group-hover:text-white truncate transition-colors" style="color: ${getStringColor(char.name)}">${char.name}</div>
                         <div class="text-[11px] text-discord-muted truncate">${char.archetype}</div>
                     </div>
                 `;
@@ -288,27 +305,27 @@
 
         function appendMessage(sender, content, avatarUrl = null, isBot = false, timeStr = null) {
             const div = document.createElement('div');
-            div.className = 'hover:bg-discord-dark/40 px-4 py-1 flex items-start group mt-3 message-enter hover:translate-x-1 transition-transform duration-200';
+            div.className = 'hover:bg-discord-dark/40 px-4 py-1 flex items-start group mt-3 message-enter transition-all duration-200';
 
             const time = timeStr || formatTime();
             const avatar = avatarUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(sender)}&background=random`;
             const color = isBot ? getStringColor(sender) : 'white';
 
-            const botTag = isBot ? `<span class="bg-discord-primary text-white text-[10px] font-bold px-1 rounded ml-1 uppercase leading-tight relative top-[-1px]">Bot</span>` : '';
+            const botTag = isBot ? `<span class="bg-discord-primary text-white text-[10px] font-bold px-1 rounded ml-1 uppercase leading-tight relative top-[-1px] shadow-sm">Bot</span>` : '';
 
             // Highlight mentions
-            let formattedContent = content.replace(/@([a-zA-Z0-9_ ]+)/g, '<span class="bg-indigo-500/30 text-indigo-300 px-1 rounded cursor-pointer hover:bg-indigo-500/50 transition-colors">@$1</span>');
+            let formattedContent = content.replace(/@([a-zA-Z0-9_ ]+)/g, '<span class="bg-indigo-500/30 text-indigo-300 px-1 rounded cursor-pointer hover:bg-indigo-500/50 hover:underline transition-colors">@$1</span>');
 
             // Highlight action text *...*
-            formattedContent = formattedContent.replace(/\*(.*?)\*/g, '<span class="italic text-discord-muted">* $1 *</span>');
+            formattedContent = formattedContent.replace(/\*(.*?)\*/g, '<span class="italic text-discord-muted group-hover:text-discord-muted/80 transition-colors">* $1 *</span>');
 
             div.innerHTML = `
-                <img src="${avatar}" alt="${sender}" class="w-10 h-10 rounded-full bg-discord-darker object-cover mr-4 cursor-pointer mt-0.5">
-                <div class="flex-1">
+                <img src="${avatar}" alt="${sender}" class="w-10 h-10 rounded-full bg-discord-darker object-cover mr-4 cursor-pointer mt-0.5 hover:scale-110 hover:shadow-lg transition-transform duration-300">
+                <div class="flex-1 group-hover:translate-x-1 transition-transform duration-200">
                     <div class="flex items-baseline">
                         <span class="font-medium text-[15px] cursor-pointer hover:underline" style="color: ${color}">${sender}</span>
                         ${botTag}
-                        <span class="text-xs text-discord-muted ml-2">${time}</span>
+                        <span class="text-xs text-discord-muted ml-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">${time}</span>
                     </div>
                     <div class="text-[15px] text-discord-text leading-[1.375rem] whitespace-pre-wrap">${formattedContent}</div>
                 </div>
@@ -363,13 +380,27 @@
 
                 setTyping(false);
 
-                // Display responses with slight delays between them
+                // Display responses with dynamic delays based on content length
                 if (data.responses && data.responses.length > 0) {
+                    let cumulativeDelay = 0;
                     for (let i = 0; i < data.responses.length; i++) {
                         const r = data.responses[i];
+                        // Calculate a dynamic delay: base delay + delay based on character length of previous messages
+                        const readTime = i > 0 ? Math.max(800, data.responses[i-1].content.length * 15) : 0;
+                        cumulativeDelay += readTime + 600; // Base delay + read time
+
                         setTimeout(() => {
-                            appendMessage(r.sender, r.content, r.avatar, true);
-                        }, i * 1200); // 1.2s delay between each character's message
+                            // Show typing indicator again briefly before each subsequent message
+                            if (i > 0) {
+                                setTyping(true);
+                                setTimeout(() => {
+                                    setTyping(false);
+                                    appendMessage(r.sender, r.content, r.avatar, true);
+                                }, 600);
+                            } else {
+                                appendMessage(r.sender, r.content, r.avatar, true);
+                            }
+                        }, cumulativeDelay);
                     }
                 }
             } catch (error) {

@@ -3,36 +3,42 @@ from parser import parse_readme_characters
 from moderator import ModeratorAgent
 from rich.console import Console
 from rich.panel import Panel
+from rich.text import Text
 
 console = Console()
 
 def main():
-    console.print(Panel.fit("[bold cyan]Welcome to Anime Council AI![/bold cyan]"))
-    with console.status("[bold green]Loading characters from README.md to assemble the council...[/bold green]"):
+    welcome_text = Text("Welcome to Anime Council AI!", justify="center", style="bold cyan")
+    console.print(Panel(welcome_text, border_style="cyan", padding=(1, 2), title="[bold blue]Grand Assembly[/bold blue]"))
+
+    with console.status("[bold green]Loading characters from README.md to assemble the council...[/bold green]", spinner="arc"):
         characters = parse_readme_characters()
 
     if not characters:
-        console.print("[bold red]No characters found. Make sure the README.md is formatted correctly.[/bold red]")
+        console.print(Panel("[bold red]No characters found. Make sure the README.md is formatted correctly.[/bold red]", border_style="red"))
         sys.exit(1)
 
-    console.print(f"[bold green]Successfully assembled {len(characters)} characters for the council.[/bold green]")
+    console.print(Panel(f"[bold green]Successfully assembled {len(characters)} characters for the council.[/bold green]", border_style="green", expand=False))
 
     moderator = ModeratorAgent(characters)
 
     while True:
         try:
-            topic = input("\nEnter a topic or problem for the council to discuss (or type 'quit' to exit): ")
+            console.print("\n[bold magenta]Enter a topic or problem for the council to discuss (or type 'quit' to exit):[/bold magenta]", end=" ")
+            topic = input()
+
             if not topic.strip():
                 continue
 
             if topic.lower() == 'quit':
-                console.print("[bold yellow]Goodbye![/bold yellow]")
+                console.print(Panel("[bold yellow]Council adjourned. Goodbye![/bold yellow]", border_style="yellow", expand=False))
                 break
 
             moderator.discuss_topic(topic)
 
         except KeyboardInterrupt:
-            console.print("\n[bold yellow]Goodbye![/bold yellow]")
+            console.print("\n" + "-"*40)
+            console.print(Panel("[bold yellow]Council adjourned by user interrupt. Goodbye![/bold yellow]", border_style="yellow", expand=False))
             break
 
 if __name__ == "__main__":

@@ -58,9 +58,10 @@
         }
 
         .tier-card:hover {
-            transform: scale(1.05) translateY(-2px);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.1);
-            border-color: rgba(167, 139, 250, 0.5); /* Purple-400 */
+            transform: scale(1.08) translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgba(167, 139, 250, 0.4), 0 10px 10px -5px rgba(167, 139, 250, 0.1);
+            border-color: rgba(167, 139, 250, 0.8); /* Purple-400 */
+            z-index: 40;
         }
 
         .terminal-log-enter {
@@ -85,39 +86,53 @@
 
         .tooltip .tooltip-text {
             visibility: hidden;
-            width: 250px;
-            background-color: #1f2937;
+            width: 280px;
+            background: linear-gradient(to bottom right, #1f2937, #111827);
             color: #fff;
-            text-align: center;
-            border-radius: 6px;
-            padding: 8px;
+            text-align: left;
+            border-radius: 8px;
+            padding: 12px;
             position: absolute;
             z-index: 50;
-            bottom: 125%;
+            bottom: 135%;
             left: 50%;
-            margin-left: -125px;
+            transform: translateX(-50%) translateY(10px);
             opacity: 0;
-            transition: opacity 0.3s;
-            border: 1px solid #374151;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid #4b5563;
             font-size: 0.875rem;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+            pointer-events: none;
+        }
+
+        .tooltip .tooltip-text::after {
+            content: " ";
+            position: absolute;
+            top: 100%; /* At the bottom of the tooltip */
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: #4b5563 transparent transparent transparent;
         }
 
         .tooltip:hover .tooltip-text {
             visibility: visible;
             opacity: 1;
+            transform: translateX(-50%) translateY(0);
         }
     </style>
 </head>
-<body class="bg-gray-900 text-gray-100 h-screen flex flex-col font-sans overflow-hidden">
+<body class="bg-gray-900 text-gray-100 h-screen flex flex-col font-sans overflow-hidden bg-gradient-to-br from-gray-900 via-gray-800 to-gray-950">
 
     <!-- Header -->
-    <header class="bg-gray-800 border-b border-gray-700 p-4 shadow-lg z-10 flex items-center justify-between">
+    <header class="bg-gray-800/80 backdrop-blur-md border-b border-gray-700 p-4 shadow-lg z-10 flex items-center justify-between">
         <div class="flex items-center gap-3">
-            <div class="w-10 h-10 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-lg flex items-center justify-center shadow-lg shadow-purple-500/20">
-                <i class="fa-solid fa-ranking-star text-white"></i>
+            <div class="w-10 h-10 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-lg flex items-center justify-center shadow-lg shadow-purple-500/40 relative overflow-hidden group">
+                <div class="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
+                <i class="fa-solid fa-ranking-star text-white relative z-10 group-hover:scale-110 transition-transform"></i>
             </div>
-            <h1 class="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-indigo-400">Anime Scenario Ranker AI</h1>
+            <h1 class="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-indigo-400 tracking-wide">Anime Scenario Ranker AI</h1>
         </div>
     </header>
 
@@ -145,46 +160,46 @@
         </div>
 
         <!-- Main Content: Tier List -->
-        <div class="flex-1 bg-gray-900 p-8 overflow-y-auto custom-scrollbar flex flex-col gap-4 relative" id="tier-list-container">
+        <div class="flex-1 bg-transparent p-8 overflow-y-auto custom-scrollbar flex flex-col gap-4 relative" id="tier-list-container">
             <!-- Background Decoration -->
-            <div class="absolute inset-0 flex items-center justify-center pointer-events-none opacity-5">
-                <i class="fa-solid fa-ranking-star text-[20rem]"></i>
+            <div class="absolute inset-0 flex items-center justify-center pointer-events-none opacity-[0.03] animate-pulse" style="animation-duration: 4s;">
+                <i class="fa-solid fa-ranking-star text-[25rem]"></i>
             </div>
 
             <!-- Tier Rows will be generated here -->
-            <div id="tier-S" class="flex border border-gray-700 rounded-lg overflow-hidden bg-gray-800/50 shadow-lg min-h-[100px]">
-                <div class="w-24 bg-tier-s flex items-center justify-center border-r border-gray-700 shrink-0">
-                    <span class="text-3xl font-black text-gray-900 drop-shadow-sm">S</span>
+            <div id="tier-S" class="flex border border-gray-700/60 rounded-xl overflow-hidden bg-gray-800/40 backdrop-blur-sm shadow-xl min-h-[110px] transition-all hover:bg-gray-800/60 hover:border-tier-s/50">
+                <div class="w-24 bg-gradient-to-br from-tier-s to-red-600 flex items-center justify-center border-r border-gray-700/50 shrink-0 shadow-[inset_0_0_20px_rgba(0,0,0,0.2)]">
+                    <span class="text-4xl font-black text-gray-900 drop-shadow-md">S</span>
                 </div>
-                <div class="flex-1 p-3 flex flex-wrap gap-3 items-center" id="row-S"></div>
+                <div class="flex-1 p-4 flex flex-wrap gap-4 items-center content-start" id="row-S"></div>
             </div>
 
-            <div id="tier-A" class="flex border border-gray-700 rounded-lg overflow-hidden bg-gray-800/50 shadow-lg min-h-[100px]">
-                <div class="w-24 bg-tier-a flex items-center justify-center border-r border-gray-700 shrink-0">
-                    <span class="text-3xl font-black text-gray-900 drop-shadow-sm">A</span>
+            <div id="tier-A" class="flex border border-gray-700/60 rounded-xl overflow-hidden bg-gray-800/40 backdrop-blur-sm shadow-xl min-h-[110px] transition-all hover:bg-gray-800/60 hover:border-tier-a/50">
+                <div class="w-24 bg-gradient-to-br from-tier-a to-orange-500 flex items-center justify-center border-r border-gray-700/50 shrink-0 shadow-[inset_0_0_20px_rgba(0,0,0,0.2)]">
+                    <span class="text-4xl font-black text-gray-900 drop-shadow-md">A</span>
                 </div>
-                <div class="flex-1 p-3 flex flex-wrap gap-3 items-center" id="row-A"></div>
+                <div class="flex-1 p-4 flex flex-wrap gap-4 items-center content-start" id="row-A"></div>
             </div>
 
-            <div id="tier-B" class="flex border border-gray-700 rounded-lg overflow-hidden bg-gray-800/50 shadow-lg min-h-[100px]">
-                <div class="w-24 bg-tier-b flex items-center justify-center border-r border-gray-700 shrink-0">
-                    <span class="text-3xl font-black text-gray-900 drop-shadow-sm">B</span>
+            <div id="tier-B" class="flex border border-gray-700/60 rounded-xl overflow-hidden bg-gray-800/40 backdrop-blur-sm shadow-xl min-h-[110px] transition-all hover:bg-gray-800/60 hover:border-tier-b/50">
+                <div class="w-24 bg-gradient-to-br from-tier-b to-yellow-500 flex items-center justify-center border-r border-gray-700/50 shrink-0 shadow-[inset_0_0_20px_rgba(0,0,0,0.2)]">
+                    <span class="text-4xl font-black text-gray-900 drop-shadow-md">B</span>
                 </div>
-                <div class="flex-1 p-3 flex flex-wrap gap-3 items-center" id="row-B"></div>
+                <div class="flex-1 p-4 flex flex-wrap gap-4 items-center content-start" id="row-B"></div>
             </div>
 
-            <div id="tier-C" class="flex border border-gray-700 rounded-lg overflow-hidden bg-gray-800/50 shadow-lg min-h-[100px]">
-                <div class="w-24 bg-tier-c flex items-center justify-center border-r border-gray-700 shrink-0">
-                    <span class="text-3xl font-black text-gray-900 drop-shadow-sm">C</span>
+            <div id="tier-C" class="flex border border-gray-700/60 rounded-xl overflow-hidden bg-gray-800/40 backdrop-blur-sm shadow-xl min-h-[110px] transition-all hover:bg-gray-800/60 hover:border-tier-c/50">
+                <div class="w-24 bg-gradient-to-br from-tier-c to-green-500 flex items-center justify-center border-r border-gray-700/50 shrink-0 shadow-[inset_0_0_20px_rgba(0,0,0,0.2)]">
+                    <span class="text-4xl font-black text-gray-900 drop-shadow-md">C</span>
                 </div>
-                <div class="flex-1 p-3 flex flex-wrap gap-3 items-center" id="row-C"></div>
+                <div class="flex-1 p-4 flex flex-wrap gap-4 items-center content-start" id="row-C"></div>
             </div>
 
-            <div id="tier-D" class="flex border border-gray-700 rounded-lg overflow-hidden bg-gray-800/50 shadow-lg min-h-[100px]">
-                <div class="w-24 bg-tier-d flex items-center justify-center border-r border-gray-700 shrink-0">
-                    <span class="text-3xl font-black text-gray-900 drop-shadow-sm">D</span>
+            <div id="tier-D" class="flex border border-gray-700/60 rounded-xl overflow-hidden bg-gray-800/40 backdrop-blur-sm shadow-xl min-h-[110px] transition-all hover:bg-gray-800/60 hover:border-tier-d/50">
+                <div class="w-24 bg-gradient-to-br from-tier-d to-blue-500 flex items-center justify-center border-r border-gray-700/50 shrink-0 shadow-[inset_0_0_20px_rgba(0,0,0,0.2)]">
+                    <span class="text-4xl font-black text-gray-900 drop-shadow-md">D</span>
                 </div>
-                <div class="flex-1 p-3 flex flex-wrap gap-3 items-center" id="row-D"></div>
+                <div class="flex-1 p-4 flex flex-wrap gap-4 items-center content-start" id="row-D"></div>
             </div>
         </div>
     </div>
@@ -277,14 +292,17 @@
                            if(ranking) {
                                setTimeout(() => {
                                     const charHtml = `
-                                        <div class="tooltip relative cursor-help card-enter tier-card animate-pop-in" style="animation-delay: 0.1s">
-                                            <div class="bg-gray-700 border border-gray-600 rounded px-3 py-2 flex items-center gap-2 hover:bg-gray-600 transition-colors shadow-sm">
-                                                <div class="w-6 h-6 rounded-full bg-gray-800 flex items-center justify-center text-xs font-bold text-gray-300">
+                                        <div class="tooltip relative cursor-help card-enter tier-card animate-pop-in" style="animation-delay: 0.05s">
+                                            <div class="bg-gradient-to-b from-gray-700 to-gray-800 border border-gray-600 rounded-lg px-3 py-2.5 flex items-center gap-3 transition-colors shadow-md group-hover:from-gray-600 group-hover:to-gray-700">
+                                                <div class="w-7 h-7 rounded-full bg-gradient-to-br from-purple-500/20 to-indigo-500/20 border border-purple-500/30 flex items-center justify-center text-xs font-bold text-purple-300 shadow-inner">
                                                     ${getInitials(ranking.name)}
                                                 </div>
-                                                <span class="text-sm font-medium text-gray-200">${ranking.name}</span>
+                                                <span class="text-sm font-semibold text-gray-100 tracking-wide">${ranking.name}</span>
                                             </div>
-                                            <span class="tooltip-text">${ranking.reasoning}</span>
+                                            <div class="tooltip-text">
+                                                <div class="font-bold text-purple-400 mb-1 border-b border-gray-700 pb-1">${ranking.name}</div>
+                                                <div class="text-gray-300 leading-relaxed">${ranking.reasoning}</div>
+                                            </div>
                                         </div>
                                     `;
                                     // Append to correct tier row
