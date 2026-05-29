@@ -161,3 +161,29 @@ python3 main.py
 # Access the UI
 # Open your browser and navigate to http://localhost:8005/
 ```
+
+### Anime Power Scaler AI
+
+The **Anime Power Scaler AI** is a web-based, multi-agent application that evaluates how anime characters from the database would scale against a user-provided opponent or threat. It dynamically evaluates their "Core Emotion", "Personality Profile", and "Unique Quality & Philosophy" to categorize them into power tiers like Overkill, Even Match, Underdog, or Support.
+
+#### Folder Location
+`anime_power_scaler/`
+
+#### Features
+- **Dynamic Power Scaling**: An agent reads a user-inputted opponent and generates a battle strategy and tier ranking for every character.
+- **Categorized Tier Outcomes**: Characters are assigned specific tiers (e.g., Overkill, Even Match) based on their psychological profiles and powers.
+- **Sleek, Animated UI**: A modern, dark-themed interface built with Tailwind CSS featuring animated result cards and visually appealing tier indicators.
+- **Dynamic Character Loading**: Backend API automatically parses the root `README.md` to load character details.
+
+#### How to Run
+```bash
+# Install dependencies
+cd anime_power_scaler/backend
+pip install -r requirements.txt
+
+# Run the server
+python3 main.py
+
+# Access the UI
+# Open your browser and navigate to http://localhost:8006/
+```
