@@ -161,3 +161,29 @@ python3 main.py
 # Access the UI
 # Open your browser and navigate to http://localhost:8005/
 ```
+
+### 7. Anime Debate Arena AI
+
+The **Anime Debate Arena AI** is a web-based, multi-agent application that simulates a debate arena. Users propose a topic, and an orchestrator dynamically selects multiple characters from the roster to debate the issue. Each character argues their stance (In Favor, Against, or Nuanced) based on their specific Core Emotion, Personality Profile, and Unique Philosophy.
+
+#### Folder Location
+`anime_debate_arena/`
+
+#### Features
+- **Dynamic Debate Generation**: Characters formulate arguments deeply rooted in their specific psychological and philosophical profiles.
+- **Sleek, Animated UI**: A modern, dark-themed interface built with Tailwind CSS featuring glassmorphism, radial gradients, shadow glows, and smooth hover animations.
+- **Real-time Terminal Logs**: Observe the Orchestrator AI's thought process as it selects debaters and processes their arguments.
+- **Dynamic Character Loading**: Backend API automatically parses the root `README.md` to load character details.
+
+#### How to Run
+```bash
+# Install dependencies
+cd anime_debate_arena/backend
+pip install -r requirements.txt
+
+# Run the server
+python3 main.py
+
+# Access the UI
+# Open your browser and navigate to http://localhost:8006/
+```
