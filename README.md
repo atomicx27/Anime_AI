@@ -136,6 +136,17 @@ python3 main.py
 # Open your browser and navigate to http://localhost:8004/
 ```
 
+### 6. Anime Debate Arena AI
+
+The **Anime Debate Arena AI** is an intelligent web-based platform that dynamically selects two characters with contrasting philosophies to engage in a formal debate on any given topic.
+
+#### Folder Location
+`anime_debate_arena/`
+
+#### Features
+- **Dynamic Matchmaking**: An agent categorizes characters by their Core Emotion and pairs diametrically opposed perspectives for maximum conflict.
+- **Agentic Simulation**: A backend `DebateAgent` generates in-character opening statements and rebuttals based directly on the characters' Unique Qualities.
+- **Cinematic UI**: An animated Tailwind CSS frontend that simulates an AI thought terminal followed by a theatrical "VS" screen and typing-effect chat transcript.
 ### 6. Anime World Simulator AI
 
 The **Anime World Simulator AI** is a web-based, multi-agent application that simulates how the characters in the database would react to a global event or crisis. It dynamically evaluates their "Core Emotion", "Personality Profile", and "Unique Quality & Philosophy" to determine an "Action State" (Aggressive, Defensive, Diplomatic, etc.) and generates a personalized reaction strategy.
@@ -152,6 +163,7 @@ The **Anime World Simulator AI** is a web-based, multi-agent application that si
 #### How to Run
 ```bash
 # Install dependencies
+cd anime_debate_arena/backend
 cd anime_world_simulator/backend
 pip install -r requirements.txt
 
