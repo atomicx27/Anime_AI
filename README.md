@@ -187,6 +187,9 @@ python3 main.py
 # Open your browser and navigate to http://localhost:8005/
 ```
 
+### Anime Power Scaler AI
+
+The **Anime Power Scaler AI** is a web-based, multi-agent application that evaluates how anime characters from the database would scale against a user-provided opponent or threat. It dynamically evaluates their "Core Emotion", "Personality Profile", and "Unique Quality & Philosophy" to categorize them into power tiers like Overkill, Even Match, Underdog, or Support.
 ### 7. Anime Power Scaler AI
 
 The **Anime Power Scaler AI** is a web-based, multi-agent application that pits a user's custom character or ability description against the entire anime roster. The AI acts as a combat analyst, simulating 1v1 matchups by evaluating core emotions and unique qualities to declare a Win, Loss, or Draw for each character.
@@ -195,6 +198,9 @@ The **Anime Power Scaler AI** is a web-based, multi-agent application that pits 
 `anime_power_scaler/`
 
 #### Features
+- **Dynamic Power Scaling**: An agent reads a user-inputted opponent and generates a battle strategy and tier ranking for every character.
+- **Categorized Tier Outcomes**: Characters are assigned specific tiers (e.g., Overkill, Even Match) based on their psychological profiles and powers.
+- **Sleek, Animated UI**: A modern, dark-themed interface built with Tailwind CSS featuring animated result cards and visually appealing tier indicators.
 - **Dynamic Matchup Evaluation**: The agent analyzes custom user abilities and compares them against every character's traits in the database.
 - **Visual Matchup Cards**: A sleek frontend UI using Tailwind CSS presents visually distinct results (Win/Loss/Draw) with detailed explanations.
 - **Dynamic Character Loading**: Backend API automatically parses the root `README.md` to dynamically load character details for scaling.
@@ -222,6 +228,7 @@ pip install -r requirements.txt
 python3 main.py
 
 # Access the UI
+# Open your browser and navigate to http://localhost:8006/
 # Open your browser and navigate to the frontend/index.html file locally.
 # Open your browser and navigate to http://localhost:8006/
 # Open your browser and navigate to the frontend index.html file, or use a local HTTP server in the frontend directory.
