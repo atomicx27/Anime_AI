@@ -132,9 +132,9 @@ function App() {
               <AnimatePresence>
                 {messages.map((msg, index) => (
                   <motion.div
-                    initial={{ opacity: 0, y: 20, scale: 0.9 }}
+                    initial={{ opacity: 0, y: 20, scale: 0.95 }}
                     animate={{ opacity: 1, y: 0, scale: 1 }}
-                    transition={{ duration: 0.4, type: "spring", stiffness: 250, damping: 25 }}
+                    transition={{ duration: 0.5, type: "spring", stiffness: 300, damping: 20, delay: index * 0.05 }}
                     key={index}
                     className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
                   >
@@ -236,17 +236,19 @@ function App() {
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
                     placeholder="Type a message..."
-                    className="w-full bg-gray-800/50 border border-gray-700 focus:border-cyan-500/50 focus:ring-2 focus:ring-cyan-500/20 rounded-2xl px-5 py-4 pl-5 pr-12 text-[15px] outline-none transition-all shadow-inner"
+                    className="w-full bg-gray-800/50 border border-gray-700 focus:border-cyan-500/50 focus:ring-2 focus:ring-cyan-500/30 rounded-2xl px-5 py-4 pl-5 pr-12 text-[15px] outline-none transition-all shadow-inner hover:bg-gray-800"
                     disabled={loading}
                   />
                 </div>
-                <button
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
                   type="submit"
                   disabled={loading || !input.trim()}
-                  className="bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 disabled:opacity-50 disabled:cursor-not-allowed text-white px-6 py-4 rounded-2xl font-semibold transition-all shadow-lg shadow-cyan-900/20 active:scale-95 flex items-center justify-center shrink-0"
+                  className="bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 disabled:opacity-50 disabled:cursor-not-allowed text-white px-6 py-4 rounded-2xl font-semibold transition-all shadow-lg shadow-cyan-900/40 flex items-center justify-center shrink-0"
                 >
-                  <Send size={20} className={input.trim() && !loading ? "translate-x-0.5 transition-transform" : ""} />
-                </button>
+                  <Send size={20} className={input.trim() && !loading ? "translate-x-1 transition-transform duration-300" : ""} />
+                </motion.button>
               </form>
             </div>
           </>
@@ -257,15 +259,19 @@ function App() {
             <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-blue-900/20 rounded-full blur-[100px] pointer-events-none" />
 
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
+              transition={{ duration: 0.6, ease: "easeOut" }}
               className="text-center z-10 max-w-sm px-6"
             >
-              <div className="w-24 h-24 bg-gradient-to-tr from-cyan-500/20 to-blue-500/20 rounded-3xl mx-auto flex items-center justify-center mb-6 shadow-2xl border border-gray-700/50 backdrop-blur-xl rotate-3">
-                <Bot size={48} className="text-cyan-400 -rotate-3" />
-              </div>
-              <h2 className="text-2xl font-bold mb-3 text-white">Welcome to Anime Agents</h2>
+              <motion.div
+                animate={{ y: [0, -10, 0] }}
+                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                className="w-24 h-24 bg-gradient-to-tr from-cyan-500/20 to-blue-500/20 rounded-3xl mx-auto flex items-center justify-center mb-6 shadow-[0_0_30px_rgba(6,182,212,0.15)] border border-gray-700/50 backdrop-blur-xl rotate-3"
+              >
+                <Bot size={48} className="text-cyan-400 -rotate-3 drop-shadow-[0_0_15px_rgba(34,211,238,0.5)]" />
+              </motion.div>
+              <h2 className="text-2xl font-bold mb-3 text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-400">Welcome to Anime Agents</h2>
               <p className="text-gray-400 leading-relaxed text-[15px]">
                 Select a character from the sidebar to begin your conversation. Each agent has unique personality traits and philosophies.
               </p>

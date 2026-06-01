@@ -136,6 +136,29 @@ python3 main.py
 # Open your browser and navigate to http://localhost:8004/
 ```
 
+### 6. Anime Matchmaker AI
+
+The **Anime Matchmaker AI** is a web-based, agentic application that acts as a personal matchmaker for the user. Users describe their own personality profile and relationship preferences (e.g., friendship, romance, rival), and the AI evaluates all characters from the table to find the best possible matches based on their Core Emotion and Personality Profile.
+
+#### Folder Location
+`anime_matchmaker/`
+
+#### Features
+- **Personality Matching Algorithm**: The Matchmaker Agent analyzes the user's input and scores compatibility based on shared values, complementary traits, or desired relationship dynamics.
+- **Dynamic Relationship Types**: Users can seek different types of connections (Friendship, Romance, Rivalry, Mentor), which changes the agent's evaluation criteria.
+- **Agent Output Terminal**: A live, animated terminal UI displays the agent's thought process as it evaluates each character.
+- **Sleek UI/UX**: Built with Vanilla HTML, JS, and Tailwind CSS, featuring smooth animations and a modern dark theme.
+### 6. Anime Debate Arena AI
+
+The **Anime Debate Arena AI** is an intelligent web-based platform that dynamically selects two characters with contrasting philosophies to engage in a formal debate on any given topic.
+
+#### Folder Location
+`anime_debate_arena/`
+
+#### Features
+- **Dynamic Matchmaking**: An agent categorizes characters by their Core Emotion and pairs diametrically opposed perspectives for maximum conflict.
+- **Agentic Simulation**: A backend `DebateAgent` generates in-character opening statements and rebuttals based directly on the characters' Unique Qualities.
+- **Cinematic UI**: An animated Tailwind CSS frontend that simulates an AI thought terminal followed by a theatrical "VS" screen and typing-effect chat transcript.
 ### 6. Anime World Simulator AI
 
 The **Anime World Simulator AI** is a web-based, multi-agent application that simulates how the characters in the database would react to a global event or crisis. It dynamically evaluates their "Core Emotion", "Personality Profile", and "Unique Quality & Philosophy" to determine an "Action State" (Aggressive, Defensive, Diplomatic, etc.) and generates a personalized reaction strategy.
@@ -152,6 +175,8 @@ The **Anime World Simulator AI** is a web-based, multi-agent application that si
 #### How to Run
 ```bash
 # Install dependencies
+cd anime_matchmaker/backend
+cd anime_debate_arena/backend
 cd anime_world_simulator/backend
 pip install -r requirements.txt
 
@@ -160,4 +185,44 @@ python3 main.py
 
 # Access the UI
 # Open your browser and navigate to http://localhost:8005/
+```
+
+### 7. Anime Power Scaler AI
+
+The **Anime Power Scaler AI** is a web-based, multi-agent application that pits a user's custom character or ability description against the entire anime roster. The AI acts as a combat analyst, simulating 1v1 matchups by evaluating core emotions and unique qualities to declare a Win, Loss, or Draw for each character.
+
+#### Folder Location
+`anime_power_scaler/`
+
+#### Features
+- **Dynamic Matchup Evaluation**: The agent analyzes custom user abilities and compares them against every character's traits in the database.
+- **Visual Matchup Cards**: A sleek frontend UI using Tailwind CSS presents visually distinct results (Win/Loss/Draw) with detailed explanations.
+- **Dynamic Character Loading**: Backend API automatically parses the root `README.md` to dynamically load character details for scaling.
+### 7. Anime Affinity Matcher AI
+
+The **Anime Affinity Matcher AI** is a web-based, agentic application that acts as a personalized matchmaking system. Users input a self-description encompassing their personality, goals, and values. The AI evaluates this input against all characters from the table based on their Core Emotion, Personality Profile, and Unique Quality to categorize them into affinities like "Soulmate/Best Friend", "Rival", "Mentor", or "Opposite/Enemy".
+
+#### Folder Location
+`anime_affinity_matcher/`
+
+#### Features
+- **Intelligent Affinity Categorization**: The agent analyzes the user's personality traits and calculates similarity/difference scores against the characters to dynamically match them into relationship archetypes.
+- **Dynamic Reasoning**: The agent provides a detailed rationale explaining why a character matches the user's specific input.
+- **Sleek UI/UX**: Features a modern, dark-themed interface built with Tailwind CSS, including an animated "Agent Thought Process" terminal and stylish character match cards.
+- **Dynamic Character Loading**: Backend API automatically parses the root `README.md` to load character details.
+
+#### How to Run
+```bash
+# Install dependencies
+cd anime_power_scaler/backend
+cd anime_affinity_matcher/backend
+pip install -r requirements.txt
+
+# Run the server
+python3 main.py
+
+# Access the UI
+# Open your browser and navigate to the frontend/index.html file locally.
+# Open your browser and navigate to http://localhost:8006/
+# Open your browser and navigate to the frontend index.html file, or use a local HTTP server in the frontend directory.
 ```
