@@ -62,7 +62,12 @@ def main():
                     if user_msg.lower() == 'quit':
                         break
 
-                    with console.status(f"[bold cyan]{agent.name} is thinking...[/bold cyan]"):
+                    with Progress(
+                        SpinnerColumn(spinner_name="bouncingBar", style="cyan"),
+                        TextColumn("[progress.description]{task.description}"),
+                        transient=True,
+                    ) as progress:
+                        progress.add_task(description=f"[bold cyan]{agent.name} is thinking...", total=None)
                         response = agent.chat(user_msg)
 
                     console.print()

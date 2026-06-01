@@ -11,10 +11,11 @@
             color: #f8fafc;
         }
         .card {
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
         .card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-8px) scale(1.02);
+            z-index: 10;
         }
         .state-aggressive { border: 2px solid #ef4444; box-shadow: 0 0 15px rgba(239, 68, 68, 0.4); }
         .state-aggressive:hover { box-shadow: 0 0 25px rgba(239, 68, 68, 0.6); transform: scale(1.02); }
@@ -115,16 +116,16 @@
 
         function getStateBadge(state) {
             const colors = {
-                'Aggressive': 'bg-red-900 text-red-200',
-                'Defensive': 'bg-blue-900 text-blue-200',
-                'Diplomatic': 'bg-emerald-900 text-emerald-200',
-                'Strategic': 'bg-purple-900 text-purple-200',
-                'Chaotic': 'bg-orange-900 text-orange-200',
-                'Protective': 'bg-pink-900 text-pink-200',
+                'Aggressive': 'bg-red-900 text-red-200 shadow-[0_0_10px_rgba(239,68,68,0.5)]',
+                'Defensive': 'bg-blue-900 text-blue-200 shadow-[0_0_10px_rgba(59,130,246,0.5)]',
+                'Diplomatic': 'bg-emerald-900 text-emerald-200 shadow-[0_0_10px_rgba(16,185,129,0.5)]',
+                'Strategic': 'bg-purple-900 text-purple-200 shadow-[0_0_10px_rgba(139,92,246,0.5)]',
+                'Chaotic': 'bg-orange-900 text-orange-200 shadow-[0_0_10px_rgba(249,115,22,0.5)]',
+                'Protective': 'bg-pink-900 text-pink-200 shadow-[0_0_10px_rgba(236,72,153,0.5)]',
                 'Neutral': 'bg-slate-700 text-slate-200'
             };
             const colorClass = colors[state] || colors['Neutral'];
-            return `<span class="px-2 py-1 rounded-full text-xs font-semibold ${colorClass}">${state}</span>`;
+            return `<span class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider animate-pulse ${colorClass}">${state}</span>`;
         }
 
         async function typeLogs(logs) {

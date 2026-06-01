@@ -29,7 +29,7 @@
         .message-enter {
             animation: slideInAndScale 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
             opacity: 0;
-            transform: translateY(15px) scale(0.95);
+            transform: translateY(10px) scale(0.98);
         }
         @keyframes slideInAndScale {
             to { opacity: 1; transform: translateY(0) scale(1); }
@@ -47,8 +47,8 @@
         .typing-dot:nth-child(2) { animation-delay: -0.16s; }
 
         @keyframes typingBounce {
-            0%, 80%, 100% { transform: scale(0); opacity: 0.5; }
-            40% { transform: scale(1); opacity: 1; }
+            0%, 80%, 100% { transform: scale(0.6); opacity: 0.3; }
+            40% { transform: scale(1.2); opacity: 1; }
         }
 
         /* Smooth scrolling */
@@ -110,25 +110,28 @@
     <!-- Sidebar: Channels/Online Users -->
     <div class="w-60 bg-discord-dark flex flex-col border-l border-discord-darker">
         <!-- Header -->
-        <div class="h-12 border-b border-discord-darker flex items-center px-4 shadow-sm hover:bg-discord-light cursor-pointer transition-colors">
+        <div class="h-12 border-b border-discord-darker flex items-center px-4 shadow-sm hover:bg-discord-light cursor-pointer transition-all duration-200 hover:pl-5">
             <h1 class="font-bold text-white flex-1 truncate">Anime All-Stars</h1>
-            <i class="fas fa-chevron-down text-sm"></i>
+            <i class="fas fa-chevron-down text-sm text-discord-muted transition-transform duration-200 group-hover:text-white"></i>
         </div>
 
         <div class="flex-1 overflow-y-auto py-3 px-2">
             <!-- Channels Section -->
-            <div class="mb-6">
-                <div class="text-xs font-semibold text-discord-muted uppercase tracking-wider mb-1 px-2">Text Channels</div>
-                <div class="flex items-center px-2 py-1 bg-discord-light text-white rounded cursor-pointer mb-1 group transition-colors hover:bg-discord-light">
-                    <i class="fas fa-hashtag text-discord-text mr-2 transition-colors"></i>
+            <div class="mb-6 group/channels">
+                <div class="text-xs font-semibold text-discord-muted uppercase tracking-wider mb-1 px-2 flex justify-between items-center cursor-pointer hover:text-discord-text transition-colors">
+                    <span>Text Channels</span>
+                    <i class="fas fa-plus text-discord-muted hover:text-white transition-colors opacity-0 group-hover/channels:opacity-100"></i>
+                </div>
+                <div class="flex items-center px-2 py-1 bg-discord-light text-white rounded cursor-pointer mb-1 group transition-all duration-200 hover:bg-discord-light hover:translate-x-1">
+                    <i class="fas fa-hashtag text-discord-text mr-2 transition-colors group-hover:text-white"></i>
                     <span class="flex-1">general-chat</span>
                 </div>
-                <div class="flex items-center px-2 py-1 text-discord-muted rounded cursor-pointer mb-1 group transition-colors hover:bg-discord-light hover:text-discord-text">
-                    <i class="fas fa-hashtag mr-2 transition-colors"></i>
+                <div class="flex items-center px-2 py-1 text-discord-muted rounded cursor-pointer mb-1 group transition-all duration-200 hover:bg-discord-light hover:text-discord-text hover:translate-x-1">
+                    <i class="fas fa-hashtag mr-2 transition-colors group-hover:text-white"></i>
                     <span class="flex-1">strategy-talk</span>
                 </div>
-                <div class="flex items-center px-2 py-1 text-discord-muted rounded cursor-pointer mb-1 group transition-colors hover:bg-discord-light hover:text-discord-text">
-                    <i class="fas fa-hashtag mr-2 transition-colors"></i>
+                <div class="flex items-center px-2 py-1 text-discord-muted rounded cursor-pointer mb-1 group transition-all duration-200 hover:bg-discord-light hover:text-discord-text hover:translate-x-1">
+                    <i class="fas fa-hashtag mr-2 transition-colors group-hover:text-white"></i>
                     <span class="flex-1">philosophical-debates</span>
                 </div>
             </div>
@@ -143,19 +146,20 @@
         </div>
 
         <!-- User Area -->
-        <div class="h-14 bg-discord-darker flex items-center px-2">
-            <div class="flex items-center hover:bg-discord-light p-1 rounded cursor-pointer w-full group">
-                <div class="w-8 h-8 rounded-full bg-indigo-500 flex items-center justify-center mr-2 relative">
+        <div class="h-14 bg-discord-darker flex items-center px-2 mt-auto">
+            <div class="flex items-center hover:bg-discord-light p-1 rounded cursor-pointer w-full group transition-colors duration-200">
+                <div class="w-8 h-8 rounded-full bg-indigo-500 flex items-center justify-center mr-2 relative hover:opacity-80 transition-opacity">
                     <i class="fas fa-user text-white text-xs"></i>
-                    <div class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-discord-darker"></div>
+                    <div class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-discord-darker transition-transform group-hover:scale-110"></div>
                 </div>
                 <div class="flex-1 overflow-hidden">
-                    <div class="text-white text-sm font-semibold truncate leading-tight">You</div>
+                    <div class="text-white text-sm font-semibold truncate leading-tight group-hover:underline">You</div>
                     <div class="text-discord-muted text-xs truncate">#0001</div>
                 </div>
-                <div class="flex text-discord-muted space-x-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                    <i class="fas fa-microphone hover:text-white"></i>
-                    <i class="fas fa-cog hover:text-white"></i>
+                <div class="flex text-discord-muted space-x-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                    <i class="fas fa-microphone hover:text-white transition-colors"></i>
+                    <i class="fas fa-headphones hover:text-white transition-colors"></i>
+                    <i class="fas fa-cog hover:text-white transition-colors"></i>
                 </div>
             </div>
         </div>
@@ -212,21 +216,21 @@
 
         <!-- Input Area -->
         <div class="px-4 pb-6 pt-2 relative">
-            <form id="chat-form" class="bg-discord-light rounded-lg flex items-center px-4 py-2 relative">
-                <div class="text-discord-muted hover:text-discord-text cursor-pointer w-6 h-6 flex items-center justify-center mr-3 bg-discord-darker rounded-full">
+            <form id="chat-form" class="bg-discord-light rounded-lg flex items-center px-4 py-2 relative transition-all duration-300 focus-within:ring-1 focus-within:ring-discord-primary shadow-sm hover:shadow-md">
+                <div class="text-discord-muted hover:text-white hover:bg-discord-primary transition-colors duration-200 cursor-pointer w-6 h-6 flex items-center justify-center mr-3 bg-discord-darker rounded-full">
                     <i class="fas fa-plus text-xs"></i>
                 </div>
                 <input
                     type="text"
                     id="message-input"
                     placeholder="Message #general-chat"
-                    class="bg-transparent flex-1 outline-none text-discord-text text-[15px]"
+                    class="bg-transparent flex-1 outline-none text-discord-text text-[15px] placeholder-discord-muted focus:text-white transition-colors"
                     autocomplete="off"
                 >
                 <div class="flex text-discord-muted space-x-3 ml-3">
-                    <i class="fas fa-gift cursor-pointer hover:text-discord-text"></i>
-                    <i class="fas fa-sticky-note cursor-pointer hover:text-discord-text"></i>
-                    <i class="fas fa-smile cursor-pointer hover:text-discord-text"></i>
+                    <i class="fas fa-gift cursor-pointer hover:text-white transition-colors duration-200 hover:-translate-y-0.5 transform"></i>
+                    <i class="fas fa-file-image cursor-pointer hover:text-white transition-colors duration-200 hover:-translate-y-0.5 transform"></i>
+                    <i class="fas fa-smile cursor-pointer hover:text-white transition-colors duration-200 hover:-translate-y-0.5 transform"></i>
                 </div>
             </form>
         </div>

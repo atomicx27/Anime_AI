@@ -38,6 +38,11 @@ class WorldSimulatorAgent:
             if chosen_state == "Aggressive":
                 chosen_state = "Chaotic" # Might disrupt peace
 
+        # Add a slight chance for unpredictability
+        if random.random() < 0.15: # 15% chance to act out of character
+             alternative_states = [s for s in action_states if s != chosen_state]
+             chosen_state = random.choice(alternative_states)
+
         # Generate strategy/reaction text
         if chosen_state == "Aggressive":
             strategy = f"Charges headfirst into the situation, driven by {character['core_emotion']}. Relies on '{character['unique_quality'].split('.')[0]}' to overpower the challenge."
