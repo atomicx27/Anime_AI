@@ -22,45 +22,49 @@ class ModeratorAgent:
         table.add_column("Agent", style="cyan", width=20)
         table.add_column("Status / Advice", style="green")
 
-        with Live(table, console=console, refresh_per_second=10) as live:
+        from rich.progress import Progress, SpinnerColumn, TextColumn
+
+        with Live(table, console=console, refresh_per_second=15) as live:
             for agent in self.agents:
-                # Show agent is thinking
-                table.add_row(agent.name, "[italic yellow]Thinking...[/italic yellow]")
-                live.update(table)
+                # Show agent is thinking with a more dynamic indicator
+                temp_table = Table(title="Live Council Deliberation", show_header=True, header_style="bold magenta")
+                temp_table.add_column("Agent", style="cyan", width=20)
+                temp_table.add_column("Status / Advice", style="green")
+                for i in range(len(insights)):
+                    temp_table.add_row(self.agents[i].name, insights[i])
+                temp_table.add_row(agent.name, "[italic yellow]... Processing Council Directive ...[/italic yellow]")
+                live.update(temp_table)
 
                 # Simulate thinking time and get advice
-                time.sleep(0.5)
+                time.sleep(0.6)
                 advice = agent.give_advice(topic)
                 insights.append(advice)
 
-                # Update row with actual advice
-                # We need to recreate the table or modify the rows (rich Tables aren't easily mutable like this, so we rebuild it)
-                new_table = Table(title="Live Council Deliberation", show_header=True, header_style="bold magenta")
-                new_table.add_column("Agent", style="cyan", width=20)
-                new_table.add_column("Status / Advice", style="green")
-
-                # Add all past insights
-                for i in range(len(insights) - 1):
-                    new_table.add_row(self.agents[i].name, insights[i])
-
                 # Add current insight with a typing effect
                 displayed_advice = ""
-                for char in advice:
-                    displayed_advice += char
+                # Chunking the advice slightly for smoother typing rather than character by character
+                chunk_size = 3
+                for i in range(0, len(advice), chunk_size):
+                    displayed_advice += advice[i:i+chunk_size]
                     temp_table = Table(title="Live Council Deliberation", show_header=True, header_style="bold magenta")
                     temp_table.add_column("Agent", style="cyan", width=20)
                     temp_table.add_column("Status / Advice", style="green")
-                    for i in range(len(insights) - 1):
-                        temp_table.add_row(self.agents[i].name, insights[i])
+                    for j in range(len(insights) - 1):
+                        temp_table.add_row(self.agents[j].name, insights[j])
                     temp_table.add_row(agent.name, displayed_advice + "█")
                     live.update(temp_table)
-                    time.sleep(0.005)
+                    time.sleep(0.01)
 
                 # Add the final completed row without the cursor
-                new_table.add_row(agent.name, advice)
-                table = new_table
+                final_table = Table(title="Live Council Deliberation", show_header=True, header_style="bold magenta")
+                final_table.add_column("Agent", style="cyan", width=20)
+                final_table.add_column("Status / Advice", style="green")
+                for j in range(len(insights)):
+                    final_table.add_row(self.agents[j].name, insights[j])
+
+                table = final_table
                 live.update(table)
-                time.sleep(0.2)
+                time.sleep(0.3)
 
         console.print("\n[bold cyan]--- Moderator Synthesis ---[/bold cyan]")
         console.print("The council has deliberated. Here is the synthesized resolution:")

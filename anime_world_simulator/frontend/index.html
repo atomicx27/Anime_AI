@@ -11,18 +11,32 @@
             color: #f8fafc;
         }
         .card {
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
         .card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-8px) scale(1.02);
+            z-index: 10;
         }
         .state-aggressive { border: 2px solid #ef4444; box-shadow: 0 0 15px rgba(239, 68, 68, 0.4); }
+        .state-aggressive:hover { box-shadow: 0 0 25px rgba(239, 68, 68, 0.6); transform: scale(1.02); }
+
         .state-defensive { border: 2px solid #3b82f6; box-shadow: 0 0 15px rgba(59, 130, 246, 0.4); }
+        .state-defensive:hover { box-shadow: 0 0 25px rgba(59, 130, 246, 0.6); transform: scale(1.02); }
+
         .state-diplomatic { border: 2px solid #10b981; box-shadow: 0 0 15px rgba(16, 185, 129, 0.4); }
+        .state-diplomatic:hover { box-shadow: 0 0 25px rgba(16, 185, 129, 0.6); transform: scale(1.02); }
+
         .state-strategic { border: 2px solid #8b5cf6; box-shadow: 0 0 15px rgba(139, 92, 246, 0.4); }
+        .state-strategic:hover { box-shadow: 0 0 25px rgba(139, 92, 246, 0.6); transform: scale(1.02); }
+
         .state-chaotic { border: 2px solid #f97316; box-shadow: 0 0 15px rgba(249, 115, 22, 0.4); }
+        .state-chaotic:hover { box-shadow: 0 0 25px rgba(249, 115, 22, 0.6); transform: scale(1.02); }
+
         .state-protective { border: 2px solid #ec4899; box-shadow: 0 0 15px rgba(236, 72, 153, 0.4); }
+        .state-protective:hover { box-shadow: 0 0 25px rgba(236, 72, 153, 0.6); transform: scale(1.02); }
+
         .state-neutral { border: 2px solid #64748b; }
+        .state-neutral:hover { box-shadow: 0 0 25px rgba(100, 116, 139, 0.6); transform: scale(1.02); }
 
         .typewriter {
             overflow: hidden;
@@ -64,8 +78,13 @@
                 <div id="logsContent"></div>
             </div>
 
-            <div id="loading" class="hidden flex justify-center py-12">
-                <div class="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-blue-500"></div>
+            <div id="loading" class="hidden flex flex-col items-center justify-center py-16">
+                <div class="relative w-20 h-20 mb-4">
+                    <div class="absolute inset-0 rounded-full border-4 border-slate-700"></div>
+                    <div class="absolute inset-0 rounded-full border-4 border-t-blue-500 animate-spin"></div>
+                    <div class="absolute inset-2 bg-blue-500/20 rounded-full animate-pulse"></div>
+                </div>
+                <p class="text-blue-400 font-medium tracking-widest uppercase text-sm animate-pulse">Simulating World State...</p>
             </div>
 
             <div id="resultsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -97,16 +116,16 @@
 
         function getStateBadge(state) {
             const colors = {
-                'Aggressive': 'bg-red-900 text-red-200',
-                'Defensive': 'bg-blue-900 text-blue-200',
-                'Diplomatic': 'bg-emerald-900 text-emerald-200',
-                'Strategic': 'bg-purple-900 text-purple-200',
-                'Chaotic': 'bg-orange-900 text-orange-200',
-                'Protective': 'bg-pink-900 text-pink-200',
+                'Aggressive': 'bg-red-900 text-red-200 shadow-[0_0_10px_rgba(239,68,68,0.5)]',
+                'Defensive': 'bg-blue-900 text-blue-200 shadow-[0_0_10px_rgba(59,130,246,0.5)]',
+                'Diplomatic': 'bg-emerald-900 text-emerald-200 shadow-[0_0_10px_rgba(16,185,129,0.5)]',
+                'Strategic': 'bg-purple-900 text-purple-200 shadow-[0_0_10px_rgba(139,92,246,0.5)]',
+                'Chaotic': 'bg-orange-900 text-orange-200 shadow-[0_0_10px_rgba(249,115,22,0.5)]',
+                'Protective': 'bg-pink-900 text-pink-200 shadow-[0_0_10px_rgba(236,72,153,0.5)]',
                 'Neutral': 'bg-slate-700 text-slate-200'
             };
             const colorClass = colors[state] || colors['Neutral'];
-            return `<span class="px-2 py-1 rounded-full text-xs font-semibold ${colorClass}">${state}</span>`;
+            return `<span class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider animate-pulse ${colorClass}">${state}</span>`;
         }
 
         async function typeLogs(logs) {
@@ -150,27 +169,28 @@
                 data.reactions.forEach((reaction, index) => {
                     setTimeout(() => {
                         const card = document.createElement('div');
-                        card.className = `card bg-slate-800 rounded-xl p-5 flex flex-col h-full ${getStateClass(reaction.action_state)}`;
+                        card.className = `card card-enter bg-slate-800/80 backdrop-blur-sm rounded-xl p-5 flex flex-col h-full ${getStateClass(reaction.action_state)}`;
+                        card.style.animationDelay = `${index * 0.1}s`;
 
                         card.innerHTML = `
                             <div class="flex justify-between items-start mb-3">
                                 <div>
                                     <h3 class="text-xl font-bold text-white">${reaction.name}</h3>
-                                    <p class="text-xs text-slate-400">${reaction.archetype}</p>
+                                    <p class="text-xs text-slate-400 font-medium">${reaction.archetype}</p>
                                 </div>
                                 ${getStateBadge(reaction.action_state)}
                             </div>
-                            <div class="mb-4">
-                                <span class="text-xs font-semibold text-indigo-400 uppercase tracking-wider">Core Emotion</span>
+                            <div class="mb-4 bg-slate-900/50 p-3 rounded-lg border border-slate-700/50">
+                                <span class="text-[10px] font-bold text-indigo-400 uppercase tracking-wider block mb-1">Core Emotion</span>
                                 <p class="text-sm italic text-slate-300">"${reaction.core_emotion}"</p>
                             </div>
-                            <div class="mt-auto pt-4 border-t border-slate-700">
-                                <span class="text-xs font-semibold text-blue-400 uppercase tracking-wider block mb-1">Reaction Strategy</span>
+                            <div class="mt-auto pt-4 border-t border-slate-700/80">
+                                <span class="text-[10px] font-bold text-blue-400 uppercase tracking-wider block mb-1">Reaction Strategy</span>
                                 <p class="text-sm text-slate-200 leading-relaxed">${reaction.reaction_strategy}</p>
                             </div>
                         `;
                         resultsGrid.appendChild(card);
-                    }, index * 150); // Staggered entrance
+                    }, index * 100); // Faster staggered entrance
                 });
 
             } catch (err) {
