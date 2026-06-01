@@ -187,6 +187,17 @@ python3 main.py
 # Open your browser and navigate to http://localhost:8005/
 ```
 
+### 7. Anime Power Scaler AI
+
+The **Anime Power Scaler AI** is a web-based, multi-agent application that pits a user's custom character or ability description against the entire anime roster. The AI acts as a combat analyst, simulating 1v1 matchups by evaluating core emotions and unique qualities to declare a Win, Loss, or Draw for each character.
+
+#### Folder Location
+`anime_power_scaler/`
+
+#### Features
+- **Dynamic Matchup Evaluation**: The agent analyzes custom user abilities and compares them against every character's traits in the database.
+- **Visual Matchup Cards**: A sleek frontend UI using Tailwind CSS presents visually distinct results (Win/Loss/Draw) with detailed explanations.
+- **Dynamic Character Loading**: Backend API automatically parses the root `README.md` to dynamically load character details for scaling.
 ### 7. Anime Affinity Matcher AI
 
 The **Anime Affinity Matcher AI** is a web-based, agentic application that acts as a personalized matchmaking system. Users input a self-description encompassing their personality, goals, and values. The AI evaluates this input against all characters from the table based on their Core Emotion, Personality Profile, and Unique Quality to categorize them into affinities like "Soulmate/Best Friend", "Rival", "Mentor", or "Opposite/Enemy".
@@ -211,6 +222,7 @@ pip install -r requirements.txt
 python3 main.py
 
 # Access the UI
+# Open your browser and navigate to the frontend/index.html file locally.
 # Open your browser and navigate to http://localhost:8006/
 # Open your browser and navigate to the frontend index.html file, or use a local HTTP server in the frontend directory.
 ```
