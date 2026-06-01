@@ -9,9 +9,9 @@ import sys
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 from parser import parse_readme_characters
-from agent import DebateAgent
+from agent import AnimeMatchmakerAgent
 
-app = FastAPI(title="Anime Debate Arena API")
+app = FastAPI(title="Anime Matchmaker API")
 
 app.add_middleware(
     CORSMiddleware,
@@ -30,19 +30,25 @@ def startup_event():
     CHARACTERS = parse_readme_characters()
     if CHARACTERS:
         print(f"Loaded {len(CHARACTERS)} characters.")
-        AGENT = DebateAgent(CHARACTERS)
+        AGENT = AnimeMatchmakerAgent(CHARACTERS)
     else:
         print("Warning: Could not load characters from README.md")
 
-class DebateRequest(BaseModel):
-    topic: str
+class MatchRequest(BaseModel):
+    user_profile: str
+    relationship_type: str = "friendship"
+    top_n: int = 5
 
-@app.post("/api/debate")
-def host_debate(request: DebateRequest):
+@app.get("/api/characters")
+def get_characters():
+    return {"characters": CHARACTERS}
+
+@app.post("/api/match")
+def match_characters(request: MatchRequest):
     if not AGENT:
         raise HTTPException(status_code=500, detail="Agent not initialized")
 
-    result = AGENT.host_debate(request.topic)
+    result = AGENT.find_matches(request.user_profile, request.relationship_type, request.top_n)
     return result
 
 frontend_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "frontend")
