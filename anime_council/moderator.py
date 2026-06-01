@@ -5,6 +5,7 @@ from rich.table import Table
 from rich.live import Live
 from rich.layout import Layout
 from rich.text import Text
+from rich import box
 import time
 
 console = Console()
@@ -14,12 +15,12 @@ class ModeratorAgent:
         self.agents = [CharacterAgent(data) for data in character_data_list]
 
     def discuss_topic(self, topic):
-        console.print(f"\n[bold cyan]--- Council Meeting on: '{topic}' ---[/bold cyan]\n")
+        console.print(f"\n⚡ [bold cyan]--- Council Meeting on: '{topic}' ---[/bold cyan] ⚡\n")
 
         insights = []
 
-        table = Table(title="Live Council Deliberation", show_header=True, header_style="bold magenta")
-        table.add_column("Agent", style="cyan", width=20)
+        table = Table(title="🔥 [bold red]Live Council Deliberation[/bold red] 🔥", show_header=True, header_style="bold magenta", box=box.HEAVY_EDGE)
+        table.add_column("Agent", style="cyan", width=20, justify="right")
         table.add_column("Status / Advice", style="green")
 
         from rich.progress import Progress, SpinnerColumn, TextColumn
@@ -66,10 +67,10 @@ class ModeratorAgent:
                 live.update(table)
                 time.sleep(0.3)
 
-        console.print("\n[bold cyan]--- Moderator Synthesis ---[/bold cyan]")
-        console.print("The council has deliberated. Here is the synthesized resolution:")
+        console.print("\n⚖️  [bold cyan]--- Moderator Synthesis ---[/bold cyan] ⚖️")
+        console.print("The council has deliberated. Here is the synthesized resolution:\n")
 
-        summary_table = Table(title="Council Perspectives")
+        summary_table = Table(title="💡 [bold yellow]Council Perspectives[/bold yellow] 💡", box=box.SIMPLE_HEAVY, show_lines=True)
         summary_table.add_column("Agent", style="cyan")
         summary_table.add_column("Core Emotion", style="green")
         summary_table.add_column("Perspective Suggestion", style="magenta")
@@ -77,12 +78,12 @@ class ModeratorAgent:
         for idx, advice in enumerate(insights):
             agent_name = self.agents[idx].name
             core_emotion = self.agents[idx].core_emotion
-            summary_table.add_row(agent_name, core_emotion, "Approaching it with their core emotion")
+            summary_table.add_row(agent_name, core_emotion, f"[italic]Approaching it with their core emotion[/italic]")
 
         console.print(summary_table)
 
         final_verdict = f"\nFinal Verdict: By combining the insights of all these characters, we can address '{topic}' from multiple philosophical angles."
-        console.print(Panel(final_verdict, title="Resolution", expand=False))
+        console.print(Panel(final_verdict, title="📜 [bold green]Resolution[/bold green] 📜", expand=False, border_style="green", box=box.DOUBLE_EDGE))
 
         return final_verdict
 

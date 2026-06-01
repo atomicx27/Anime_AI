@@ -24,6 +24,11 @@
         }
     </script>
     <style>
+        body {
+            background-image: radial-gradient(circle at top right, rgba(139, 92, 246, 0.1) 0%, transparent 40%),
+                              radial-gradient(circle at bottom left, rgba(59, 130, 246, 0.1) 0%, transparent 40%);
+            background-color: #111827;
+        }
         .custom-scrollbar::-webkit-scrollbar { width: 6px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background-color: rgba(75, 85, 99, 0.4); border-radius: 10px; }
@@ -41,20 +46,19 @@
         @keyframes typing { from { width: 0 } to { width: 100% } }
         @keyframes blink-caret { from, to { border-color: transparent } 50% { border-color: orange; } }
 
-
-
         .tier-card {
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .animate-pop-in {
-            animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            animation: popIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
             opacity: 0;
             transform: scale(0.8);
         }
+
         @keyframes popIn {
-            0% { opacity: 0; transform: scale(0.8); }
-            100% { opacity: 1; transform: scale(1); }
+            0% { opacity: 0; transform: scale(0.8) translateY(10px); }
+            100% { opacity: 1; transform: scale(1) translateY(0); }
         }
 
         .tier-card:hover {
@@ -89,14 +93,11 @@
             transform: scale(0.8) translateY(20px);
         }
 
-        @keyframes popIn {
-            to { opacity: 1; transform: scale(1) translateY(0); }
-        }
-
         .tooltip .tooltip-text {
             visibility: hidden;
-            width: 250px;
-            background-color: #1f2937;
+            width: 280px;
+            background: rgba(31, 41, 55, 0.95);
+            backdrop-filter: blur(8px);
             color: #fff;
             text-align: center;
             border-radius: 8px;
@@ -105,7 +106,7 @@
             z-index: 50;
             bottom: 125%;
             left: 50%;
-            margin-left: -125px;
+            transform: translateX(-50%) translateY(10px);
             opacity: 0;
             transform: translateY(10px) scale(0.95);
             transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -120,9 +121,16 @@
             opacity: 1;
             transform: translateY(0) scale(1);
         }
+
+        /* Tier gradients */
+        .tier-s-bg { background: linear-gradient(135deg, #ff7f7f, #ff4b4b); }
+        .tier-a-bg { background: linear-gradient(135deg, #ffbf7f, #ff9b4b); }
+        .tier-b-bg { background: linear-gradient(135deg, #ffff7f, #dfdf4b); }
+        .tier-c-bg { background: linear-gradient(135deg, #7fff7f, #4bff4b); }
+        .tier-d-bg { background: linear-gradient(135deg, #7fbfff, #4b9bff); }
     </style>
 </head>
-<body class="bg-gray-900 text-gray-100 h-screen flex flex-col font-sans overflow-hidden">
+<body class="text-gray-100 h-screen flex flex-col font-sans overflow-hidden">
 
     <!-- Header -->
     <header class="bg-gray-800 border-b border-gray-700 p-4 shadow-lg z-10 flex items-center justify-between">
@@ -172,35 +180,35 @@
                 <div class="w-24 bg-tier-s flex items-center justify-center border-r border-gray-700 shrink-0">
                     <span class="text-3xl font-black text-gray-900 drop-shadow-sm">S</span>
                 </div>
-                <div class="flex-1 p-3 flex flex-wrap gap-3 items-center" id="row-S"></div>
+                <div class="flex-1 p-4 flex flex-wrap gap-4 items-center" id="row-S"></div>
             </div>
 
             <div id="tier-A" class="tier-row flex border border-gray-700 rounded-lg overflow-hidden bg-gray-800/50 shadow-lg min-h-[100px] z-10 relative">
                 <div class="w-24 bg-tier-a flex items-center justify-center border-r border-gray-700 shrink-0">
                     <span class="text-3xl font-black text-gray-900 drop-shadow-sm">A</span>
                 </div>
-                <div class="flex-1 p-3 flex flex-wrap gap-3 items-center" id="row-A"></div>
+                <div class="flex-1 p-4 flex flex-wrap gap-4 items-center" id="row-A"></div>
             </div>
 
             <div id="tier-B" class="tier-row flex border border-gray-700 rounded-lg overflow-hidden bg-gray-800/50 shadow-lg min-h-[100px] z-10 relative">
                 <div class="w-24 bg-tier-b flex items-center justify-center border-r border-gray-700 shrink-0">
                     <span class="text-3xl font-black text-gray-900 drop-shadow-sm">B</span>
                 </div>
-                <div class="flex-1 p-3 flex flex-wrap gap-3 items-center" id="row-B"></div>
+                <div class="flex-1 p-4 flex flex-wrap gap-4 items-center" id="row-B"></div>
             </div>
 
             <div id="tier-C" class="tier-row flex border border-gray-700 rounded-lg overflow-hidden bg-gray-800/50 shadow-lg min-h-[100px] z-10 relative">
                 <div class="w-24 bg-tier-c flex items-center justify-center border-r border-gray-700 shrink-0">
                     <span class="text-3xl font-black text-gray-900 drop-shadow-sm">C</span>
                 </div>
-                <div class="flex-1 p-3 flex flex-wrap gap-3 items-center" id="row-C"></div>
+                <div class="flex-1 p-4 flex flex-wrap gap-4 items-center" id="row-C"></div>
             </div>
 
             <div id="tier-D" class="tier-row flex border border-gray-700 rounded-lg overflow-hidden bg-gray-800/50 shadow-lg min-h-[100px] z-10 relative">
                 <div class="w-24 bg-tier-d flex items-center justify-center border-r border-gray-700 shrink-0">
                     <span class="text-3xl font-black text-gray-900 drop-shadow-sm">D</span>
                 </div>
-                <div class="flex-1 p-3 flex flex-wrap gap-3 items-center" id="row-D"></div>
+                <div class="flex-1 p-4 flex flex-wrap gap-4 items-center" id="row-D"></div>
             </div>
         </div>
     </div>
