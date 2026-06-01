@@ -3,13 +3,19 @@ from parser import parse_readme_characters
 from moderator import ModeratorAgent
 from rich.console import Console
 from rich.panel import Panel
-from rich import box
+from rich.progress import Progress, SpinnerColumn, TextColumn
 
 console = Console()
 
 def main():
-    console.print(Panel.fit("🏛️ [bold cyan]Welcome to Anime Council AI![/bold cyan] 🏛️", border_style="cyan", box=box.ROUNDED))
-    with console.status("[bold green]Loading characters from README.md to assemble the council...[/bold green]", spinner="bouncingBar"):
+    console.print(Panel.fit("[bold cyan]Welcome to Anime Council AI![/bold cyan]"))
+
+    with Progress(
+        SpinnerColumn("dots", style="cyan"),
+        TextColumn("[bold green]Loading characters from README.md to assemble the council...[/bold green]"),
+        transient=True,
+    ) as progress:
+        progress.add_task("loading", start=False)
         characters = parse_readme_characters()
 
     if not characters:

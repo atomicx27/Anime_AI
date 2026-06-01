@@ -7,14 +7,19 @@ from rich.panel import Panel
 from rich.table import Table
 from rich.live import Live
 from rich.markdown import Markdown
-from rich import box
-from rich.spinner import Spinner
+from rich.progress import Progress, SpinnerColumn, TextColumn
 
 console = Console()
 
 def main():
-    console.print(Panel.fit("✨ [bold cyan]Welcome to Anime Agents CLI![/bold cyan] ✨", border_style="cyan", box=box.ROUNDED))
-    with console.status("[bold green]Loading characters from README.md...[/bold green]", spinner="dots", spinner_style="bold green"):
+    console.print(Panel.fit("[bold cyan]Welcome to Anime Agents CLI![/bold cyan]"))
+
+    with Progress(
+        SpinnerColumn("dots", style="cyan"),
+        TextColumn("[bold green]Loading characters from README.md...[/bold green]"),
+        transient=True,
+    ) as progress:
+        progress.add_task("loading", start=False)
         characters = parse_readme_characters()
 
     if not characters:
@@ -58,7 +63,12 @@ def main():
                     if user_msg.lower() == 'quit':
                         break
 
-                    with console.status(f"🧠 [bold cyan]{agent.name} is thinking...[/bold cyan]", spinner="arc", spinner_style="bold cyan"):
+                    with Progress(
+                        SpinnerColumn(spinner_name="bouncingBar", style="cyan"),
+                        TextColumn("[progress.description]{task.description}"),
+                        transient=True,
+                    ) as progress:
+                        progress.add_task(description=f"[bold cyan]{agent.name} is thinking...", total=None)
                         response = agent.chat(user_msg)
 
                     console.print()
