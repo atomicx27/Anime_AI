@@ -34,12 +34,25 @@
         }
         .score-bar {
             width: 0%;
-            transition: width 2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: width 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 0 10px rgba(236, 72, 153, 0.5);
         }
         .terminal {
             background-color: #000;
             color: #0f0;
             font-family: monospace;
+        }
+        .radar-scan {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 2px solid rgba(168, 85, 247, 0.5);
+            animation: radar 2s linear infinite;
+        }
+        @keyframes radar {
+            0% { transform: scale(0.5); opacity: 1; }
+            100% { transform: scale(1.5); opacity: 0; }
         }
     </style>
 </head>
@@ -84,8 +97,13 @@
                     <h2 class="text-2xl font-bold mb-6 text-white border-b border-slate-600 pb-2">Selected Operatives</h2>
 
                     <div id="loading-state" class="hidden flex flex-col items-center justify-center h-full pt-32">
-                        <div class="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-purple-500 mb-4"></div>
-                        <p class="text-purple-300 animate-pulse">Commander is analyzing candidates...</p>
+                        <div class="relative w-24 h-24 mb-6">
+                            <div class="absolute inset-0 border-4 border-purple-500/20 rounded-full"></div>
+                            <div class="absolute inset-0 border-4 border-t-purple-500 rounded-full animate-spin"></div>
+                            <div class="radar-scan"></div>
+                            <div class="radar-scan" style="animation-delay: 1s"></div>
+                        </div>
+                        <p class="text-purple-300 animate-pulse font-medium">Commander is analyzing candidates...</p>
                     </div>
 
                     <div id="team-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -151,21 +169,38 @@
 
                     data.team.forEach((member, index) => {
                         const card = document.createElement('div');
-                        card.className = 'bg-slate-800 rounded-xl p-5 border-l-4 border-purple-500 shadow-md card-enter';
+                        // Add glow based on role to make it more distinct
+                        let borderColor = 'border-purple-500';
+                        let shadowGlow = 'hover:shadow-purple-500/40';
+                        let tagColor = 'bg-purple-900 text-purple-200';
+                        let barGradient = 'from-purple-500 to-pink-500';
+
+                        if (member.role.includes('Combat')) {
+                            borderColor = 'border-red-500'; shadowGlow = 'hover:shadow-red-500/40'; tagColor = 'bg-red-900 text-red-200'; barGradient = 'from-red-500 to-orange-500';
+                        } else if (member.role.includes('Diplomat')) {
+                            borderColor = 'border-blue-500'; shadowGlow = 'hover:shadow-blue-500/40'; tagColor = 'bg-blue-900 text-blue-200'; barGradient = 'from-blue-500 to-cyan-500';
+                        } else if (member.role.includes('Strategist')) {
+                            borderColor = 'border-emerald-500'; shadowGlow = 'hover:shadow-emerald-500/40'; tagColor = 'bg-emerald-900 text-emerald-200'; barGradient = 'from-emerald-500 to-teal-500';
+                        }
+
+                        card.className = `bg-slate-800 rounded-xl p-5 border-l-4 ${borderColor} shadow-md card-enter transition-shadow duration-300 ${shadowGlow}`;
                         card.style.animationDelay = `${index * 0.2}s`;
 
                         card.innerHTML = `
                             <div class="flex justify-between items-start mb-3">
                                 <h3 class="text-xl font-bold text-white">${member.name}</h3>
-                                <span class="bg-purple-900 text-purple-200 text-xs font-semibold px-2.5 py-0.5 rounded">${member.role}</span>
+                                <span class="${tagColor} text-xs font-semibold px-2.5 py-0.5 rounded shadow-sm">${member.role}</span>
                             </div>
-                            <p class="text-sm text-slate-400 mb-2">Archetype: ${member.archetype}</p>
-                            <p class="text-sm text-slate-300 italic mb-4">"${member.reasoning}"</p>
-                            <div class="mt-auto">
-                                <div class="w-full bg-slate-700 rounded-full h-2.5">
-                                  <div class="bg-gradient-to-r from-purple-500 to-pink-500 h-2.5 rounded-full score-bar" id="score-bar-${index}"></div>
+                            <p class="text-sm text-slate-400 mb-2 font-medium">${member.archetype}</p>
+                            <p class="text-sm text-slate-300 italic mb-4 leading-relaxed">"${member.reasoning}"</p>
+                            <div class="mt-auto pt-3 border-t border-slate-700">
+                                <div class="flex justify-between mb-1">
+                                    <span class="text-xs font-medium text-slate-400">Aptitude Score</span>
+                                    <span class="text-xs font-bold text-slate-300">${member.score}/100</span>
                                 </div>
-                                <div class="text-xs text-right mt-1 text-slate-500">Aptitude Score: ${member.score}</div>
+                                <div class="w-full bg-slate-900 rounded-full h-2.5 shadow-inner">
+                                  <div class="bg-gradient-to-r ${barGradient} h-2.5 rounded-full score-bar shadow-sm" id="score-bar-${index}"></div>
+                                </div>
                             </div>
                         `;
                         teamGrid.appendChild(card);

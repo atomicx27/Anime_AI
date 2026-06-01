@@ -86,6 +86,12 @@ class WorldSimulatorAgent:
         summary = ", ".join([f"{count} {state}" for state, count in state_counts.items()])
         logs.append(f"Simulation complete. World state breakdown: {summary}")
 
+        total_reactions = len(reactions)
+        if state_counts.get("Chaotic", 0) > total_reactions / 2:
+            logs.append("WARNING: The world descends into absolute chaos.")
+        elif state_counts.get("Diplomatic", 0) > total_reactions / 2:
+            logs.append("NOTE: The world leans heavily towards a peaceful resolution.")
+
         return {
             "scenario": scenario,
             "reactions": reactions,

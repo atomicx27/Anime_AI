@@ -12,14 +12,14 @@ from rich.progress import Progress, SpinnerColumn, TextColumn
 console = Console()
 
 def main():
-    console.print(Panel.fit("[bold cyan]Welcome to Anime Agents CLI![/bold cyan]", border_style="blue"))
+    console.print(Panel.fit("[bold cyan]Welcome to Anime Agents CLI![/bold cyan]"))
 
     with Progress(
-        SpinnerColumn(spinner_name="dots2", style="green"),
-        TextColumn("[progress.description]{task.description}"),
+        SpinnerColumn("dots", style="cyan"),
+        TextColumn("[bold green]Loading characters from README.md...[/bold green]"),
         transient=True,
     ) as progress:
-        progress.add_task(description="[bold green]Loading characters from README.md...", total=None)
+        progress.add_task("loading", start=False)
         characters = parse_readme_characters()
 
     if not characters:

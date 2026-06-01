@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anime Matchmaker AI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #0f172a; /* slate-900 */
+            color: #f8fafc; /* slate-50 */
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1e293b;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #475569;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #64748b;
+        }
+
+        .terminal-container {
+            background-color: #020617;
+            border: 1px solid #334155;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+        }
+
+        .log-entry {
+            opacity: 0;
+            animation: fadeIn 0.3s forwards;
+            padding-left: 1rem;
+            text-indent: -1rem;
+        }
+
+        .log-timestamp {
+            color: #64748b;
+            font-size: 0.8em;
+            margin-right: 0.5rem;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        .card-enter {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: slideUp 0.5s forwards ease-out;
+        }
+
+        @keyframes slideUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .pulse-dot {
+            height: 8px;
+            width: 8px;
+            background-color: #10b981;
+            border-radius: 50%;
+            display: inline-block;
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: .5; }
+        }
+
+        .match-badge {
+            background: linear-gradient(135deg, #ec4899 0%, #8b5cf6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: bold;
+        }
+
+        .btn-gradient {
+            background: linear-gradient(135deg, #ec4899 0%, #8b5cf6 100%);
+            transition: all 0.3s ease;
+        }
+        .btn-gradient:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(139, 92, 246, 0.5);
+        }
+        .btn-gradient:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center py-10 px-4 md:px-8">
+
+    <div class="max-w-6xl w-full">
+        <!-- Header -->
+        <header class="text-center mb-12">
+            <h1 class="text-5xl font-extrabold mb-4 tracking-tight">
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-violet-500">
+                    Anime Matchmaker AI
+                </span>
+            </h1>
+            <p class="text-slate-400 text-lg max-w-2xl mx-auto">
+                Enter your personality profile and what you're looking for. Our AI agent will analyze the character database to find your perfect match.
+            </p>
+        </header>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+            <!-- Left Column: Input Form & Terminal -->
+            <div class="lg:col-span-1 flex flex-col gap-6">
+
+                <!-- Input Panel -->
+                <div class="bg-slate-800 rounded-xl p-6 border border-slate-700 shadow-xl">
+                    <h2 class="text-xl font-semibold mb-4 flex items-center">
+                        <i class="fas fa-user-circle mr-2 text-pink-400"></i> Your Profile
+                    </h2>
+
+                    <div class="mb-4">
+                        <label for="profileInput" class="block text-sm font-medium text-slate-300 mb-2">Describe yourself (Personality, hobbies, goals):</label>
+                        <textarea id="profileInput" rows="4" class="w-full bg-slate-900 border border-slate-600 rounded-lg p-3 text-slate-100 focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all placeholder-slate-500 resize-none" placeholder="E.g., I'm a quiet introvert who enjoys reading and peace, but I deeply admire people with strong ambition and drive..."></textarea>
+                    </div>
+
+                    <div class="mb-6">
+                        <label for="relationshipType" class="block text-sm font-medium text-slate-300 mb-2">Looking for:</label>
+                        <select id="relationshipType" class="w-full bg-slate-900 border border-slate-600 rounded-lg p-3 text-slate-100 focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all">
+                            <option value="friendship">Friendship / Best Friend</option>
+                            <option value="romantic">Romantic Partner</option>
+                            <option value="rival">Rival / Competitor</option>
+                            <option value="mentor">Mentor / Student</option>
+                        </select>
+                    </div>
+
+                    <button id="findMatchesBtn" class="w-full btn-gradient text-white font-bold py-3 px-4 rounded-lg flex justify-center items-center">
+                        <span>Find My Match</span>
+                        <i class="fas fa-heart ml-2"></i>
+                    </button>
+                </div>
+
+                <!-- Agent Terminal -->
+                <div class="terminal-container rounded-xl flex flex-col flex-grow h-[400px]">
+                    <div class="bg-slate-800 px-4 py-2 border-b border-slate-700 rounded-t-xl flex items-center justify-between">
+                        <div class="flex items-center space-x-2">
+                            <span class="pulse-dot"></span>
+                            <span class="text-sm font-mono text-emerald-400">Matchmaker Agent</span>
+                        </div>
+                        <div class="flex space-x-1.5">
+                            <div class="w-3 h-3 rounded-full bg-slate-600"></div>
+                            <div class="w-3 h-3 rounded-full bg-slate-600"></div>
+                            <div class="w-3 h-3 rounded-full bg-slate-600"></div>
+                        </div>
+                    </div>
+                    <div id="terminalLog" class="p-4 font-mono text-sm text-slate-300 overflow-y-auto flex-grow space-y-1">
+                        <div class="text-slate-500 italic">Waiting for user input...</div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Right Column: Results -->
+            <div class="lg:col-span-2">
+                <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 shadow-inner min-h-full">
+                    <div class="flex items-center justify-between mb-6">
+                        <h2 class="text-2xl font-semibold flex items-center">
+                            <i class="fas fa-star mr-2 text-yellow-400"></i> Top Matches
+                        </h2>
+                        <span id="matchStatus" class="text-sm text-slate-400 hidden">Evaluation Complete</span>
+                    </div>
+
+                    <div id="resultsContainer" class="space-y-4">
+                        <!-- Initial Placeholder -->
+                        <div class="flex flex-col items-center justify-center h-64 text-slate-500 border-2 border-dashed border-slate-700 rounded-xl">
+                            <i class="fas fa-search text-4xl mb-3 opacity-50"></i>
+                            <p>Fill out your profile and click "Find My Match"</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        const findMatchesBtn = document.getElementById('findMatchesBtn');
+        const profileInput = document.getElementById('profileInput');
+        const relationshipType = document.getElementById('relationshipType');
+        const terminalLog = document.getElementById('terminalLog');
+        const resultsContainer = document.getElementById('resultsContainer');
+        const matchStatus = document.getElementById('matchStatus');
+
+        function appendToTerminal(message, isImportant = false) {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString([], { hour12: false, hour: '2-digit', minute:'2-digit', second:'2-digit' }) + '.' + now.getMilliseconds().toString().padStart(3, '0');
+
+            const div = document.createElement('div');
+            div.className = `log-entry ${isImportant ? 'text-emerald-400 font-bold' : ''}`;
+
+            // Syntax highlighting for logs
+            let formattedMessage = message;
+            if (message.includes("Assessment:")) {
+                formattedMessage = message.replace(/Assessment: (.*)/, 'Assessment: <span class="text-pink-400">$1</span>');
+            } else if (message.includes("Evaluating")) {
+                formattedMessage = message.replace(/Evaluating (.*)\.\.\./, 'Evaluating <span class="text-violet-300">$1</span>...');
+            }
+
+            div.innerHTML = `<span class="log-timestamp">[${timeString}]</span> > ${formattedMessage}`;
+            terminalLog.appendChild(div);
+            terminalLog.scrollTop = terminalLog.scrollHeight;
+        }
+
+        function createResultCard(match, index) {
+            const delay = index * 0.15; // Staggered animation
+
+            // Icon logic
+            let icon = 'fa-user';
+            let iconColor = 'text-slate-400';
+            if (match.match_level.includes('Soulmate') || match.match_level.includes('Best')) { icon = 'fa-heart'; iconColor = 'text-pink-500'; }
+            else if (match.match_level.includes('Great')) { icon = 'fa-star'; iconColor = 'text-yellow-400'; }
+            else if (match.match_level.includes('Good')) { icon = 'fa-thumbs-up'; iconColor = 'text-blue-400'; }
+            else if (match.match_level.includes('Incompatible')) { icon = 'fa-times-circle'; iconColor = 'text-red-500'; }
+
+            return `
+                <div class="card-enter bg-slate-800 rounded-lg p-5 border border-slate-700 hover:border-violet-500/50 transition-colors relative overflow-hidden" style="animation-delay: ${delay}s">
+                    <div class="absolute top-0 right-0 bg-slate-900 px-3 py-1 rounded-bl-lg border-b border-l border-slate-700 text-xs font-mono text-slate-400">
+                        Rank #${index + 1} | Score: ${match.score}
+                    </div>
+
+                    <div class="flex items-start gap-4">
+                        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-slate-900 flex items-center justify-center border border-slate-700">
+                            <i class="fas ${icon} ${iconColor} text-xl"></i>
+                        </div>
+
+                        <div class="flex-grow">
+                            <div class="flex items-baseline justify-between mb-1 pr-24">
+                                <h3 class="text-xl font-bold text-slate-100">${match.name}</h3>
+                            </div>
+
+                            <div class="text-sm font-semibold mb-3 match-badge inline-block">
+                                ${match.match_level}
+                            </div>
+
+                            <div class="bg-slate-900/50 rounded-md p-3 border border-slate-700/50">
+                                <p class="text-slate-300 text-sm leading-relaxed"><strong class="text-slate-400">Agent Reasoning:</strong> ${match.reasoning}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        findMatchesBtn.addEventListener('click', async () => {
+            const profile = profileInput.value.trim();
+            const relType = relationshipType.value;
+
+            if (!profile) {
+                alert("Please describe yourself first!");
+                return;
+            }
+
+            // Reset UI
+            findMatchesBtn.disabled = true;
+            findMatchesBtn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i><span class="ml-2">Analyzing...</span>';
+            terminalLog.innerHTML = '';
+            resultsContainer.innerHTML = '';
+            matchStatus.classList.add('hidden');
+
+            appendToTerminal("Initializing AI Matchmaker request...", true);
+
+            try {
+                // Determine API URL based on environment (development vs relative)
+                const apiUrl = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+                    ? `http://${window.location.hostname}:8005/api/match`
+                    : '/api/match';
+
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        user_profile: profile,
+                        relationship_type: relType,
+                        top_n: 5
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Server error: ${response.status}`);
+                }
+
+                const data = await response.json();
+
+                // Simulate processing logs (typing effect for logs)
+                for (let i = 0; i < data.logs.length; i++) {
+                    await new Promise(r => setTimeout(r, 100)); // Delay between logs
+                    appendToTerminal(data.logs[i]);
+                }
+
+                appendToTerminal("Analysis complete. Rendering results...", true);
+
+                // Render results
+                await new Promise(r => setTimeout(r, 500)); // Small pause before showing results
+
+                if (data.matches && data.matches.length > 0) {
+                    data.matches.forEach((match, index) => {
+                        resultsContainer.innerHTML += createResultCard(match, index);
+                    });
+                    matchStatus.classList.remove('hidden');
+                } else {
+                    resultsContainer.innerHTML = `
+                        <div class="text-center p-8 text-slate-400">
+                            No matches found.
+                        </div>
+                    `;
+                }
+
+            } catch (error) {
+                appendToTerminal(`ERROR: ${error.message}`, true);
+                resultsContainer.innerHTML = `
+                    <div class="bg-red-900/20 border border-red-500/50 text-red-400 rounded-lg p-4 text-center">
+                        <i class="fas fa-exclamation-triangle mr-2"></i> Error connecting to the AI Matchmaker API.
+                        <p class="text-sm mt-2 opacity-80">Make sure the backend server is running on port 8005.</p>
+                    </div>
+                `;
+            } finally {
+                findMatchesBtn.disabled = false;
+                findMatchesBtn.innerHTML = '<span>Find My Match</span><i class="fas fa-heart ml-2"></i>';
+            }
+        });
+
+        // Add some placeholder text on load
+        profileInput.value = "I'm a quiet and stoic person who values logic and peace. I try to avoid unnecessary conflict but I admire those who work hard.";
+    </script>
+</body>
+</html>
