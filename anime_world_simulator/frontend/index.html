@@ -77,8 +77,13 @@
                 <div id="logsContent"></div>
             </div>
 
-            <div id="loading" class="hidden flex justify-center py-12">
-                <div class="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-blue-500"></div>
+            <div id="loading" class="hidden flex flex-col items-center justify-center py-16">
+                <div class="relative w-20 h-20 mb-4">
+                    <div class="absolute inset-0 rounded-full border-4 border-slate-700"></div>
+                    <div class="absolute inset-0 rounded-full border-4 border-t-blue-500 animate-spin"></div>
+                    <div class="absolute inset-2 bg-blue-500/20 rounded-full animate-pulse"></div>
+                </div>
+                <p class="text-blue-400 font-medium tracking-widest uppercase text-sm animate-pulse">Simulating World State...</p>
             </div>
 
             <div id="resultsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -163,27 +168,28 @@
                 data.reactions.forEach((reaction, index) => {
                     setTimeout(() => {
                         const card = document.createElement('div');
-                        card.className = `card bg-slate-800 rounded-xl p-5 flex flex-col h-full ${getStateClass(reaction.action_state)}`;
+                        card.className = `card card-enter bg-slate-800/80 backdrop-blur-sm rounded-xl p-5 flex flex-col h-full ${getStateClass(reaction.action_state)}`;
+                        card.style.animationDelay = `${index * 0.1}s`;
 
                         card.innerHTML = `
                             <div class="flex justify-between items-start mb-3">
                                 <div>
                                     <h3 class="text-xl font-bold text-white">${reaction.name}</h3>
-                                    <p class="text-xs text-slate-400">${reaction.archetype}</p>
+                                    <p class="text-xs text-slate-400 font-medium">${reaction.archetype}</p>
                                 </div>
                                 ${getStateBadge(reaction.action_state)}
                             </div>
-                            <div class="mb-4">
-                                <span class="text-xs font-semibold text-indigo-400 uppercase tracking-wider">Core Emotion</span>
+                            <div class="mb-4 bg-slate-900/50 p-3 rounded-lg border border-slate-700/50">
+                                <span class="text-[10px] font-bold text-indigo-400 uppercase tracking-wider block mb-1">Core Emotion</span>
                                 <p class="text-sm italic text-slate-300">"${reaction.core_emotion}"</p>
                             </div>
-                            <div class="mt-auto pt-4 border-t border-slate-700">
-                                <span class="text-xs font-semibold text-blue-400 uppercase tracking-wider block mb-1">Reaction Strategy</span>
+                            <div class="mt-auto pt-4 border-t border-slate-700/80">
+                                <span class="text-[10px] font-bold text-blue-400 uppercase tracking-wider block mb-1">Reaction Strategy</span>
                                 <p class="text-sm text-slate-200 leading-relaxed">${reaction.reaction_strategy}</p>
                             </div>
                         `;
                         resultsGrid.appendChild(card);
-                    }, index * 150); // Staggered entrance
+                    }, index * 100); // Faster staggered entrance
                 });
 
             } catch (err) {
