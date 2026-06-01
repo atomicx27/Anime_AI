@@ -136,6 +136,18 @@ python3 main.py
 # Open your browser and navigate to http://localhost:8004/
 ```
 
+### 6. Anime Matchmaker AI
+
+The **Anime Matchmaker AI** is a web-based, agentic application that acts as a personal matchmaker for the user. Users describe their own personality profile and relationship preferences (e.g., friendship, romance, rival), and the AI evaluates all characters from the table to find the best possible matches based on their Core Emotion and Personality Profile.
+
+#### Folder Location
+`anime_matchmaker/`
+
+#### Features
+- **Personality Matching Algorithm**: The Matchmaker Agent analyzes the user's input and scores compatibility based on shared values, complementary traits, or desired relationship dynamics.
+- **Dynamic Relationship Types**: Users can seek different types of connections (Friendship, Romance, Rivalry, Mentor), which changes the agent's evaluation criteria.
+- **Agent Output Terminal**: A live, animated terminal UI displays the agent's thought process as it evaluates each character.
+- **Sleek UI/UX**: Built with Vanilla HTML, JS, and Tailwind CSS, featuring smooth animations and a modern dark theme.
 ### 6. Anime Debate Arena AI
 
 The **Anime Debate Arena AI** is an intelligent web-based platform that dynamically selects two characters with contrasting philosophies to engage in a formal debate on any given topic.
@@ -163,6 +175,7 @@ The **Anime World Simulator AI** is a web-based, multi-agent application that si
 #### How to Run
 ```bash
 # Install dependencies
+cd anime_matchmaker/backend
 cd anime_debate_arena/backend
 cd anime_world_simulator/backend
 pip install -r requirements.txt
