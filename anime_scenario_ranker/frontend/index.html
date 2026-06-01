@@ -152,7 +152,7 @@
             </div>
 
             <!-- Tier Rows will be generated here -->
-            <div id="tier-S" class="flex border border-gray-700 rounded-lg overflow-hidden bg-gray-800/50 shadow-lg min-h-[100px]">
+            <div id="tier-S" class="flex border border-gray-700 rounded-lg overflow-hidden bg-gray-800/50 shadow-[0_0_15px_rgba(255,127,127,0.5)] min-h-[100px]">
                 <div class="w-24 bg-tier-s flex items-center justify-center border-r border-gray-700 shrink-0">
                     <span class="text-3xl font-black text-gray-900 drop-shadow-sm">S</span>
                 </div>
@@ -276,8 +276,10 @@
 
                            if(ranking) {
                                setTimeout(() => {
+                                    const rowChildCount = tierRows[ranking.rank].children.length;
+                                    const delay = (rowChildCount * 0.1).toFixed(1);
                                     const charHtml = `
-                                        <div class="tooltip relative cursor-help card-enter tier-card animate-pop-in" style="animation-delay: 0.1s">
+                                        <div class="tooltip relative cursor-help card-enter tier-card animate-pop-in" style="animation-delay: ${delay}s">
                                             <div class="bg-gray-700 border border-gray-600 rounded px-3 py-2 flex items-center gap-2 hover:bg-gray-600 transition-colors shadow-sm">
                                                 <div class="w-6 h-6 rounded-full bg-gray-800 flex items-center justify-center text-xs font-bold text-gray-300">
                                                     ${getInitials(ranking.name)}
