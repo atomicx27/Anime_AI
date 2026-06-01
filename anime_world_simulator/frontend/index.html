@@ -76,6 +76,10 @@
             animation: typing 3.5s steps(40, end), blink-caret .75s step-end infinite;
         }
 
+        @keyframes typing {
+            from { max-width: 0 }
+            to { max-width: 100% }
+        }
         @keyframes blink-caret {
             from, to { border-color: transparent }
             50% { border-color: #4ade80; }
@@ -168,11 +172,15 @@
 
             for (let log of logs) {
                 const p = document.createElement('p');
-                p.className = 'mb-1';
+                p.className = 'mb-2 typewriter text-green-400 font-mono text-sm inline-block';
                 p.textContent = '> ' + log;
-                logsContent.appendChild(p);
+                const wrapper = document.createElement('div');
+                wrapper.appendChild(p);
+                logsContent.appendChild(wrapper);
                 logsContainer.scrollTop = logsContainer.scrollHeight;
-                await new Promise(r => setTimeout(r, 400));
+                await new Promise(r => setTimeout(r, 600));
+                // Remove typewriter class after animation finishes to stop cursor blinking on old lines
+                setTimeout(() => p.style.borderRight = 'none', 750);
             }
         }
 

@@ -35,6 +35,15 @@
             to { opacity: 1; transform: translateY(0) scale(1); }
         }
 
+        .channel-enter {
+            animation: slideRight 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+
+        @keyframes slideRight {
+            from { opacity: 0; transform: translateX(-10px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
         .typing-dot {
             animation: typingBounce 1.4s infinite ease-in-out both;
             width: 6px;
@@ -278,17 +287,18 @@
             DOM.onlineCount.textContent = `Online — ${characters.length}`;
             DOM.characterList.innerHTML = '';
 
-            characters.forEach(char => {
+            characters.forEach((char, index) => {
                 const div = document.createElement('div');
-                div.className = 'flex items-center px-2 py-1 rounded hover:bg-discord-light cursor-pointer group mb-[1px]';
+                div.className = 'flex items-center px-2 py-1 rounded hover:bg-discord-light cursor-pointer group mb-[1px] channel-enter opacity-0';
+                div.style.animationDelay = `${index * 0.05}s`;
 
                 div.innerHTML = `
-                    <div class="relative mr-3">
-                        <img src="${char.avatar}" alt="${char.name}" class="w-8 h-8 rounded-full bg-discord-darker object-cover">
-                        <div class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-discord-dark"></div>
+                    <div class="relative mr-3 transform group-hover:scale-105 transition-transform duration-200">
+                        <img src="${char.avatar}" alt="${char.name}" class="w-8 h-8 rounded-full bg-discord-darker object-cover ring-2 ring-transparent group-hover:ring-discord-primary/30 transition-all">
+                        <div class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-discord-dark group-hover:border-discord-light transition-colors"></div>
                     </div>
                     <div class="flex-1 truncate">
-                        <div class="text-[15px] text-discord-text group-hover:text-white truncate" style="color: ${getStringColor(char.name)}">${char.name}</div>
+                        <div class="text-[15px] text-discord-text group-hover:text-white truncate transition-colors" style="color: ${getStringColor(char.name)}">${char.name}</div>
                         <div class="text-[11px] text-discord-muted truncate">${char.archetype}</div>
                     </div>
                 `;
@@ -320,21 +330,21 @@
             const avatar = avatarUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(sender)}&background=random`;
             const color = isBot ? getStringColor(sender) : 'white';
 
-            const botTag = isBot ? `<span class="bg-discord-primary text-white text-[10px] font-bold px-1 rounded ml-1 uppercase leading-tight relative top-[-1px]">Bot</span>` : '';
+            const botTag = isBot ? `<span class="bg-discord-primary text-white text-[10px] font-bold px-1 rounded ml-1 uppercase leading-tight relative top-[-1px] shadow-sm">Bot</span>` : '';
 
             // Highlight mentions
-            let formattedContent = content.replace(/@([a-zA-Z0-9_ ]+)/g, '<span class="bg-indigo-500/30 text-indigo-300 px-1 rounded cursor-pointer hover:bg-indigo-500/50 transition-colors">@$1</span>');
+            let formattedContent = content.replace(/@([a-zA-Z0-9_ ]+)/g, '<span class="bg-indigo-500/30 text-indigo-300 px-1 rounded cursor-pointer hover:bg-indigo-500/50 hover:underline transition-colors">@$1</span>');
 
             // Highlight action text *...*
-            formattedContent = formattedContent.replace(/\*(.*?)\*/g, '<span class="italic text-discord-muted">* $1 *</span>');
+            formattedContent = formattedContent.replace(/\*(.*?)\*/g, '<span class="italic text-discord-muted group-hover:text-discord-muted/80 transition-colors">* $1 *</span>');
 
             div.innerHTML = `
-                <img src="${avatar}" alt="${sender}" class="w-10 h-10 rounded-full bg-discord-darker object-cover mr-4 cursor-pointer mt-0.5">
-                <div class="flex-1">
+                <img src="${avatar}" alt="${sender}" class="w-10 h-10 rounded-full bg-discord-darker object-cover mr-4 cursor-pointer mt-0.5 hover:scale-110 hover:shadow-lg transition-transform duration-300">
+                <div class="flex-1 group-hover:translate-x-1 transition-transform duration-200">
                     <div class="flex items-baseline">
                         <span class="font-medium text-[15px] cursor-pointer hover:underline" style="color: ${color}">${sender}</span>
                         ${botTag}
-                        <span class="text-xs text-discord-muted ml-2">${time}</span>
+                        <span class="text-xs text-discord-muted ml-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">${time}</span>
                     </div>
                     <div class="text-[15px] text-discord-text leading-[1.375rem] whitespace-pre-wrap">${formattedContent}</div>
                 </div>

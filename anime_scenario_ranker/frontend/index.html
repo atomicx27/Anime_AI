@@ -104,7 +104,7 @@
             padding: 10px;
             position: absolute;
             z-index: 50;
-            bottom: 125%;
+            bottom: 135%;
             left: 50%;
             transform: translateX(-50%) translateY(10px);
             opacity: 0;
@@ -133,12 +133,13 @@
 <body class="text-gray-100 h-screen flex flex-col font-sans overflow-hidden">
 
     <!-- Header -->
-    <header class="bg-gray-800 border-b border-gray-700 p-4 shadow-lg z-10 flex items-center justify-between">
+    <header class="bg-gray-800/80 backdrop-blur-md border-b border-gray-700 p-4 shadow-lg z-10 flex items-center justify-between">
         <div class="flex items-center gap-3">
-            <div class="w-10 h-10 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-lg flex items-center justify-center shadow-lg shadow-purple-500/20">
-                <i class="fa-solid fa-ranking-star text-white"></i>
+            <div class="w-10 h-10 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-lg flex items-center justify-center shadow-lg shadow-purple-500/40 relative overflow-hidden group">
+                <div class="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
+                <i class="fa-solid fa-ranking-star text-white relative z-10 group-hover:scale-110 transition-transform"></i>
             </div>
-            <h1 class="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-indigo-400">Anime Scenario Ranker AI</h1>
+            <h1 class="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-indigo-400 tracking-wide">Anime Scenario Ranker AI</h1>
         </div>
     </header>
 
@@ -308,9 +309,12 @@
                                                 <div class="w-6 h-6 rounded-full bg-gray-800 flex items-center justify-center text-xs font-bold text-gray-300">
                                                     ${getInitials(ranking.name)}
                                                 </div>
-                                                <span class="text-sm font-medium text-gray-200">${ranking.name}</span>
+                                                <span class="text-sm font-semibold text-gray-100 tracking-wide">${ranking.name}</span>
                                             </div>
-                                            <span class="tooltip-text">${ranking.reasoning}</span>
+                                            <div class="tooltip-text">
+                                                <div class="font-bold text-purple-400 mb-1 border-b border-gray-700 pb-1">${ranking.name}</div>
+                                                <div class="text-gray-300 leading-relaxed">${ranking.reasoning}</div>
+                                            </div>
                                         </div>
                                     `;
                                     // Append to correct tier row

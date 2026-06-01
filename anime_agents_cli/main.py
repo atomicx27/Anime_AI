@@ -33,10 +33,10 @@ def main():
         table.add_column("Core Emotion", style="green", justify="left")
 
         for idx, char in enumerate(characters):
-            table.add_row(str(idx + 1), char['name'], char['core_emotion'])
+            table.add_row(str(idx + 1), char['name'], char['core_emotion'], char.get('archetype', 'N/A'))
 
         console.print(table)
-        console.print("[bold yellow]0.[/bold yellow] Exit")
+        console.print(Panel("[bold yellow]0.[/bold yellow] Exit", expand=False, border_style="yellow"))
 
         try:
             console.print("\n")
