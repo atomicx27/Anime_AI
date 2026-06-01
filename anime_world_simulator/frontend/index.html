@@ -16,31 +16,26 @@
         .card:hover {
             transform: translateY(-5px);
         }
-        .state-aggressive { border: 2px solid rgba(239, 68, 68, 0.5); box-shadow: 0 0 15px rgba(239, 68, 68, 0.2); }
-        .state-defensive { border: 2px solid rgba(59, 130, 246, 0.5); box-shadow: 0 0 15px rgba(59, 130, 246, 0.2); }
-        .state-diplomatic { border: 2px solid rgba(16, 185, 129, 0.5); box-shadow: 0 0 15px rgba(16, 185, 129, 0.2); }
-        .state-strategic { border: 2px solid rgba(139, 92, 246, 0.5); box-shadow: 0 0 15px rgba(139, 92, 246, 0.2); }
-        .state-chaotic { border: 2px solid rgba(249, 115, 22, 0.5); box-shadow: 0 0 15px rgba(249, 115, 22, 0.2); }
-        .state-protective { border: 2px solid rgba(236, 72, 153, 0.5); box-shadow: 0 0 15px rgba(236, 72, 153, 0.2); }
-        .state-neutral { border: 2px solid rgba(100, 116, 139, 0.5); }
+        .state-aggressive { border: 2px solid #ef4444; box-shadow: 0 0 15px rgba(239, 68, 68, 0.4); }
+        .state-aggressive:hover { box-shadow: 0 0 25px rgba(239, 68, 68, 0.6); transform: scale(1.02); }
 
-        .card:hover.state-aggressive { box-shadow: 0 0 25px rgba(239, 68, 68, 0.5); border-color: rgba(239, 68, 68, 1); }
-        .card:hover.state-defensive { box-shadow: 0 0 25px rgba(59, 130, 246, 0.5); border-color: rgba(59, 130, 246, 1); }
-        .card:hover.state-diplomatic { box-shadow: 0 0 25px rgba(16, 185, 129, 0.5); border-color: rgba(16, 185, 129, 1); }
-        .card:hover.state-strategic { box-shadow: 0 0 25px rgba(139, 92, 246, 0.5); border-color: rgba(139, 92, 246, 1); }
-        .card:hover.state-chaotic { box-shadow: 0 0 25px rgba(249, 115, 22, 0.5); border-color: rgba(249, 115, 22, 1); }
-        .card:hover.state-protective { box-shadow: 0 0 25px rgba(236, 72, 153, 0.5); border-color: rgba(236, 72, 153, 1); }
-        .card:hover.state-neutral { box-shadow: 0 0 25px rgba(100, 116, 139, 0.5); border-color: rgba(100, 116, 139, 1); }
+        .state-defensive { border: 2px solid #3b82f6; box-shadow: 0 0 15px rgba(59, 130, 246, 0.4); }
+        .state-defensive:hover { box-shadow: 0 0 25px rgba(59, 130, 246, 0.6); transform: scale(1.02); }
 
-        .card-enter {
-            animation: slideUpFade 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-            opacity: 0;
-            transform: translateY(20px);
-        }
+        .state-diplomatic { border: 2px solid #10b981; box-shadow: 0 0 15px rgba(16, 185, 129, 0.4); }
+        .state-diplomatic:hover { box-shadow: 0 0 25px rgba(16, 185, 129, 0.6); transform: scale(1.02); }
 
-        @keyframes slideUpFade {
-            to { opacity: 1; transform: translateY(0); }
-        }
+        .state-strategic { border: 2px solid #8b5cf6; box-shadow: 0 0 15px rgba(139, 92, 246, 0.4); }
+        .state-strategic:hover { box-shadow: 0 0 25px rgba(139, 92, 246, 0.6); transform: scale(1.02); }
+
+        .state-chaotic { border: 2px solid #f97316; box-shadow: 0 0 15px rgba(249, 115, 22, 0.4); }
+        .state-chaotic:hover { box-shadow: 0 0 25px rgba(249, 115, 22, 0.6); transform: scale(1.02); }
+
+        .state-protective { border: 2px solid #ec4899; box-shadow: 0 0 15px rgba(236, 72, 153, 0.4); }
+        .state-protective:hover { box-shadow: 0 0 25px rgba(236, 72, 153, 0.6); transform: scale(1.02); }
+
+        .state-neutral { border: 2px solid #64748b; }
+        .state-neutral:hover { box-shadow: 0 0 25px rgba(100, 116, 139, 0.6); transform: scale(1.02); }
 
         .typewriter {
             overflow: hidden;

@@ -34,7 +34,16 @@ class OrchestratorAgent:
         if previous_messages:
             last_msg = previous_messages[-1]
             if last_msg["sender"] != "User":
-                context_reaction = f" Addressing {last_msg['sender']}'s point: "
+                # Check if last sender's traits clash or align
+                last_sender_name = last_msg["sender"]
+                last_sender_archetype = last_msg.get("archetype", "")
+
+                if "Antagonist" in character.get("archetype", "") and "Protagonist" in last_sender_archetype:
+                    context_reaction = f" Rejecting {last_sender_name}'s naive view: "
+                elif "Mentor" in character.get("archetype", ""):
+                    context_reaction = f" Offering wisdom to {last_sender_name}: "
+                else:
+                    context_reaction = f" Addressing {last_sender_name}'s point: "
 
         # Dynamic injection
         dynamic_responses = [

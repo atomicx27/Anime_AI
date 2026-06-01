@@ -72,6 +72,18 @@ class TeamBuilderAgent:
         roles_filled = [member["role"] for member in selected_team]
         logs.append(f"Team selected. Roles filled: {', '.join(roles_filled)}")
 
+        # Calculate Synergy
+        wildcard_count = roles_filled.count("Wildcard")
+        if wildcard_count >= 2:
+            logs.append("Synergy Warning: Too many Wildcards. Deducting 15 points from team cohesion.")
+            for member in selected_team:
+                member["score"] -= 15
+
+        if "Combat Specialist" in roles_filled and "Diplomat / Negotiator" in roles_filled and "Strategist / Tactician" in roles_filled:
+            logs.append("Synergy Bonus: Perfect role balance achieved. Adding 15 points to team aptitude.")
+            for member in selected_team:
+                member["score"] += 15
+
         return {
             "mission": mission,
             "team": selected_team,

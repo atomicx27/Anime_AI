@@ -7,12 +7,19 @@ from rich.panel import Panel
 from rich.table import Table
 from rich.live import Live
 from rich.markdown import Markdown
+from rich.progress import Progress, SpinnerColumn, TextColumn
 
 console = Console()
 
 def main():
     console.print(Panel.fit("[bold cyan]Welcome to Anime Agents CLI![/bold cyan]"))
-    with console.status("[bold green]Loading characters from README.md..."):
+
+    with Progress(
+        SpinnerColumn("dots", style="cyan"),
+        TextColumn("[bold green]Loading characters from README.md...[/bold green]"),
+        transient=True,
+    ) as progress:
+        progress.add_task("loading", start=False)
         characters = parse_readme_characters()
 
     if not characters:
