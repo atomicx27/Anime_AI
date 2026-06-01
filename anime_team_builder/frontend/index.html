@@ -20,12 +20,21 @@
             animation: slideUp 0.5s ease-out forwards;
             opacity: 0;
             transform: translateY(20px);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card-enter:hover {
+            transform: translateY(-5px) !important;
+            box-shadow: 0 10px 25px rgba(168, 85, 247, 0.4);
         }
         @keyframes slideUp {
             to {
                 opacity: 1;
                 transform: translateY(0);
             }
+        }
+        .score-bar {
+            width: 0%;
+            transition: width 1.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .terminal {
             background-color: #000;
@@ -154,12 +163,20 @@
                             <p class="text-sm text-slate-300 italic mb-4">"${member.reasoning}"</p>
                             <div class="mt-auto">
                                 <div class="w-full bg-slate-700 rounded-full h-2.5">
-                                  <div class="bg-gradient-to-r from-purple-500 to-pink-500 h-2.5 rounded-full" style="width: ${Math.min(100, Math.max(10, member.score))}%"></div>
+                                  <div class="bg-gradient-to-r from-purple-500 to-pink-500 h-2.5 rounded-full score-bar" id="score-bar-${index}"></div>
                                 </div>
                                 <div class="text-xs text-right mt-1 text-slate-500">Aptitude Score: ${member.score}</div>
                             </div>
                         `;
                         teamGrid.appendChild(card);
+
+                        // Trigger transition after appending
+                        setTimeout(() => {
+                            const bar = document.getElementById(`score-bar-${index}`);
+                            if (bar) {
+                                bar.style.width = `${Math.min(100, Math.max(10, member.score))}%`;
+                            }
+                        }, 50);
                     });
                 }, data.logs.length * 300 + 500);
 

@@ -1,9 +1,12 @@
 import sys
+import time
 from parser import parse_readme_characters
 from agent import AnimeAgent
 from rich.console import Console
 from rich.panel import Panel
 from rich.table import Table
+from rich.live import Live
+from rich.markdown import Markdown
 
 console = Console()
 
@@ -54,7 +57,14 @@ def main():
 
                     with console.status(f"[bold cyan]{agent.name} is thinking...[/bold cyan]"):
                         response = agent.chat(user_msg)
-                    console.print(f"\n[bold magenta]{response}[/bold magenta]")
+
+                    console.print()
+                    with Live(console=console, refresh_per_second=30) as live:
+                        displayed_response = ""
+                        for char in response:
+                            displayed_response += char
+                            live.update(Markdown(f"**{agent.name}:** {displayed_response}"))
+                            time.sleep(0.01)
             else:
                 console.print("[bold red]Invalid selection. Please try again.[/bold red]")
         except ValueError:
