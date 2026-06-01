@@ -6,133 +6,277 @@
     <title>Anime Power Scaler AI</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .fade-in {
-            animation: fadeIn 0.5s ease-out forwards;
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@400;600;700&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0f172a; /* slate-900 */
+            color: #f8fafc; /* slate-50 */
         }
 
-        .tier-Overkill { border-color: #ef4444; background: rgba(239, 68, 68, 0.1); }
-        .tier-Even-Match { border-color: #eab308; background: rgba(234, 179, 8, 0.1); }
-        .tier-Underdog { border-color: #3b82f6; background: rgba(59, 130, 246, 0.1); }
-        .tier-Support { border-color: #10b981; background: rgba(16, 185, 129, 0.1); }
+        .terminal {
+            font-family: 'Fira Code', monospace;
+            background-color: #1e293b; /* slate-800 */
+            border: 1px solid #334155; /* slate-700 */
+        }
+
+        .log-entry {
+            opacity: 0;
+            animation: fadeIn 0.5s forwards;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .typing-cursor::after {
+            content: '▋';
+            animation: blink 1s step-start infinite;
+        }
+
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
     </style>
 </head>
-<body class="bg-gray-900 text-gray-100 min-h-screen font-sans antialiased">
+<body class="min-h-screen flex flex-col items-center p-6 bg-gradient-to-b from-slate-900 to-slate-800">
 
-    <div class="container mx-auto px-4 py-12 max-w-5xl">
-        <header class="text-center mb-12">
-            <h1 class="text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-yellow-500 mb-4">
-                Anime Power Scaler AI
-            </h1>
-            <p class="text-xl text-gray-400">Evaluate the anime roster against any threat or opponent.</p>
-        </header>
+    <header class="w-full max-w-5xl mb-8 text-center">
+        <h1 class="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-orange-500 mb-2">Anime Power Scaler AI</h1>
+        <p class="text-slate-400 text-lg">Simulate dynamic 1v1 battles between legends based on their core traits and philosophies.</p>
+    </header>
 
-        <div class="bg-gray-800 rounded-xl p-8 shadow-2xl mb-12 border border-gray-700">
-            <h2 class="text-2xl font-bold mb-6">Describe the Opponent / Threat</h2>
-            <form id="scaleForm" class="space-y-4">
-                <div>
-                    <input type="text" id="opponentInput" required
-                        class="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-3 text-lg focus:outline-none focus:ring-2 focus:ring-red-500 transition-all placeholder-gray-500"
-                        placeholder="e.g. A God of Destruction, A ninja army, A political mastermind...">
+    <main class="w-full max-w-5xl flex flex-col lg:flex-row gap-6 flex-grow">
+
+        <!-- Sidebar: Setup Battle -->
+        <aside class="w-full lg:w-1/3 glass-panel rounded-xl p-6 h-fit shadow-xl">
+            <h2 class="text-xl font-semibold mb-4 text-orange-400 border-b border-slate-700 pb-2">Setup Match</h2>
+
+            <div class="mb-4">
+                <label class="block text-sm font-medium text-slate-300 mb-1" for="char1-select">Fighter 1</label>
+                <select id="char1-select" class="w-full bg-slate-800 border border-slate-600 text-white rounded-md py-2 px-3 focus:outline-none focus:ring-2 focus:ring-orange-500">
+                    <option value="">Select Character...</option>
+                </select>
+            </div>
+
+            <div class="flex justify-center my-4">
+                <span class="text-2xl font-bold text-red-500">VS</span>
+            </div>
+
+            <div class="mb-6">
+                <label class="block text-sm font-medium text-slate-300 mb-1" for="char2-select">Fighter 2</label>
+                <select id="char2-select" class="w-full bg-slate-800 border border-slate-600 text-white rounded-md py-2 px-3 focus:outline-none focus:ring-2 focus:ring-orange-500">
+                    <option value="">Select Character...</option>
+                </select>
+            </div>
+
+            <div class="mb-6">
+                <label class="block text-sm font-medium text-slate-300 mb-1" for="context-input">Battle Context / Arena</label>
+                <input type="text" id="context-input" value="Final Valley" class="w-full bg-slate-800 border border-slate-600 text-white rounded-md py-2 px-3 focus:outline-none focus:ring-2 focus:ring-orange-500 placeholder-slate-500">
+            </div>
+
+            <button id="simulate-btn" class="w-full bg-gradient-to-r from-red-600 to-orange-600 hover:from-red-500 hover:to-orange-500 text-white font-bold py-3 px-4 rounded-md transition-all shadow-lg hover:shadow-orange-500/30">
+                Simulate Battle
+            </button>
+        </aside>
+
+        <!-- Main Content: Terminal & Results -->
+        <section class="w-full lg:w-2/3 flex flex-col gap-6">
+
+            <!-- Terminal -->
+            <div class="terminal rounded-xl p-4 h-80 overflow-y-auto shadow-inner flex flex-col relative">
+                <div class="flex items-center gap-2 mb-4 border-b border-slate-700 pb-2">
+                    <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                    <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                    <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                    <span class="text-xs text-slate-400 ml-2">Agent Terminal // Power_Scaler.exe</span>
                 </div>
-                <button type="submit" id="submitBtn"
-                    class="w-full bg-gradient-to-r from-red-600 to-yellow-600 hover:from-red-500 hover:to-yellow-500 text-white font-bold py-3 px-6 rounded-lg transition-all transform hover:scale-[1.02] shadow-lg">
-                    Initialize Power Scaling
-                </button>
-            </form>
-        </div>
 
-        <div id="loadingIndicator" class="hidden text-center py-12">
-            <div class="inline-block animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-red-500"></div>
-            <p class="mt-4 text-gray-400 text-lg">Agent evaluating combat scenarios...</p>
-        </div>
-
-        <div id="resultsContainer" class="hidden">
-            <div class="flex items-center justify-between mb-6">
-                <h2 class="text-3xl font-bold">Scaling Results</h2>
-                <div class="text-sm text-gray-400">Opponent: <span id="displayOpponent" class="text-white font-semibold"></span></div>
+                <div id="terminal-content" class="text-sm text-green-400 flex-grow whitespace-pre-wrap font-mono">
+                    <span class="text-slate-500">Awaiting input...</span>
+                </div>
             </div>
 
-            <div id="cardsGrid" class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Cards will be dynamically inserted here -->
+            <!-- Results Card -->
+            <div id="results-card" class="glass-panel rounded-xl p-6 shadow-xl hidden relative overflow-hidden">
+                <!-- Decorative background elements -->
+                <div class="absolute -top-10 -right-10 w-32 h-32 bg-orange-500 rounded-full opacity-10 blur-2xl"></div>
+                <div class="absolute -bottom-10 -left-10 w-32 h-32 bg-red-500 rounded-full opacity-10 blur-2xl"></div>
+
+                <h3 class="text-2xl font-bold text-center mb-6 border-b border-slate-700 pb-2 text-white">Battle Result</h3>
+
+                <div class="flex flex-col md:flex-row items-center justify-center gap-8 mb-6">
+                    <div class="text-center w-full md:w-2/5">
+                        <div id="res-char1-name" class="text-xl font-bold text-slate-200">Char 1</div>
+                        <div id="res-char1-trait" class="text-xs text-slate-400 mt-1">Trait</div>
+                    </div>
+
+                    <div class="w-full md:w-1/5 text-center">
+                        <div id="winner-badge" class="inline-block px-4 py-2 bg-gradient-to-r from-yellow-600 to-yellow-400 text-white font-bold rounded-full shadow-lg transform scale-110">
+                            WINNER
+                        </div>
+                    </div>
+
+                    <div class="text-center w-full md:w-2/5">
+                        <div id="res-char2-name" class="text-xl font-bold text-slate-200">Char 2</div>
+                        <div id="res-char2-trait" class="text-xs text-slate-400 mt-1">Trait</div>
+                    </div>
+                </div>
+
+                <div class="bg-slate-800/50 border border-slate-700 rounded-lg p-4">
+                    <h4 class="text-sm font-semibold text-orange-400 mb-2 uppercase tracking-wide">Post-Match Summary</h4>
+                    <p id="match-summary" class="text-slate-300 italic text-sm leading-relaxed"></p>
+                </div>
             </div>
-        </div>
-    </div>
+
+        </section>
+    </main>
 
     <script>
-        document.getElementById('scaleForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const opponent = document.getElementById('opponentInput').value;
-            const btn = document.getElementById('submitBtn');
-            const loading = document.getElementById('loadingIndicator');
-            const resultsContainer = document.getElementById('resultsContainer');
-            const cardsGrid = document.getElementById('cardsGrid');
-            const displayOpponent = document.getElementById('displayOpponent');
+        const char1Select = document.getElementById('char1-select');
+        const char2Select = document.getElementById('char2-select');
+        const contextInput = document.getElementById('context-input');
+        const simulateBtn = document.getElementById('simulate-btn');
+        const terminalContent = document.getElementById('terminal-content');
+        const resultsCard = document.getElementById('results-card');
 
-            // UI State updates
-            btn.disabled = true;
-            btn.classList.add('opacity-50');
-            resultsContainer.classList.add('hidden');
-            loading.classList.remove('hidden');
-            cardsGrid.innerHTML = '';
+        let charactersData = [];
+
+        // Load characters
+        async function loadCharacters() {
+            try {
+                const response = await fetch('/api/characters');
+                const data = await response.json();
+                charactersData = data.characters;
+
+                charactersData.forEach(char => {
+                    const opt1 = document.createElement('option');
+                    opt1.value = char.name;
+                    opt1.textContent = char.name;
+                    char1Select.appendChild(opt1);
+
+                    const opt2 = document.createElement('option');
+                    opt2.value = char.name;
+                    opt2.textContent = char.name;
+                    char2Select.appendChild(opt2);
+                });
+            } catch (error) {
+                console.error("Failed to load characters", error);
+                terminalContent.innerHTML = `<span class="text-red-500">Error: Could not connect to backend API to load characters.</span>`;
+            }
+        }
+
+        function typeLine(text, delay, isLast = false) {
+            return new Promise(resolve => {
+                setTimeout(() => {
+                    const line = document.createElement('div');
+                    line.className = 'log-entry mb-1';
+                    if (text.includes('Error') || text.includes('failed')) {
+                        line.classList.add('text-red-400');
+                    } else if (text.includes('Winner') || text.includes('wins!')) {
+                        line.classList.add('text-yellow-400', 'font-bold');
+                    } else if (text.startsWith('>')) {
+                         line.classList.add('text-blue-400');
+                    }
+
+                    line.innerHTML = `> ${text}`;
+                    terminalContent.appendChild(line);
+
+                    // Auto scroll to bottom
+                    terminalContent.parentElement.scrollTop = terminalContent.parentElement.scrollHeight;
+                    resolve();
+                }, delay);
+            });
+        }
+
+        async function handleSimulation() {
+            const char1 = char1Select.value;
+            const char2 = char2Select.value;
+            const context = contextInput.value || "Neutral Arena";
+
+            if (!char1 || !char2) {
+                alert("Please select two fighters.");
+                return;
+            }
+
+            if (char1 === char2) {
+                alert("Please select different characters for a battle.");
+                return;
+            }
+
+            // Reset UI
+            resultsCard.classList.add('hidden');
+            terminalContent.innerHTML = '';
+            simulateBtn.disabled = true;
+            simulateBtn.classList.add('opacity-50', 'cursor-not-allowed');
 
             try {
-                const response = await fetch('/api/scale', {
+                const initMsg = document.createElement('div');
+                initMsg.className = 'text-blue-400 mb-2 typing-cursor';
+                initMsg.textContent = 'Initializing Simulation Protocol...';
+                terminalContent.appendChild(initMsg);
+
+                const response = await fetch('/api/battle', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ opponent: opponent })
+                    body: JSON.stringify({ char1, char2, context })
                 });
 
-                if (!response.ok) throw new Error('API Error');
+                if (!response.ok) {
+                    throw new Error("Server returned " + response.status);
+                }
 
                 const data = await response.json();
 
-                loading.classList.add('hidden');
-                resultsContainer.classList.remove('hidden');
-                displayOpponent.textContent = data.opponent;
+                // Remove init message
+                initMsg.remove();
 
-                data.results.forEach((result, index) => {
-                    const safeTierClass = result.tier.split(' ')[0]; // Handle "Support / Outmatched"
-                    const card = document.createElement('div');
-                    card.className = `p-6 rounded-xl border-l-4 tier-${safeTierClass} bg-gray-800/80 backdrop-blur-sm shadow-xl fade-in`;
-                    card.style.animationDelay = `${index * 0.1}s`;
-                    card.style.opacity = '0';
+                // Play animation logs
+                for (let i = 0; i < data.logs.length; i++) {
+                    await typeLine(data.logs[i], 800 + Math.random() * 500); // Random delay for realism
+                }
 
-                    let tierColor = 'text-gray-400';
-                    if (safeTierClass === 'Overkill') tierColor = 'text-red-400';
-                    else if (safeTierClass === 'Even') tierColor = 'text-yellow-400';
-                    else if (safeTierClass === 'Underdog') tierColor = 'text-blue-400';
-                    else tierColor = 'text-green-400';
+                await typeLine(`SIMULATION COMPLETE. Analyzing results...`, 1000);
 
-                    card.innerHTML = `
-                        <div class="flex justify-between items-start mb-4">
-                            <h3 class="text-2xl font-bold text-white">${result.name}</h3>
-                            <span class="px-3 py-1 rounded-full bg-gray-900 border border-gray-700 text-sm font-bold ${tierColor}">
-                                ${result.tier}
-                            </span>
-                        </div>
-                        <p class="text-sm text-gray-400 mb-4 pb-4 border-b border-gray-700">
-                            <strong>Core:</strong> ${result.core_emotion}
-                        </p>
-                        <p class="text-gray-200 leading-relaxed">
-                            ${result.strategy}
-                        </p>
-                    `;
-                    cardsGrid.appendChild(card);
-                });
+                // Show Results Card
+                document.getElementById('res-char1-name').textContent = data.char1.name;
+                document.getElementById('res-char1-trait').textContent = data.char1.archetype;
+
+                document.getElementById('res-char2-name').textContent = data.char2.name;
+                document.getElementById('res-char2-trait').textContent = data.char2.archetype;
+
+                const winnerBadge = document.getElementById('winner-badge');
+                if (data.winner === "Draw") {
+                    winnerBadge.textContent = "DRAW";
+                    winnerBadge.className = "inline-block px-4 py-2 bg-gradient-to-r from-slate-600 to-slate-400 text-white font-bold rounded-full shadow-lg transform scale-110";
+                } else {
+                    winnerBadge.textContent = data.winner + " WINS";
+                    winnerBadge.className = "inline-block px-4 py-2 bg-gradient-to-r from-yellow-600 to-yellow-400 text-white font-bold rounded-full shadow-lg transform scale-110 text-xs sm:text-sm";
+                }
+
+                document.getElementById('match-summary').textContent = data.summary;
+
+                resultsCard.classList.remove('hidden');
 
             } catch (error) {
-                console.error("Failed to fetch scaling results:", error);
-                alert("An error occurred while scaling. Make sure the backend is running.");
+                console.error("Simulation error", error);
+                await typeLine(`FATAL ERROR: ${error.message}`, 100);
             } finally {
-                btn.disabled = false;
-                btn.classList.remove('opacity-50');
-                loading.classList.add('hidden');
+                simulateBtn.disabled = false;
+                simulateBtn.classList.remove('opacity-50', 'cursor-not-allowed');
             }
-        });
+        }
+
+        simulateBtn.addEventListener('click', handleSimulation);
+
+        // Init
+        loadCharacters();
     </script>
 </body>
 </html>

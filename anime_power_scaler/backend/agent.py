@@ -1,70 +1,80 @@
+import random
+
 class PowerScalerAgent:
     def __init__(self, characters):
-        self.characters = characters
+        self.characters = {c['name']: c for c in characters}
 
-    def scale_character(self, character, opponent):
-        opponent_lower = opponent.lower()
-        core_emotion = character["core_emotion"].lower()
-        personality = character["personality_profile"].lower()
-        quality = character["unique_quality"].lower()
+    def simulate_battle(self, char1_name, char2_name, context="Neutral Arena"):
+        if char1_name not in self.characters or char2_name not in self.characters:
+            return {"error": "One or both characters not found."}
 
-        # Simple keyword matching heuristic
-        score = 0
-        if any(w in opponent_lower for w in ["god", "universe", "alien", "demon", "king"]):
-            if "combat" in core_emotion or "limitless" in quality or "overwhelming" in quality:
-                score += 3
-            if "defiance" in core_emotion or "grit" in quality:
-                score += 2
-        if any(w in opponent_lower for w in ["ninja", "magic", "sword", "army", "villain"]):
-            if "protect" in core_emotion or "strategic" in personality or "genjutsu" in quality:
-                score += 2
-            if "passion" in core_emotion or "combat" in core_emotion:
-                score += 1
-        if any(w in opponent_lower for w in ["peace", "diplomat", "talk", "political"]):
-            if "diplomatic" in personality or "empathy" in core_emotion:
-                score += 3
-            if "arrogance" in core_emotion or "despair" in core_emotion:
-                score -= 1
+        char1 = self.characters[char1_name]
+        char2 = self.characters[char2_name]
 
-        # Base power check
-        if "protagonist" in character["archetype"].lower() or "antagonist" in character["archetype"].lower():
-            score += 1
+        # Analyze traits to determine scores
+        def analyze_combat_potential(char):
+            score = 50
+            emotion = char['core_emotion'].lower()
+            personality = char['personality_profile'].lower()
+            quality = char['unique_quality'].lower()
+            archetype = char['archetype'].lower()
 
-        if score >= 4:
-            tier = "Overkill"
-            strategy = f"Easily dominates using their {character['core_emotion']}. {character['unique_quality']}"
-        elif score >= 2:
-            tier = "Even Match"
-            strategy = f"Fights on equal footing. Will need to rely on their {character['personality_profile'].split('.')[0].lower()} to find an edge."
-        elif score >= 1:
-            tier = "Underdog"
-            strategy = f"Struggles significantly, but their {character['core_emotion']} gives them a slight chance of a miracle."
+            if any(word in emotion or word in personality for word in ["combat", "battle", "power", "arrogance", "pride", "domination"]):
+                score += 20
+            if "protagonist" in archetype:
+                score += 10
+            if "antagonist" in archetype:
+                score += 15
+            if any(word in quality for word in ["limitless", "overwhelming", "mastery", "adaptability"]):
+                score += 25
+            if any(word in emotion or word in personality for word in ["empathy", "peace", "comfort"]):
+                score -= 10
+
+            return score
+
+        score1 = analyze_combat_potential(char1)
+        score2 = analyze_combat_potential(char2)
+
+        # Introduce some randomness for dynamic battles
+        score1 += random.randint(-10, 15)
+        score2 += random.randint(-10, 15)
+
+        winner = char1 if score1 >= score2 else char2
+        loser = char2 if score1 >= score2 else char1
+
+        logs = []
+        logs.append(f"Power Scaler AI initialized.")
+        logs.append(f"Matchup: {char1['name']} vs {char2['name']} in {context}.")
+        logs.append(f"Analyzing {char1['name']}: Core Emotion - {char1['core_emotion']}.")
+        logs.append(f"Analyzing {char2['name']}: Core Emotion - {char2['core_emotion']}.")
+
+        # Determine battle narrative based on traits
+        logs.append(f"The battle begins! {char1['name']} approaches with their {char1['personality_profile'].split('.')[0].lower()}.")
+        logs.append(f"In response, {char2['name']} leverages their {char2['personality_profile'].split('.')[0].lower()}.")
+
+        # Mid battle clash
+        logs.append(f"A massive clash of ideals! {char1['name']} uses '{char1['unique_quality'].split('.')[0]}' against {char2['name']}'s '{char2['unique_quality'].split('.')[0]}'.")
+
+        if score1 == score2:
+            winner = None
+            logs.append(f"The battle ends in a draw! Both characters counter each other perfectly.")
+            summary = f"An absolute stalemate between {char1['name']} and {char2['name']}. Neither could overcome the other's unique qualities."
         else:
-            tier = "Support / Outmatched"
-            strategy = f"Cannot win directly. Should focus on supporting allies using their unique philosophy: {character['unique_quality'].split('.')[0]}."
+            logs.append(f"{winner['name']}'s '{winner['unique_quality'].split('.')[0]}' proves too effective.")
+            logs.append(f"{loser['name']} is overwhelmed by {winner['name']}'s {winner['core_emotion']}.")
+            summary = f"{winner['name']} wins! Their {winner['core_emotion']} and unique approach '{winner['unique_quality'].split('.')[0]}' outmatched {loser['name']}'s capabilities in this scenario."
 
         return {
-            "name": character["name"],
-            "tier": tier,
-            "strategy": strategy,
-            "core_emotion": character["core_emotion"]
+            "char1": char1,
+            "char2": char2,
+            "winner": winner['name'] if winner else "Draw",
+            "logs": logs,
+            "summary": summary
         }
-
-    def evaluate_opponent(self, opponent):
-        results = []
-        for char in self.characters:
-            results.append(self.scale_character(char, opponent))
-
-        # Sort by tier: Overkill > Even Match > Underdog > Support
-        tier_order = {"Overkill": 0, "Even Match": 1, "Underdog": 2, "Support / Outmatched": 3}
-        results.sort(key=lambda x: tier_order.get(x["tier"], 4))
-
-        return results
 
 if __name__ == "__main__":
     from parser import parse_readme_characters
     chars = parse_readme_characters()
     agent = PowerScalerAgent(chars)
-    res = agent.evaluate_opponent("A Demon Lord with overwhelming magic")
-    for r in res[:3]:
-        print(f"[{r['tier']}] {r['name']}: {r['strategy']}")
+    res = agent.simulate_battle("Naruto Uzumaki", "Son Goku")
+    print(res)
