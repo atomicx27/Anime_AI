@@ -132,9 +132,9 @@ function App() {
               <AnimatePresence>
                 {messages.map((msg, index) => (
                   <motion.div
-                    initial={{ opacity: 0, y: 15, scale: 0.95 }}
+                    initial={{ opacity: 0, y: 20, scale: 0.9 }}
                     animate={{ opacity: 1, y: 0, scale: 1 }}
-                    transition={{ duration: 0.3, type: "spring", stiffness: 200, damping: 20 }}
+                    transition={{ duration: 0.4, type: "spring", stiffness: 250, damping: 25 }}
                     key={index}
                     className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
                   >
@@ -197,8 +197,9 @@ function App() {
               </AnimatePresence>
               {loading && (
                 <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
+                  initial={{ opacity: 0, y: 15, scale: 0.95 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  transition={{ duration: 0.3, type: "spring" }}
                   className="flex justify-start gap-3 max-w-[85%]"
                 >
                   <div className="w-8 h-8 rounded-full bg-cyan-600 flex items-center justify-center shrink-0 mt-1 shadow-sm">
