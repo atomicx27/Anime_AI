@@ -203,6 +203,7 @@ The **Anime Affinity Matcher AI** is a web-based, agentic application that acts 
 #### How to Run
 ```bash
 # Install dependencies
+cd anime_power_scaler/backend
 cd anime_affinity_matcher/backend
 pip install -r requirements.txt
 
@@ -210,5 +211,6 @@ pip install -r requirements.txt
 python3 main.py
 
 # Access the UI
+# Open your browser and navigate to http://localhost:8006/
 # Open your browser and navigate to the frontend index.html file, or use a local HTTP server in the frontend directory.
 ```
