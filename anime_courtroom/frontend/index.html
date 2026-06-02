@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anime Courtroom AI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="static/style.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        darkBase: '#0b0f19',
+                        panelBg: 'rgba(20, 25, 40, 0.6)',
+                        accentRed: '#ff4d4d',
+                        accentBlue: '#4d94ff',
+                        accentGold: '#ffcc00'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-darkBase text-gray-200 min-h-screen overflow-x-hidden font-sans radial-bg">
+    <!-- Navbar -->
+    <nav class="glass-nav sticky top-0 z-50 px-6 py-4 flex items-center justify-between shadow-glow">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-accentGold to-accentRed flex items-center justify-center text-xl font-bold shadow-glow-small">
+                ⚖️
+            </div>
+            <h1 class="text-2xl font-extrabold tracking-wider bg-clip-text text-transparent bg-gradient-to-r from-gray-100 to-gray-400">
+                Anime Courtroom <span class="text-accentGold">AI</span>
+            </h1>
+        </div>
+    </nav>
+
+    <main class="container mx-auto px-4 py-10 max-w-5xl">
+        <!-- Input Section -->
+        <section class="glass-panel rounded-2xl p-8 mb-10 slide-up">
+            <h2 class="text-xl font-bold mb-4 text-accentBlue">Submit Your Case</h2>
+            <p class="text-sm text-gray-400 mb-6">Describe a scenario, crime, or moral dilemma. The AI will assemble a court of anime characters to judge it.</p>
+
+            <div class="flex flex-col md:flex-row gap-4">
+                <textarea id="case-input" rows="3" class="w-full bg-gray-900/50 border border-gray-700 rounded-xl p-4 text-gray-100 placeholder-gray-500 focus:outline-none focus:border-accentBlue focus:ring-1 focus:ring-accentBlue transition-all resize-none" placeholder="e.g., Someone stole the last slice of pizza from the communal fridge..."></textarea>
+                <button id="submit-case-btn" class="bg-gradient-to-r from-accentBlue to-indigo-600 hover:from-indigo-500 hover:to-accentBlue text-white font-bold py-4 px-8 rounded-xl shadow-glow-blue transition-all transform hover:scale-105 h-fit self-end">
+                    Convene Court
+                </button>
+            </div>
+            <div id="loading-spinner" class="hidden mt-4 text-accentGold animate-pulse font-semibold">Summoning characters...</div>
+        </section>
+
+        <!-- Courtroom Results (Hidden initially) -->
+        <section id="courtroom-container" class="hidden">
+
+            <!-- Roles Header -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10 fade-in">
+                <!-- Judge -->
+                <div class="glass-panel rounded-xl p-6 border-t-4 border-accentGold flex flex-col items-center text-center shadow-glow-gold hover-lift">
+                    <div class="text-xs font-bold text-accentGold uppercase tracking-widest mb-2">The Judge</div>
+                    <div id="judge-name" class="text-xl font-bold text-white mb-1">...</div>
+                    <div id="judge-trait" class="text-xs text-gray-400 italic">...</div>
+                </div>
+
+                <!-- Prosecutor -->
+                <div class="glass-panel rounded-xl p-6 border-t-4 border-accentRed flex flex-col items-center text-center shadow-glow-red hover-lift">
+                    <div class="text-xs font-bold text-accentRed uppercase tracking-widest mb-2">Prosecution</div>
+                    <div id="pros-name" class="text-xl font-bold text-white mb-1">...</div>
+                    <div id="pros-trait" class="text-xs text-gray-400 italic">...</div>
+                </div>
+
+                <!-- Defense -->
+                <div class="glass-panel rounded-xl p-6 border-t-4 border-accentBlue flex flex-col items-center text-center shadow-glow-blue hover-lift">
+                    <div class="text-xs font-bold text-accentBlue uppercase tracking-widest mb-2">Defense</div>
+                    <div id="def-name" class="text-xl font-bold text-white mb-1">...</div>
+                    <div id="def-trait" class="text-xs text-gray-400 italic">...</div>
+                </div>
+            </div>
+
+            <!-- Trial Transcript -->
+            <div class="glass-panel rounded-2xl p-8 mb-10 fade-in delay-100">
+                <div class="flex items-center justify-between border-b border-gray-700/50 pb-4 mb-6">
+                    <h2 class="text-xl font-bold flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
+                        Live Transcript
+                    </h2>
+                    <span id="case-title" class="text-sm font-semibold text-gray-400 truncate max-w-xs">Case: ...</span>
+                </div>
+
+                <div id="transcript-log" class="space-y-6 max-h-[500px] overflow-y-auto pr-2 custom-scrollbar">
+                    <!-- Statements injected here via JS -->
+                </div>
+            </div>
+
+            <!-- Jury Panel -->
+            <div class="glass-panel rounded-2xl p-6 fade-in delay-200">
+                <h3 class="text-sm font-bold text-gray-400 uppercase tracking-widest mb-4">The Jury Panel</h3>
+                <div id="jury-container" class="flex flex-wrap gap-3">
+                    <!-- Jury badges injected here -->
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="static/app.js"></script>
+</body>
+</html>
