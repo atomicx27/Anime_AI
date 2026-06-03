@@ -233,3 +233,28 @@ python3 main.py
 # Open your browser and navigate to http://localhost:8006/
 # Open your browser and navigate to the frontend index.html file, or use a local HTTP server in the frontend directory.
 ```
+### 8. Anime Courtroom AI
+
+The **Anime Courtroom AI** is a web-based, multi-agent application that simulates a trial where anime characters take on the roles of Judge, Prosecutor, Defense Attorney, and Jury. It dynamically evaluates their "Core Emotion", "Personality Profile", and "Unique Quality & Philosophy" to determine the verdict of a user-submitted case.
+
+#### Folder Location
+`anime_courtroom/`
+
+#### Features
+- **Dynamic Role Assignment**: Agents analyze character traits to assign suitable courtroom roles (e.g., logical characters as Judges, protective characters as Defense).
+- **Agentic Trial Simulation**: Generates in-character opening statements, jury deliberation thoughts, and a final verdict based on the characters' worldviews.
+- **Sleek, Animated UI**: A modern, dark-themed interface built with Tailwind CSS featuring an animated trial transcript and distinct role cards with glassmorphism effects.
+- **Dynamic Character Loading**: Backend API automatically parses the root `README.md` to load character details.
+
+#### How to Run
+```bash
+# Install dependencies
+cd anime_courtroom/backend
+pip install -r requirements.txt
+
+# Run the server
+python3 main.py
+
+# Access the UI
+# Open your browser and navigate to http://localhost:8007/
+```
