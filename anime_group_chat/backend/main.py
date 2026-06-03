@@ -1,3 +1,4 @@
+from contextlib import asynccontextmanager
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
@@ -13,23 +14,12 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 from parser import parse_readme_characters
 from agent import OrchestratorAgent
 
-app = FastAPI(title="Anime Group Chat API")
-
-# Setup CORS
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
 # Global variables
 CHARACTERS = []
 ORCHESTRATOR = None
 
-@app.on_event("startup")
-def startup_event():
+@asynccontextmanager
+async def lifespan(app: FastAPI):
     global CHARACTERS, ORCHESTRATOR
 
     # Try multiple possible paths for README.md
@@ -55,6 +45,18 @@ def startup_event():
         print("Warning: Could not load characters from README.md")
 
     ORCHESTRATOR = OrchestratorAgent(CHARACTERS)
+    yield
+
+app = FastAPI(title="Anime Group Chat API", lifespan=lifespan)
+
+# Setup CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 class ChatRequest(BaseModel):
     message: str

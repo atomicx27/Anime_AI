@@ -72,6 +72,11 @@
             transition: background-color 0.3s ease, box-shadow 0.3s ease;
         }
 
+        .tier-row:hover {
+            box-shadow: 0 0 15px rgba(167, 139, 250, 0.6);
+            background-color: rgba(31, 41, 55, 0.6);
+        }
+
         .tier-row.active-tier {
             background-color: rgba(31, 41, 55, 0.8);
             box-shadow: 0 0 15px rgba(167, 139, 250, 0.2) inset;
@@ -133,7 +138,7 @@
 <body class="text-gray-100 h-screen flex flex-col font-sans overflow-hidden">
 
     <!-- Header -->
-    <header class="bg-gray-800/80 backdrop-blur-md border-b border-gray-700 p-4 shadow-lg z-10 flex items-center justify-between">
+    <header class="bg-gray-800/60 backdrop-blur-xl border-b border-gray-700 p-4 shadow-lg z-10 flex items-center justify-between">
         <div class="flex items-center gap-3">
             <div class="w-10 h-10 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-lg flex items-center justify-center shadow-lg shadow-purple-500/40 relative overflow-hidden group">
                 <div class="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
