@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anime Detective Agency AI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=JetBrains+Mono:wght@400;700&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: radial-gradient(circle at top right, #1e1e2f, #0b0c10);
+            color: #c5c6c7;
+            min-height: 100vh;
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        .glass-panel {
+            background: rgba(30, 30, 46, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+
+        .terminal-text {
+            font-family: 'JetBrains Mono', monospace;
+            color: #66c2ff;
+            text-shadow: 0 0 5px rgba(102, 194, 255, 0.5);
+        }
+
+        .btn-glow:hover {
+            box-shadow: 0 0 15px #45a29e, 0 0 30px #45a29e;
+            transform: translateY(-2px);
+            transition: all 0.3s ease;
+        }
+
+        .card-glow:hover {
+            box-shadow: 0 0 20px rgba(69, 162, 158, 0.4);
+            transform: translateY(-5px);
+            transition: all 0.3s ease;
+            border-color: rgba(69, 162, 158, 0.6);
+        }
+
+        .role-badge {
+            background: linear-gradient(135deg, #45a29e 0%, #1f2833 100%);
+            color: #fff;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 8px;
+            box-shadow: 0 0 10px rgba(69, 162, 158, 0.4);
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-in forwards;
+            opacity: 0;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.2);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #45a29e;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #66fcf1;
+        }
+    </style>
+</head>
+<body class="p-6 md:p-12">
+
+    <div class="max-w-7xl mx-auto space-y-8">
+
+        <!-- Header -->
+        <header class="text-center space-y-4">
+            <h1 class="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#66fcf1] to-[#45a29e]">
+                Anime Detective Agency AI
+            </h1>
+            <p class="text-lg text-gray-400 max-w-2xl mx-auto">
+                Submit a mystery and our AI agent will orchestrate a team of legendary anime characters,
+                assigning them specialized investigation roles based on their core traits and philosophies.
+            </p>
+        </header>
+
+        <!-- Main Layout -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+            <!-- Left Column: Input Form & Terminal -->
+            <div class="lg:col-span-1 space-y-6">
+
+                <!-- Input Form -->
+                <div class="glass-panel rounded-2xl p-6">
+                    <h2 class="text-2xl font-semibold mb-4 text-white">File a Case</h2>
+                    <textarea id="mysteryInput" rows="5"
+                        class="w-full bg-[#0b0c10] text-[#c5c6c7] rounded-lg p-4 border border-gray-700 focus:outline-none focus:border-[#45a29e] focus:ring-1 focus:ring-[#45a29e] transition-colors resize-none"
+                        placeholder="Describe the mystery (e.g., 'The Hokage monument was painted in the middle of the night, but no guards saw anyone...')"
+                    ></textarea>
+                    <button id="investigateBtn" onclick="submitMystery()"
+                        class="w-full mt-4 bg-[#45a29e] text-[#0b0c10] font-bold py-3 px-6 rounded-lg btn-glow transition-all">
+                        Initiate Investigation
+                    </button>
+                </div>
+
+                <!-- Terminal Log -->
+                <div class="glass-panel rounded-2xl p-6 h-[400px] flex flex-col">
+                    <div class="flex items-center mb-4 space-x-2 border-b border-gray-700 pb-2">
+                        <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                        <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                        <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                        <span class="ml-2 text-sm text-gray-400 font-mono">Agent Thoughts Terminal</span>
+                    </div>
+                    <div id="terminalLog" class="terminal-text text-sm flex-grow overflow-y-auto space-y-2 whitespace-pre-wrap">
+                        <span class="text-gray-500">Waiting for case input...</span>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Right Column: Results Grid -->
+            <div class="lg:col-span-2 glass-panel rounded-2xl p-6">
+                <div class="flex justify-between items-end mb-6 border-b border-gray-700 pb-4">
+                    <h2 class="text-2xl font-semibold text-white">Investigation Roster</h2>
+                    <span id="teamStatus" class="text-sm text-gray-400">Standby</span>
+                </div>
+
+                <!-- Cards Container -->
+                <div id="cardsContainer" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Cards will be injected here -->
+                    <div class="col-span-full text-center text-gray-500 py-12">
+                        No team assembled yet. Submit a mystery to begin.
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:8007/api/investigate';
+
+        async function submitMystery() {
+            const input = document.getElementById('mysteryInput').value.trim();
+            const btn = document.getElementById('investigateBtn');
+            const terminal = document.getElementById('terminalLog');
+            const cardsContainer = document.getElementById('cardsContainer');
+            const status = document.getElementById('teamStatus');
+
+            if (!input) {
+                alert("Please describe a mystery first.");
+                return;
+            }
+
+            // Reset UI
+            btn.disabled = true;
+            btn.innerHTML = '<span class="animate-pulse">Investigating...</span>';
+            terminal.innerHTML = '';
+            cardsContainer.innerHTML = '';
+            status.textContent = 'Processing...';
+
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ description: input })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Server error: ${response.status}`);
+                }
+
+                const data = await response.json();
+
+                // Simulate typing effect for terminal
+                await typeTerminal(data.terminal_log, terminal);
+
+                // Render Cards
+                renderCards(data.team, cardsContainer);
+                status.textContent = `${data.team.length} Operatives Assigned`;
+
+            } catch (error) {
+                console.error("Error:", error);
+                terminal.innerHTML += `<div class="text-red-500">[ERROR] Connection to Agency Network Failed. Is the backend running?</div>`;
+                status.textContent = 'Error';
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = 'Initiate Investigation';
+            }
+        }
+
+        async function typeTerminal(lines, element) {
+            for (let i = 0; i < lines.length; i++) {
+                const lineDiv = document.createElement('div');
+                element.appendChild(lineDiv);
+
+                // Fast type for visual effect
+                let text = lines[i];
+                if(text.includes("[ANALYSIS]") || text.includes("[SYSTEM]")) {
+                    lineDiv.className = "text-[#66fcf1] font-bold mt-2";
+                } else if (text.includes("[ASSIGNMENT]")) {
+                    lineDiv.className = "text-green-400";
+                }
+
+                lineDiv.textContent = text;
+                element.scrollTop = element.scrollHeight;
+
+                // Wait a tiny bit between lines for the "thinking" effect
+                await new Promise(r => setTimeout(r, 50));
+            }
+        }
+
+        function renderCards(team, container) {
+            team.forEach((member, index) => {
+                const card = document.createElement('div');
+                card.className = `glass-panel rounded-xl p-5 card-glow fade-in flex flex-col justify-between border border-gray-700 h-full`;
+                card.style.animationDelay = `${index * 0.1}s`;
+
+                card.innerHTML = `
+                    <div>
+                        <div class="role-badge">${member.role}</div>
+                        <h3 class="text-xl font-bold text-white mb-1">${member.character.name}</h3>
+                        <p class="text-xs text-[#66fcf1] mb-3 font-mono">${member.character.archetype}</p>
+
+                        <div class="space-y-2 mb-4">
+                            <div>
+                                <span class="text-xs text-gray-500 uppercase tracking-wider block">Core Emotion</span>
+                                <span class="text-sm text-gray-300">${member.character.core_emotion}</span>
+                            </div>
+                            <div>
+                                <span class="text-xs text-gray-500 uppercase tracking-wider block">Insight / Action</span>
+                                <p class="text-sm text-white italic border-l-2 border-[#45a29e] pl-2 mt-1">"${member.insight}"</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+    </script>
+</body>
+</html>
