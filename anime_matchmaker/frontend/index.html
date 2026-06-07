@@ -12,6 +12,17 @@
             color: #f8fafc; /* slate-50 */
             font-family: 'Inter', sans-serif;
             overflow-x: hidden;
+            background-image: radial-gradient(circle at 10% 20%, rgba(236, 72, 153, 0.1), transparent 40%),
+                              radial-gradient(circle at 90% 80%, rgba(168, 85, 247, 0.1), transparent 40%);
+            background-attachment: fixed;
+        }
+
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
         }
 
         /* Custom Scrollbar */
@@ -123,19 +134,19 @@
             <div class="lg:col-span-1 flex flex-col gap-6">
 
                 <!-- Input Panel -->
-                <div class="bg-slate-800 rounded-xl p-6 border border-slate-700 shadow-xl">
-                    <h2 class="text-xl font-semibold mb-4 flex items-center">
-                        <i class="fas fa-user-circle mr-2 text-pink-400"></i> Your Profile
+                <div class="glass-panel rounded-2xl p-6 shadow-xl transition-transform duration-300 hover:shadow-pink-500/10">
+                    <h2 class="text-xl font-semibold mb-4 flex items-center text-pink-400">
+                        <i class="fas fa-user-circle mr-2"></i> Your Profile
                     </h2>
 
                     <div class="mb-4">
                         <label for="profileInput" class="block text-sm font-medium text-slate-300 mb-2">Describe yourself (Personality, hobbies, goals):</label>
-                        <textarea id="profileInput" rows="4" class="w-full bg-slate-900 border border-slate-600 rounded-lg p-3 text-slate-100 focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all placeholder-slate-500 resize-none" placeholder="E.g., I'm a quiet introvert who enjoys reading and peace, but I deeply admire people with strong ambition and drive..."></textarea>
+                        <textarea id="profileInput" rows="4" class="w-full bg-slate-800/60 border border-slate-600/50 rounded-xl p-3 text-slate-100 focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all placeholder-slate-500 resize-none hover:bg-slate-800/80 shadow-inner" placeholder="E.g., I'm a quiet introvert who enjoys reading and peace, but I deeply admire people with strong ambition and drive..."></textarea>
                     </div>
 
                     <div class="mb-6">
                         <label for="relationshipType" class="block text-sm font-medium text-slate-300 mb-2">Looking for:</label>
-                        <select id="relationshipType" class="w-full bg-slate-900 border border-slate-600 rounded-lg p-3 text-slate-100 focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all">
+                        <select id="relationshipType" class="w-full bg-slate-800/60 border border-slate-600/50 rounded-xl p-3 text-slate-100 focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all hover:bg-slate-800/80 shadow-inner">
                             <option value="friendship">Friendship / Best Friend</option>
                             <option value="romantic">Romantic Partner</option>
                             <option value="rival">Rival / Competitor</option>
@@ -143,7 +154,7 @@
                         </select>
                     </div>
 
-                    <button id="findMatchesBtn" class="w-full btn-gradient text-white font-bold py-3 px-4 rounded-lg flex justify-center items-center">
+                    <button id="findMatchesBtn" class="w-full bg-gradient-to-r from-pink-500 to-violet-500 hover:from-pink-400 hover:to-violet-400 text-white font-bold py-3.5 px-4 rounded-xl flex justify-center items-center shadow-[0_0_15px_rgba(236,72,153,0.4)] hover:shadow-[0_0_25px_rgba(236,72,153,0.6)] transform hover:-translate-y-0.5 transition-all">
                         <span>Find My Match</span>
                         <i class="fas fa-heart ml-2"></i>
                     </button>
@@ -171,19 +182,19 @@
 
             <!-- Right Column: Results -->
             <div class="lg:col-span-2">
-                <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 shadow-inner min-h-full">
-                    <div class="flex items-center justify-between mb-6">
-                        <h2 class="text-2xl font-semibold flex items-center">
-                            <i class="fas fa-star mr-2 text-yellow-400"></i> Top Matches
+                <div class="glass-panel rounded-2xl p-6 shadow-inner min-h-full relative overflow-hidden">
+                    <div class="flex items-center justify-between mb-8 border-b border-slate-700/50 pb-4">
+                        <h2 class="text-2xl font-bold flex items-center text-white">
+                            <i class="fas fa-star mr-3 text-yellow-400"></i> Top Matches
                         </h2>
-                        <span id="matchStatus" class="text-sm text-slate-400 hidden">Evaluation Complete</span>
+                        <span id="matchStatus" class="text-sm text-pink-400 font-semibold uppercase tracking-wider hidden">Evaluation Complete</span>
                     </div>
 
-                    <div id="resultsContainer" class="space-y-4">
+                    <div id="resultsContainer" class="space-y-6 relative z-10">
                         <!-- Initial Placeholder -->
-                        <div class="flex flex-col items-center justify-center h-64 text-slate-500 border-2 border-dashed border-slate-700 rounded-xl">
-                            <i class="fas fa-search text-4xl mb-3 opacity-50"></i>
-                            <p>Fill out your profile and click "Find My Match"</p>
+                        <div class="flex flex-col items-center justify-center h-64 text-slate-500 border-2 border-dashed border-slate-700/50 rounded-2xl bg-slate-800/20">
+                            <i class="fas fa-search text-5xl mb-4 text-slate-600"></i>
+                            <p class="font-medium tracking-wide">Fill out your profile and click "Find My Match"</p>
                         </div>
                     </div>
                 </div>

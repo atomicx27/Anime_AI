@@ -39,14 +39,15 @@
 <body class="bg-gray-900 text-white h-screen flex flex-col font-sans overflow-hidden">
 
     <!-- Header -->
-    <header class="bg-gray-800 border-b border-gray-700 p-4 flex justify-between items-center z-10 shrink-0">
+    <header class="bg-slate-900/70 backdrop-blur-xl border-b border-slate-700/50 p-4 flex justify-between items-center z-10 shrink-0 shadow-lg">
         <div class="flex items-center space-x-3">
-            <div class="w-10 h-10 bg-purple-600 rounded-full flex items-center justify-center shadow-lg shadow-purple-500/30">
-                <i class="fas fa-heart text-xl text-white"></i>
+            <div class="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-600 rounded-full flex items-center justify-center shadow-lg shadow-pink-500/40 relative overflow-hidden group">
+                <div class="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
+                <i class="fas fa-heart text-xl text-white relative z-10 group-hover:scale-110 transition-transform"></i>
             </div>
             <div>
                 <h1 class="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-500">Anime Affinity Matcher AI</h1>
-                <p class="text-xs text-gray-400">Discover your anime soulmates and rivals.</p>
+                <p class="text-xs text-slate-400 font-medium">Discover your anime soulmates and rivals.</p>
             </div>
         </div>
     </header>
@@ -56,28 +57,28 @@
 
         <!-- Background decorative elements -->
         <div class="absolute top-0 left-0 w-full h-full overflow-hidden -z-10 pointer-events-none">
-            <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-600/10 rounded-full blur-3xl"></div>
-            <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-pink-600/10 rounded-full blur-3xl"></div>
+            <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-600/15 rounded-full blur-[100px]"></div>
+            <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-pink-600/15 rounded-full blur-[100px]"></div>
         </div>
 
         <!-- Left Panel: Input Area -->
-        <div class="w-full lg:w-1/3 p-6 flex flex-col border-r border-gray-800 bg-gray-900/50 backdrop-blur-sm z-10 shrink-0 h-1/2 lg:h-full overflow-y-auto custom-scrollbar">
-            <h2 class="text-lg font-semibold mb-4 flex items-center text-gray-200">
+        <div class="w-full lg:w-1/3 p-6 flex flex-col border-r border-slate-800/50 bg-slate-900/60 backdrop-blur-md z-10 shrink-0 h-1/2 lg:h-full overflow-y-auto custom-scrollbar">
+            <h2 class="text-lg font-semibold mb-4 flex items-center text-slate-200">
                 <i class="fas fa-user-edit mr-2 text-purple-400"></i> Describe Yourself
             </h2>
 
-            <div class="bg-gray-800 rounded-xl p-4 border border-gray-700 flex-1 flex flex-col">
-                <p class="text-sm text-gray-400 mb-4">
+            <div class="bg-slate-800/60 backdrop-blur-sm rounded-2xl p-5 border border-slate-700/50 flex-1 flex flex-col shadow-xl transition-transform duration-300 hover:shadow-purple-500/10">
+                <p class="text-sm text-slate-400 mb-4 leading-relaxed">
                     Enter a brief description of your personality, goals, and values. The Agent will analyze your traits and match you with characters from the database.
                 </p>
                 <textarea
                     id="descriptionInput"
-                    class="w-full flex-1 bg-gray-900 border border-gray-600 rounded-lg p-3 text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 resize-none transition-all custom-scrollbar"
+                    class="w-full flex-1 bg-slate-900/80 border border-slate-600/50 rounded-xl p-4 text-white placeholder-slate-500 focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/50 resize-none transition-all custom-scrollbar shadow-inner hover:bg-slate-800/80"
                     placeholder="E.g., I am very calm, calculating, and prefer diplomacy over fighting. I like peace and hate unnecessary conflict..."></textarea>
 
                 <button
                     id="matchBtn"
-                    class="mt-4 w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white font-bold py-3 px-4 rounded-lg shadow-lg shadow-purple-500/25 transition-all transform hover:scale-[1.02] active:scale-95 flex items-center justify-center">
+                    class="mt-5 w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white font-bold py-3.5 px-4 rounded-xl shadow-[0_0_15px_rgba(236,72,153,0.3)] hover:shadow-[0_0_25px_rgba(236,72,153,0.5)] transition-all flex justify-center items-center gap-2 transform hover:-translate-y-0.5 active:scale-95">
                     <i class="fas fa-magic mr-2"></i> Find My Matches
                 </button>
             </div>

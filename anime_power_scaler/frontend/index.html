@@ -12,27 +12,35 @@
             font-family: 'Inter', sans-serif;
             background-color: #0f172a; /* slate-900 */
             color: #f8fafc; /* slate-50 */
+            background-image: radial-gradient(circle at 20% 30%, rgba(239, 68, 68, 0.15), transparent 40%),
+                              radial-gradient(circle at 80% 70%, rgba(249, 115, 22, 0.15), transparent 40%);
+            background-attachment: fixed;
         }
 
         .terminal {
             font-family: 'Fira Code', monospace;
-            background-color: #1e293b; /* slate-800 */
-            border: 1px solid #334155; /* slate-700 */
+            background-color: rgba(15, 23, 42, 0.8); /* slate-900/80 */
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(8px);
         }
 
         .log-entry {
             opacity: 0;
             animation: fadeIn 0.5s forwards;
+            transform: translateY(5px);
         }
 
         @keyframes fadeIn {
-            to { opacity: 1; }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .glass-panel {
-            background: rgba(30, 41, 59, 0.7);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(30, 41, 59, 0.6);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
         }
 
         .typing-cursor::after {
@@ -45,93 +53,105 @@
         }
     </style>
 </head>
-<body class="min-h-screen flex flex-col items-center p-6 bg-gradient-to-b from-slate-900 to-slate-800">
+<body class="min-h-screen flex flex-col items-center p-8">
 
-    <header class="w-full max-w-5xl mb-8 text-center">
-        <h1 class="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-orange-500 mb-2">Anime Power Scaler AI</h1>
-        <p class="text-slate-400 text-lg">Simulate dynamic 1v1 battles between legends based on their core traits and philosophies.</p>
+    <header class="w-full max-w-5xl mb-12 text-center mt-4">
+        <h1 class="text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-orange-500 mb-4 drop-shadow-sm tracking-tight">Anime Power Scaler AI</h1>
+        <p class="text-slate-400 text-xl font-light">Simulate dynamic 1v1 battles between legends based on their core traits and philosophies.</p>
     </header>
 
-    <main class="w-full max-w-5xl flex flex-col lg:flex-row gap-6 flex-grow">
+    <main class="w-full max-w-6xl flex flex-col lg:flex-row gap-8 flex-grow">
 
         <!-- Sidebar: Setup Battle -->
-        <aside class="w-full lg:w-1/3 glass-panel rounded-xl p-6 h-fit shadow-xl">
-            <h2 class="text-xl font-semibold mb-4 text-orange-400 border-b border-slate-700 pb-2">Setup Match</h2>
+        <aside class="w-full lg:w-1/3 glass-panel rounded-2xl p-8 h-fit transition-transform duration-300 hover:shadow-orange-500/10 hover:shadow-2xl">
+            <h2 class="text-2xl font-bold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-red-400 border-b border-slate-700/50 pb-3 flex items-center gap-2">
+                <svg class="w-6 h-6 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                Setup Match
+            </h2>
 
-            <div class="mb-4">
-                <label class="block text-sm font-medium text-slate-300 mb-1" for="char1-select">Fighter 1</label>
-                <select id="char1-select" class="w-full bg-slate-800 border border-slate-600 text-white rounded-md py-2 px-3 focus:outline-none focus:ring-2 focus:ring-orange-500">
+            <div class="mb-5">
+                <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2" for="char1-select">Fighter 1</label>
+                <select id="char1-select" class="w-full bg-slate-800/80 border border-slate-600/50 text-white rounded-xl py-3 px-4 focus:outline-none focus:ring-2 focus:ring-orange-500 transition-all shadow-inner hover:bg-slate-700/80 cursor-pointer">
                     <option value="">Select Character...</option>
                 </select>
             </div>
 
-            <div class="flex justify-center my-4">
-                <span class="text-2xl font-bold text-red-500">VS</span>
+            <div class="flex justify-center my-6 relative">
+                <div class="absolute inset-0 flex items-center">
+                    <div class="w-full border-t border-slate-700"></div>
+                </div>
+                <div class="relative bg-slate-900 px-4 rounded-full">
+                    <span class="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-rose-500 italic transform -skew-x-12 drop-shadow-[0_0_10px_rgba(239,68,68,0.5)]">VS</span>
+                </div>
             </div>
 
             <div class="mb-6">
-                <label class="block text-sm font-medium text-slate-300 mb-1" for="char2-select">Fighter 2</label>
-                <select id="char2-select" class="w-full bg-slate-800 border border-slate-600 text-white rounded-md py-2 px-3 focus:outline-none focus:ring-2 focus:ring-orange-500">
+                <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2" for="char2-select">Fighter 2</label>
+                <select id="char2-select" class="w-full bg-slate-800/80 border border-slate-600/50 text-white rounded-xl py-3 px-4 focus:outline-none focus:ring-2 focus:ring-orange-500 transition-all shadow-inner hover:bg-slate-700/80 cursor-pointer">
                     <option value="">Select Character...</option>
                 </select>
             </div>
 
-            <div class="mb-6">
-                <label class="block text-sm font-medium text-slate-300 mb-1" for="context-input">Battle Context / Arena</label>
-                <input type="text" id="context-input" value="Final Valley" class="w-full bg-slate-800 border border-slate-600 text-white rounded-md py-2 px-3 focus:outline-none focus:ring-2 focus:ring-orange-500 placeholder-slate-500">
+            <div class="mb-8">
+                <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2" for="context-input">Battle Context / Arena</label>
+                <input type="text" id="context-input" value="Final Valley" class="w-full bg-slate-800/80 border border-slate-600/50 text-white rounded-xl py-3 px-4 focus:outline-none focus:ring-2 focus:ring-orange-500 transition-all shadow-inner hover:bg-slate-700/80 placeholder-slate-500">
             </div>
 
-            <button id="simulate-btn" class="w-full bg-gradient-to-r from-red-600 to-orange-600 hover:from-red-500 hover:to-orange-500 text-white font-bold py-3 px-4 rounded-md transition-all shadow-lg hover:shadow-orange-500/30">
+            <button id="simulate-btn" class="w-full bg-gradient-to-r from-red-600 to-orange-500 hover:from-red-500 hover:to-orange-400 text-white font-bold py-4 px-4 rounded-xl transition-all duration-300 shadow-lg shadow-orange-500/30 transform hover:-translate-y-1">
                 Simulate Battle
             </button>
         </aside>
 
         <!-- Main Content: Terminal & Results -->
-        <section class="w-full lg:w-2/3 flex flex-col gap-6">
+        <section class="w-full lg:w-2/3 flex flex-col gap-8">
 
             <!-- Terminal -->
-            <div class="terminal rounded-xl p-4 h-80 overflow-y-auto shadow-inner flex flex-col relative">
-                <div class="flex items-center gap-2 mb-4 border-b border-slate-700 pb-2">
-                    <div class="w-3 h-3 rounded-full bg-red-500"></div>
-                    <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
-                    <div class="w-3 h-3 rounded-full bg-green-500"></div>
-                    <span class="text-xs text-slate-400 ml-2">Agent Terminal // Power_Scaler.exe</span>
+            <div class="terminal rounded-2xl p-5 h-80 overflow-y-auto relative">
+                <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-red-500/50 to-transparent"></div>
+                <div class="flex items-center gap-2 mb-4 border-b border-red-500/20 pb-3">
+                    <div class="w-3 h-3 rounded-full bg-red-500 shadow-[0_0_5px_rgba(239,68,68,0.8)]"></div>
+                    <div class="w-3 h-3 rounded-full bg-yellow-500 shadow-[0_0_5px_rgba(234,179,8,0.8)]"></div>
+                    <div class="w-3 h-3 rounded-full bg-green-500 shadow-[0_0_5px_rgba(34,197,94,0.8)]"></div>
+                    <span class="text-xs text-red-400/70 ml-2 uppercase tracking-widest font-sans">Agent Terminal // Power_Scaler.exe</span>
                 </div>
 
-                <div id="terminal-content" class="text-sm text-green-400 flex-grow whitespace-pre-wrap font-mono">
+                <div id="terminal-content" class="text-sm text-red-400 flex-grow whitespace-pre-wrap font-mono leading-relaxed">
                     <span class="text-slate-500">Awaiting input...</span>
                 </div>
             </div>
 
             <!-- Results Card -->
-            <div id="results-card" class="glass-panel rounded-xl p-6 shadow-xl hidden relative overflow-hidden">
+            <div id="results-card" class="glass-panel rounded-2xl p-8 hidden relative overflow-hidden transition-all duration-500 transform scale-95 opacity-0">
                 <!-- Decorative background elements -->
-                <div class="absolute -top-10 -right-10 w-32 h-32 bg-orange-500 rounded-full opacity-10 blur-2xl"></div>
-                <div class="absolute -bottom-10 -left-10 w-32 h-32 bg-red-500 rounded-full opacity-10 blur-2xl"></div>
+                <div class="absolute -top-20 -right-20 w-64 h-64 bg-orange-500 rounded-full opacity-10 blur-3xl"></div>
+                <div class="absolute -bottom-20 -left-20 w-64 h-64 bg-red-500 rounded-full opacity-10 blur-3xl"></div>
 
-                <h3 class="text-2xl font-bold text-center mb-6 border-b border-slate-700 pb-2 text-white">Battle Result</h3>
+                <h3 class="text-2xl font-bold text-center mb-6 border-b border-slate-700/50 pb-4 text-white">Battle Result</h3>
 
-                <div class="flex flex-col md:flex-row items-center justify-center gap-8 mb-6">
-                    <div class="text-center w-full md:w-2/5">
-                        <div id="res-char1-name" class="text-xl font-bold text-slate-200">Char 1</div>
-                        <div id="res-char1-trait" class="text-xs text-slate-400 mt-1">Trait</div>
+                <div class="flex flex-col md:flex-row items-center justify-center gap-8 mb-8">
+                    <div class="text-center w-full md:w-2/5 transform hover:scale-105 transition-transform">
+                        <div id="res-char1-name" class="text-2xl font-extrabold text-transparent bg-clip-text bg-gradient-to-br from-blue-400 to-cyan-400">Char 1</div>
+                        <div id="res-char1-trait" class="text-sm text-slate-400 mt-1 uppercase tracking-wide font-semibold">Trait</div>
                     </div>
 
                     <div class="w-full md:w-1/5 text-center">
-                        <div id="winner-badge" class="inline-block px-4 py-2 bg-gradient-to-r from-yellow-600 to-yellow-400 text-white font-bold rounded-full shadow-lg transform scale-110">
+                        <div id="winner-badge" class="inline-block px-6 py-3 bg-gradient-to-r from-yellow-500 to-amber-600 text-white font-black rounded-full shadow-[0_0_15px_rgba(245,158,11,0.5)] transform scale-110">
                             WINNER
                         </div>
                     </div>
 
-                    <div class="text-center w-full md:w-2/5">
-                        <div id="res-char2-name" class="text-xl font-bold text-slate-200">Char 2</div>
-                        <div id="res-char2-trait" class="text-xs text-slate-400 mt-1">Trait</div>
+                    <div class="text-center w-full md:w-2/5 transform hover:scale-105 transition-transform">
+                        <div id="res-char2-name" class="text-2xl font-extrabold text-transparent bg-clip-text bg-gradient-to-br from-red-400 to-rose-400">Char 2</div>
+                        <div id="res-char2-trait" class="text-sm text-slate-400 mt-1 uppercase tracking-wide font-semibold">Trait</div>
                     </div>
                 </div>
 
-                <div class="bg-slate-800/50 border border-slate-700 rounded-lg p-4">
-                    <h4 class="text-sm font-semibold text-orange-400 mb-2 uppercase tracking-wide">Post-Match Summary</h4>
-                    <p id="match-summary" class="text-slate-300 italic text-sm leading-relaxed"></p>
+                <div class="bg-slate-900/50 border border-slate-700/50 rounded-xl p-6 shadow-inner">
+                    <h4 class="text-xs font-bold text-orange-500 mb-3 uppercase tracking-widest flex items-center gap-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                        Post-Match Summary
+                    </h4>
+                    <p id="match-summary" class="text-slate-300 italic text-base leading-relaxed"></p>
                 </div>
             </div>
 
@@ -254,15 +274,20 @@
                 const winnerBadge = document.getElementById('winner-badge');
                 if (data.winner === "Draw") {
                     winnerBadge.textContent = "DRAW";
-                    winnerBadge.className = "inline-block px-4 py-2 bg-gradient-to-r from-slate-600 to-slate-400 text-white font-bold rounded-full shadow-lg transform scale-110";
+                    winnerBadge.className = "inline-block px-6 py-3 bg-gradient-to-r from-slate-600 to-slate-400 text-white font-black rounded-full shadow-[0_0_15px_rgba(148,163,184,0.5)] transform scale-110";
                 } else {
                     winnerBadge.textContent = data.winner + " WINS";
-                    winnerBadge.className = "inline-block px-4 py-2 bg-gradient-to-r from-yellow-600 to-yellow-400 text-white font-bold rounded-full shadow-lg transform scale-110 text-xs sm:text-sm";
+                    winnerBadge.className = "inline-block px-6 py-3 bg-gradient-to-r from-yellow-500 to-amber-600 text-white font-black rounded-full shadow-[0_0_15px_rgba(245,158,11,0.5)] transform scale-110 text-sm sm:text-base";
                 }
 
                 document.getElementById('match-summary').textContent = data.summary;
 
                 resultsCard.classList.remove('hidden');
+                // Trigger animation
+                setTimeout(() => {
+                    resultsCard.classList.remove('scale-95', 'opacity-0');
+                    resultsCard.classList.add('scale-100', 'opacity-100');
+                }, 50);
 
             } catch (error) {
                 console.error("Simulation error", error);
