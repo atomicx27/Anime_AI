@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anime Detective Agency AI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['Fira Code', 'monospace'],
+                    },
+                    colors: {
+                        dark: '#0f172a',
+                        darker: '#020617',
+                        accent: '#3b82f6',
+                        accentDark: '#1d4ed8'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #0f172a;
+            color: #f8fafc;
+            background-image:
+                radial-gradient(circle at 15% 50%, rgba(59, 130, 246, 0.15), transparent 25%),
+                radial-gradient(circle at 85% 30%, rgba(147, 51, 234, 0.15), transparent 25%);
+            background-attachment: fixed;
+            min-height: 100vh;
+        }
+
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06), 0 0 20px rgba(59, 130, 246, 0.1);
+        }
+
+        .glow-hover {
+            transition: all 0.3s ease;
+        }
+
+        .glow-hover:hover {
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
+            transform: translateY(-2px);
+        }
+
+        /* Typing animation for terminal */
+        .typing-effect {
+            border-right: 2px solid #3b82f6;
+            animation: blink 1s step-end infinite;
+        }
+
+        @keyframes blink {
+            50% { border-color: transparent; }
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(15, 23, 42, 0.5);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #475569;
+        }
+    </style>
+</head>
+<body class="font-sans antialiased selection:bg-accent selection:text-white pb-12">
+
+    <div class="max-w-5xl mx-auto px-4 pt-12">
+        <!-- Header -->
+        <header class="text-center mb-12">
+            <div class="inline-block p-3 rounded-full bg-blue-500/10 mb-4">
+                <svg xmlns="http://www.w3.org/2000/ applicable" class="w-10 h-10 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+            </div>
+            <h1 class="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-400 mb-2">Anime Detective Agency AI</h1>
+            <p class="text-slate-400 max-w-2xl mx-auto">Submit a mystery or case file. The AI will assemble a task force of anime characters to investigate and solve it using their unique philosophies.</p>
+        </header>
+
+        <!-- Input Section -->
+        <section class="glass-panel rounded-2xl p-6 mb-8">
+            <h2 class="text-xl font-semibold mb-4 text-white flex items-center">
+                <svg class="w-5 h-5 mr-2 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+                Case File Input
+            </h2>
+            <textarea id="case-input" rows="4" class="w-full bg-darker/50 border border-slate-700 rounded-xl p-4 text-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors font-mono text-sm resize-none" placeholder="Describe the mystery... (e.g., 'The Crimson Diamond was stolen from a locked vault. The only clue is a single black feather.')"></textarea>
+
+            <div class="mt-4 flex justify-end">
+                <button id="investigate-btn" class="bg-blue-600 hover:bg-blue-500 text-white font-medium py-2.5 px-6 rounded-xl glow-hover flex items-center">
+                    <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                    </svg>
+                    Dispatch Task Force
+                </button>
+            </div>
+        </section>
+
+        <!-- Loading State -->
+        <div id="loading-state" class="hidden flex-col items-center justify-center py-12">
+            <div class="w-16 h-16 border-4 border-blue-500/20 border-t-blue-500 rounded-full animate-spin mb-4"></div>
+            <p class="text-blue-400 font-mono animate-pulse">Assembling Agency Task Force...</p>
+        </div>
+
+        <!-- Results Section -->
+        <section id="results-section" class="hidden space-y-8">
+            <!-- Terminal / Synthesis -->
+            <div class="glass-panel rounded-2xl p-6 relative overflow-hidden">
+                <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 via-purple-500 to-blue-500"></div>
+                <div class="flex items-center mb-4 pb-2 border-b border-slate-700/50">
+                    <div class="w-3 h-3 rounded-full bg-red-500 mr-2"></div>
+                    <div class="w-3 h-3 rounded-full bg-yellow-500 mr-2"></div>
+                    <div class="w-3 h-3 rounded-full bg-green-500 mr-2"></div>
+                    <span class="ml-2 text-xs font-mono text-slate-400">agency_terminal.exe</span>
+                </div>
+
+                <div class="font-mono text-sm space-y-4">
+                    <div><span class="text-blue-400">> CASE_FILE:</span> <span id="display-case" class="text-slate-300"></span></div>
+                    <div><span class="text-purple-400">> STATUS:</span> <span class="text-green-400">SOLVED</span></div>
+                    <div class="mt-4 pt-4 border-t border-slate-700/50">
+                        <span class="text-yellow-400">> FINAL_CONCLUSION:</span>
+                        <p id="synthesis-output" class="mt-2 text-slate-300 leading-relaxed"></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Task Force Grid -->
+            <div>
+                <h3 class="text-xl font-semibold mb-6 text-white flex items-center">
+                    <svg class="w-5 h-5 mr-2 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                    </svg>
+                    Task Force Deductions
+                </h3>
+                <div id="task-force-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Task force cards will be injected here -->
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const investigateBtn = document.getElementById('investigate-btn');
+            const caseInput = document.getElementById('case-input');
+            const loadingState = document.getElementById('loading-state');
+            const resultsSection = document.getElementById('results-section');
+            const displayCase = document.getElementById('display-case');
+            const synthesisOutput = document.getElementById('synthesis-output');
+            const taskForceGrid = document.getElementById('task-force-grid');
+
+            investigateBtn.addEventListener('click', async () => {
+                const caseDescription = caseInput.value.trim();
+
+                if (!caseDescription) {
+                    alert('Please enter a case description.');
+                    return;
+                }
+
+                // UI Updates
+                resultsSection.classList.add('hidden');
+                loadingState.classList.remove('hidden');
+                loadingState.classList.add('flex');
+                investigateBtn.disabled = true;
+                investigateBtn.classList.add('opacity-50', 'cursor-not-allowed');
+
+                try {
+                    const response = await fetch('/api/solve', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ case_description: caseDescription })
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+
+                    const data = await response.json();
+
+                    // Render Results
+                    renderResults(data);
+
+                    // Show Results
+                    loadingState.classList.add('hidden');
+                    loadingState.classList.remove('flex');
+                    resultsSection.classList.remove('hidden');
+
+                } catch (error) {
+                    console.error('Error fetching data:', error);
+                    alert('Failed to process case. Please ensure backend is running.');
+
+                    loadingState.classList.add('hidden');
+                    loadingState.classList.remove('flex');
+                } finally {
+                    investigateBtn.disabled = false;
+                    investigateBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                }
+            });
+
+            function renderResults(data) {
+                displayCase.textContent = data.case;
+                synthesisOutput.textContent = data.conclusion;
+
+                taskForceGrid.innerHTML = '';
+
+                data.task_force.forEach(member => {
+                    const card = document.createElement('div');
+                    card.className = 'glass-panel rounded-xl p-6 glow-hover flex flex-col h-full';
+
+                    card.innerHTML = `
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <h4 class="text-lg font-bold text-white">${member.name}</h4>
+                                <p class="text-xs font-mono text-purple-400 mt-1">${member.role}</p>
+                            </div>
+                            <span class="px-2 py-1 bg-slate-800 text-slate-300 text-xs rounded-md border border-slate-700">
+                                ${member.archetype.split(',')[0]}
+                            </span>
+                        </div>
+
+                        <div class="mb-4">
+                            <span class="text-xs text-slate-500 uppercase tracking-wider font-semibold">Core Driver</span>
+                            <p class="text-sm text-blue-300 mt-1">${member.core_emotion}</p>
+                        </div>
+
+                        <div class="mt-auto pt-4 border-t border-slate-700/50">
+                            <span class="text-xs text-slate-500 uppercase tracking-wider font-semibold mb-2 block">Deduction Log</span>
+                            <p class="text-sm text-slate-300 italic">"${member.deduction}"</p>
+                        </div>
+                    `;
+
+                    taskForceGrid.appendChild(card);
+                });
+            }
+        });
+    </script>
+</body>
+</html>
