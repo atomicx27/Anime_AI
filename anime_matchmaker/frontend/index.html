@@ -7,12 +7,31 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        body {
-            background-color: #0f172a; /* slate-900 */
-            color: #f8fafc; /* slate-50 */
-            font-family: 'Inter', sans-serif;
-            overflow-x: hidden;
+
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.4);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+            border-radius: 1rem;
+            transition: all 0.3s ease;
         }
+        .glass-panel:hover {
+            box-shadow: 0 8px 32px 0 rgba(34, 211, 238, 0.15);
+            border: 1px solid rgba(34, 211, 238, 0.3);
+        }
+
+
+        body {
+            background-color: #0f172a;
+            color: #f8fafc;
+            background-image: radial-gradient(circle at 15% 50%, rgba(6, 182, 212, 0.15), transparent 25%),
+                              radial-gradient(circle at 85% 30%, rgba(59, 130, 246, 0.15), transparent 25%);
+            background-attachment: fixed;
+            font-family: 'Inter', sans-serif;
+        }
+
 
         /* Custom Scrollbar */
         ::-webkit-scrollbar {
@@ -123,19 +142,19 @@
             <div class="lg:col-span-1 flex flex-col gap-6">
 
                 <!-- Input Panel -->
-                <div class="bg-slate-800 rounded-xl p-6 border border-slate-700 shadow-xl">
+                <div class="glass-panel rounded-xl p-6 border border-slate-700 shadow-xl">
                     <h2 class="text-xl font-semibold mb-4 flex items-center">
                         <i class="fas fa-user-circle mr-2 text-pink-400"></i> Your Profile
                     </h2>
 
                     <div class="mb-4">
                         <label for="profileInput" class="block text-sm font-medium text-slate-300 mb-2">Describe yourself (Personality, hobbies, goals):</label>
-                        <textarea id="profileInput" rows="4" class="w-full bg-slate-900 border border-slate-600 rounded-lg p-3 text-slate-100 focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all placeholder-slate-500 resize-none" placeholder="E.g., I'm a quiet introvert who enjoys reading and peace, but I deeply admire people with strong ambition and drive..."></textarea>
+                        <textarea id="profileInput" rows="4" class="w-full glass-panel border border-slate-600 rounded-lg p-3 text-slate-100 focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all placeholder-slate-500 resize-none" placeholder="E.g., I'm a quiet introvert who enjoys reading and peace, but I deeply admire people with strong ambition and drive..."></textarea>
                     </div>
 
                     <div class="mb-6">
                         <label for="relationshipType" class="block text-sm font-medium text-slate-300 mb-2">Looking for:</label>
-                        <select id="relationshipType" class="w-full bg-slate-900 border border-slate-600 rounded-lg p-3 text-slate-100 focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all">
+                        <select id="relationshipType" class="w-full glass-panel border border-slate-600 rounded-lg p-3 text-slate-100 focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all">
                             <option value="friendship">Friendship / Best Friend</option>
                             <option value="romantic">Romantic Partner</option>
                             <option value="rival">Rival / Competitor</option>
@@ -151,7 +170,7 @@
 
                 <!-- Agent Terminal -->
                 <div class="terminal-container rounded-xl flex flex-col flex-grow h-[400px]">
-                    <div class="bg-slate-800 px-4 py-2 border-b border-slate-700 rounded-t-xl flex items-center justify-between">
+                    <div class="glass-panel px-4 py-2 border-b border-slate-700 rounded-t-xl flex items-center justify-between">
                         <div class="flex items-center space-x-2">
                             <span class="pulse-dot"></span>
                             <span class="text-sm font-mono text-emerald-400">Matchmaker Agent</span>
@@ -171,7 +190,7 @@
 
             <!-- Right Column: Results -->
             <div class="lg:col-span-2">
-                <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 shadow-inner min-h-full">
+                <div class="glass-panel rounded-xl p-6 border border-slate-700 shadow-inner min-h-full">
                     <div class="flex items-center justify-between mb-6">
                         <h2 class="text-2xl font-semibold flex items-center">
                             <i class="fas fa-star mr-2 text-yellow-400"></i> Top Matches
@@ -232,13 +251,13 @@
             else if (match.match_level.includes('Incompatible')) { icon = 'fa-times-circle'; iconColor = 'text-red-500'; }
 
             return `
-                <div class="card-enter bg-slate-800 rounded-lg p-5 border border-slate-700 hover:border-violet-500/50 transition-colors relative overflow-hidden" style="animation-delay: ${delay}s">
-                    <div class="absolute top-0 right-0 bg-slate-900 px-3 py-1 rounded-bl-lg border-b border-l border-slate-700 text-xs font-mono text-slate-400">
+                <div class="card-enter glass-panel rounded-lg p-5 border border-slate-700 hover:border-violet-500/50 transition-colors relative overflow-hidden" style="animation-delay: ${delay}s">
+                    <div class="absolute top-0 right-0 glass-panel px-3 py-1 rounded-bl-lg border-b border-l border-slate-700 text-xs font-mono text-slate-400">
                         Rank #${index + 1} | Score: ${match.score}
                     </div>
 
                     <div class="flex items-start gap-4">
-                        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-slate-900 flex items-center justify-center border border-slate-700">
+                        <div class="flex-shrink-0 w-12 h-12 rounded-full glass-panel flex items-center justify-center border border-slate-700">
                             <i class="fas ${icon} ${iconColor} text-xl"></i>
                         </div>
 
@@ -251,7 +270,7 @@
                                 ${match.match_level}
                             </div>
 
-                            <div class="bg-slate-900/50 rounded-md p-3 border border-slate-700/50">
+                            <div class="glass-panel rounded-md p-3 border border-slate-700/50">
                                 <p class="text-slate-300 text-sm leading-relaxed"><strong class="text-slate-400">Agent Reasoning:</strong> ${match.reasoning}</p>
                             </div>
                         </div>

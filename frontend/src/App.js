@@ -71,9 +71,9 @@ function App() {
   };
 
   return (
-    <div className="flex h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 animate-gradient-x text-white font-sans">
+    <div className="flex h-screen bg-[#0f172a] text-slate-200 font-sans bg-[radial-gradient(circle_at_15%_50%,_rgba(6,182,212,0.15),_transparent_25%),_radial-gradient(circle_at_85%_30%,_rgba(59,130,246,0.15),_transparent_25%)]">
       {/* Sidebar */}
-      <div className="w-72 bg-gray-900/50 backdrop-blur-md border-r border-gray-800 flex flex-col shadow-xl z-20">
+      <div className="w-72 bg-slate-900/60 backdrop-blur-xl border-r border-slate-700/50 flex flex-col shadow-[10px_0_30px_rgba(0,0,0,0.3)] z-20">
         <div className="p-6 border-b border-gray-800 flex items-center gap-3">
           <div className="bg-cyan-500/20 p-2 rounded-xl">
             <Sparkles className="w-6 h-6 text-cyan-400" />
@@ -113,11 +113,11 @@ function App() {
       </div>
 
       {/* Main Chat Area */}
-      <div className="flex-1 flex flex-col relative bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-gray-800/40 via-gray-900 to-black animate-gradient-xy">
+      <div className="flex-1 flex flex-col relative bg-transparent">
         {selectedAgent ? (
           <>
             {/* Header */}
-            <div className="p-5 bg-gray-900/80 backdrop-blur-md border-b border-gray-800 shadow-sm flex items-center gap-4 z-10">
+            <div className="p-5 bg-slate-900/40 backdrop-blur-md border-b border-slate-800/50 shadow-sm flex items-center gap-4 z-10">
               <div className="w-12 h-12 bg-cyan-500 rounded-full flex items-center justify-center text-white shadow-lg shadow-cyan-500/20 shrink-0">
                 <Bot size={24} />
               </div>
@@ -134,7 +134,7 @@ function App() {
                   <motion.div
                     initial={{ opacity: 0, y: 20, scale: 0.95 }}
                     animate={{ opacity: 1, y: 0, scale: 1 }}
-                    transition={{ duration: 0.5, type: "spring", stiffness: 300, damping: 20, delay: index * 0.05 }}
+                    transition={{ duration: 0.5, type: "spring", stiffness: 400, damping: 25, delay: index * 0.05 }}
                     key={index}
                     className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
                   >
@@ -182,10 +182,10 @@ function App() {
                           )}
 
                           {/* The actual message bubble */}
-                          <div className={`p-4 rounded-2xl shadow-md text-[15px] leading-relaxed ${
+                          <div className={`p-4 rounded-2xl shadow-xl text-[15px] leading-relaxed transition-all duration-300 hover:shadow-2xl ${
                             msg.role === 'user'
-                              ? 'bg-gradient-to-br from-blue-600 to-blue-700 text-white rounded-tr-sm shadow-blue-900/20'
-                              : 'bg-gray-800/90 backdrop-blur-sm text-gray-100 rounded-tl-sm border border-gray-700 shadow-black/20'
+                              ? 'bg-gradient-to-br from-blue-600 to-blue-800 text-white rounded-tr-sm shadow-blue-900/30'
+                              : 'bg-slate-800/70 backdrop-blur-md text-slate-100 rounded-tl-sm border border-slate-700/50 shadow-black/40 hover:bg-slate-800/80'
                           }`}>
                             {msg.content}
                           </div>
@@ -228,7 +228,7 @@ function App() {
             </div>
 
             {/* Input Area */}
-            <div className="p-5 bg-gray-900/80 backdrop-blur-md border-t border-gray-800 z-10">
+            <div className="p-5 bg-slate-900/60 backdrop-blur-xl border-t border-slate-800 z-10 shadow-[0_-10px_30px_rgba(0,0,0,0.2)]">
               <form onSubmit={sendMessage} className="flex gap-3 max-w-4xl mx-auto">
                 <div className="relative flex-1">
                   <input
@@ -236,12 +236,12 @@ function App() {
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
                     placeholder="Type a message..."
-                    className="w-full bg-gray-800/50 border border-gray-700 focus:border-cyan-500/50 focus:ring-2 focus:ring-cyan-500/30 rounded-2xl px-5 py-4 pl-5 pr-12 text-[15px] outline-none transition-all shadow-inner hover:bg-gray-800"
+                    className="w-full bg-slate-800/40 backdrop-blur-sm border border-slate-700/50 focus:border-cyan-500/60 focus:ring-2 focus:ring-cyan-500/40 rounded-2xl px-5 py-4 pl-5 pr-12 text-[15px] outline-none transition-all shadow-inner hover:bg-slate-800/60"
                     disabled={loading}
                   />
                 </div>
                 <motion.button
-                  whileHover={{ scale: 1.05 }}
+                  whileHover={{ scale: 1.05, boxShadow: "0 10px 25px -5px rgba(6, 182, 212, 0.4)" }}
                   whileTap={{ scale: 0.95 }}
                   type="submit"
                   disabled={loading || !input.trim()}

@@ -26,6 +26,31 @@
         }
     </script>
     <style>
+
+        body {
+            background-color: #0f172a;
+            color: #f8fafc;
+            background-image: radial-gradient(circle at 15% 50%, rgba(6, 182, 212, 0.15), transparent 25%),
+                              radial-gradient(circle at 85% 30%, rgba(59, 130, 246, 0.15), transparent 25%);
+            background-attachment: fixed;
+            font-family: 'Inter', sans-serif;
+        }
+
+
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.4);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+            border-radius: 1rem;
+            transition: all 0.3s ease;
+        }
+        .glass-panel:hover {
+            box-shadow: 0 8px 32px 0 rgba(34, 211, 238, 0.15);
+            border: 1px solid rgba(34, 211, 238, 0.3);
+        }
+
         .message-enter {
             animation: slideInAndScale 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
             opacity: 0;
@@ -333,7 +358,7 @@
             const botTag = isBot ? `<span class="bg-discord-primary text-white text-[10px] font-bold px-1 rounded ml-1 uppercase leading-tight relative top-[-1px] shadow-sm">Bot</span>` : '';
 
             // Highlight mentions
-            let formattedContent = content.replace(/@([a-zA-Z0-9_ ]+)/g, '<span class="bg-indigo-500/30 text-indigo-300 px-1 rounded cursor-pointer hover:bg-indigo-500/50 hover:underline transition-colors">@$1</span>');
+            let formattedContent = content.replace(/@([a-zA-Z0-9_ ]+)/g, '<span class="bg-indigo-500/30 text-indigo-300 px-1 rounded cursor-pointer hover:bg-indigo-500 hover:shadow-lg hover:shadow-indigo-500/50 transform hover:-translate-y-1 transition-all duration-300 hover:underline transition-colors">@$1</span>');
 
             // Highlight action text *...*
             formattedContent = formattedContent.replace(/\*(.*?)\*/g, '<span class="italic text-discord-muted group-hover:text-discord-muted/80 transition-colors">* $1 *</span>');
