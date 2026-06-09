@@ -6,6 +6,21 @@
     <title>Anime World Simulator AI</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
+
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.4);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+            border-radius: 1rem;
+            transition: all 0.3s ease;
+        }
+        .glass-panel:hover {
+            box-shadow: 0 8px 32px 0 rgba(34, 211, 238, 0.15);
+            border: 1px solid rgba(34, 211, 238, 0.3);
+        }
+
         body {
             background-color: #0f172a;
             color: #f8fafc;
@@ -101,10 +116,10 @@
         </header>
 
         <main>
-            <div class="bg-slate-800/80 backdrop-blur-md rounded-2xl p-8 shadow-2xl mb-10 border border-slate-700">
+            <div class="glass-panel backdrop-blur-md rounded-2xl p-8 shadow-2xl mb-10 border border-slate-700">
                 <label for="scenario" class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-4">Initialize Global Scenario Parameter</label>
                 <div class="flex flex-col sm:flex-row gap-6">
-                    <textarea id="scenario" rows="3" class="w-full bg-slate-900/80 border border-slate-600 rounded-xl p-4 text-slate-100 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none resize-none shadow-inner placeholder-slate-500 text-lg" placeholder="e.g. A mysterious portal opens in the sky, raining demons upon the city..."></textarea>
+                    <textarea id="scenario" rows="3" class="w-full glass-panel border border-slate-600 rounded-xl p-4 text-slate-100 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none resize-none shadow-inner placeholder-slate-500 text-lg" placeholder="e.g. A mysterious portal opens in the sky, raining demons upon the city..."></textarea>
                     <button id="simulateBtn" class="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold py-4 px-10 rounded-xl transition-all shadow-lg shadow-blue-500/20 flex-shrink-0 self-start sm:self-center transform hover:-translate-y-1">
                         Run Simulation
                     </button>
@@ -221,7 +236,7 @@
                                     <p class="text-xs text-slate-400 font-medium">${reaction.archetype}</p>
                                 </div>
                             </div>
-                            <div class="mb-4 bg-slate-900/50 p-3 rounded-lg border border-slate-700/50">
+                            <div class="mb-4 glass-panel p-3 rounded-lg border border-slate-700/50">
                                 <span class="text-[10px] font-bold text-indigo-400 uppercase tracking-wider block mb-1">Core Emotion</span>
                                 <p class="text-sm italic text-slate-300">"${reaction.core_emotion}"</p>
                             </div>
