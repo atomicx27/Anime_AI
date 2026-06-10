@@ -233,3 +233,28 @@ python3 main.py
 # Open your browser and navigate to http://localhost:8006/
 # Open your browser and navigate to the frontend index.html file, or use a local HTTP server in the frontend directory.
 ```
+### 8. Anime Detective Agency AI
+
+The **Anime Detective Agency AI** is a web-based, multi-agent application that acts as an orchestration system for solving mysteries. Users submit a "case file" or mystery description, and the AI evaluates all characters from the database based on their Core Emotion, Personality Profile, and Unique Quality to assign them specialized roles within the detective agency (e.g., Lead Detective, Forensics, Interrogator, Enforcer).
+
+#### Folder Location
+`anime_detective_agency/`
+
+#### Features
+- **Dynamic Role Assignment**: The agent analyzes the case description and character traits to logically assign roles that best fit their psychological profiles and abilities.
+- **Investigative Insights**: Generates unique, character-specific strategies and insights on how they would approach solving the case.
+- **Sleek UI/UX**: Features a modern, cyberpunk-inspired dark theme built with Tailwind CSS, including an animated "Director AI Terminal" and stylish glassmorphism role cards.
+- **Dynamic Character Loading**: Backend API automatically parses the root `README.md` to load character details.
+
+#### How to Run
+```bash
+# Install dependencies
+cd anime_detective_agency/backend
+pip install -r requirements.txt
+
+# Run the server
+python3 main.py
+
+# Access the UI
+# Open your browser and navigate to the frontend index.html file locally.
+```
