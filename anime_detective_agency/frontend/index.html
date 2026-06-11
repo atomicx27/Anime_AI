@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anime Detective Agency AI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['Fira Code', 'monospace'],
+                    },
+                    colors: {
+                        dark: '#0f172a',
+                        card: '#1e293b',
+                        accent: '#3b82f6'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #0f172a;
+            color: #f8fafc;
+            background-image: radial-gradient(circle at top right, rgba(59, 130, 246, 0.1), transparent),
+                              radial-gradient(circle at bottom left, rgba(147, 51, 234, 0.1), transparent);
+            min-height: 100vh;
+        }
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        }
+        .animate-pulse-slow {
+            animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: .5; }
+        }
+    </style>
+</head>
+<body class="font-sans antialiased p-6 flex flex-col items-center">
+
+    <div class="w-full max-w-4xl mt-10">
+        <header class="text-center mb-10">
+            <h1 class="text-4xl md:text-5xl font-bold mb-4 tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">
+                Anime Detective Agency AI
+            </h1>
+            <p class="text-slate-400 text-lg max-w-2xl mx-auto">
+                Present your mystery to the agency. Our elite team of anime characters will dynamically assemble and investigate based on their unique traits and philosophies.
+            </p>
+        </header>
+
+        <div class="glass-panel rounded-2xl p-6 md:p-8 mb-8 relative overflow-hidden group">
+            <div class="absolute top-0 right-0 p-4 opacity-50 group-hover:opacity-100 transition-opacity">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-blue-400"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            </div>
+
+            <label for="mystery-input" class="block text-sm font-semibold text-slate-300 mb-2 uppercase tracking-wider">Describe the Mystery</label>
+            <textarea
+                id="mystery-input"
+                rows="4"
+                class="w-full bg-slate-900/80 border border-slate-600/50 rounded-xl p-4 text-slate-100 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none resize-none shadow-inner placeholder-slate-500 text-lg transition-all"
+                placeholder="e.g. Someone stole the forbidden scrolls from the Hokage's office, leaving behind only a trace of black ash..."></textarea>
+
+            <button
+                id="investigate-btn"
+                class="mt-6 w-full py-4 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold rounded-xl shadow-[0_0_15px_rgba(59,130,246,0.5)] hover:shadow-[0_0_25px_rgba(59,130,246,0.7)] transition-all duration-300 transform hover:-translate-y-1 text-lg flex items-center justify-center gap-2">
+                <span>Start Investigation</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+            </button>
+        </div>
+
+        <div id="loading" class="hidden flex flex-col items-center justify-center py-12">
+            <div class="w-16 h-16 border-4 border-blue-500/30 border-t-blue-500 rounded-full animate-spin mb-4 shadow-[0_0_15px_rgba(59,130,246,0.5)]"></div>
+            <p class="text-blue-400 font-mono animate-pulse-slow">Analyzing clues & assembling team...</p>
+        </div>
+
+        <div id="results-container" class="hidden space-y-8 animate-[fadeIn_0.5s_ease-out]">
+
+            <div class="glass-panel rounded-2xl p-6 border-l-4 border-indigo-500">
+                <h2 class="text-xl font-bold text-indigo-400 mb-2 flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
+                    Case File
+                </h2>
+                <p id="case-description" class="text-slate-300 italic"></p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Lead Detective -->
+                <div class="glass-panel rounded-2xl p-6 relative overflow-hidden flex flex-col h-full transform transition duration-300 hover:scale-105 hover:shadow-[0_0_20px_rgba(59,130,246,0.3)]">
+                    <div class="absolute top-0 right-0 bg-blue-600 text-xs font-bold px-3 py-1 rounded-bl-lg">LEAD DETECTIVE</div>
+                    <h3 id="lead-name" class="text-2xl font-bold text-blue-400 mt-2 mb-1"></h3>
+                    <div class="flex-grow">
+                        <p id="lead-approach" class="text-sm text-slate-300 mb-4 font-mono bg-slate-900/50 p-3 rounded-lg"></p>
+                    </div>
+                    <blockquote id="lead-quote" class="border-l-2 border-blue-500 pl-3 italic text-sm text-slate-400"></blockquote>
+                </div>
+
+                <!-- Forensic Expert -->
+                <div class="glass-panel rounded-2xl p-6 relative overflow-hidden flex flex-col h-full transform transition duration-300 hover:scale-105 hover:shadow-[0_0_20px_rgba(16,185,129,0.3)]">
+                    <div class="absolute top-0 right-0 bg-emerald-600 text-xs font-bold px-3 py-1 rounded-bl-lg">FORENSIC EXPERT</div>
+                    <h3 id="expert-name" class="text-2xl font-bold text-emerald-400 mt-2 mb-1"></h3>
+                    <div class="flex-grow">
+                        <p id="expert-approach" class="text-sm text-slate-300 mb-4 font-mono bg-slate-900/50 p-3 rounded-lg"></p>
+                    </div>
+                    <blockquote id="expert-quote" class="border-l-2 border-emerald-500 pl-3 italic text-sm text-slate-400"></blockquote>
+                </div>
+
+                <!-- Wildcard -->
+                <div class="glass-panel rounded-2xl p-6 relative overflow-hidden flex flex-col h-full transform transition duration-300 hover:scale-105 hover:shadow-[0_0_20px_rgba(239,68,68,0.3)]">
+                    <div class="absolute top-0 right-0 bg-red-600 text-xs font-bold px-3 py-1 rounded-bl-lg">PRIME SUSPECT</div>
+                    <h3 id="wildcard-name" class="text-2xl font-bold text-red-400 mt-2 mb-1"></h3>
+                    <div class="flex-grow">
+                        <p id="wildcard-approach" class="text-sm text-slate-300 mb-4 font-mono bg-slate-900/50 p-3 rounded-lg"></p>
+                    </div>
+                    <blockquote id="wildcard-quote" class="border-l-2 border-red-500 pl-3 italic text-sm text-slate-400"></blockquote>
+                </div>
+            </div>
+
+            <!-- Conclusion -->
+            <div class="glass-panel rounded-2xl p-8 relative overflow-hidden border border-purple-500/30">
+                <div class="absolute -top-10 -right-10 w-32 h-32 bg-purple-500 rounded-full blur-3xl opacity-20"></div>
+                <h2 class="text-2xl font-bold text-purple-400 mb-4 flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                    Final Deduction
+                </h2>
+                <p id="conclusion-text" class="text-lg text-slate-200 leading-relaxed font-mono bg-slate-900/60 p-4 rounded-xl"></p>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('investigate-btn').addEventListener('click', async () => {
+            const mysteryInput = document.getElementById('mystery-input').value.trim();
+            if (!mysteryInput) return;
+
+            // UI State updates
+            document.getElementById('results-container').classList.add('hidden');
+            document.getElementById('loading').classList.remove('hidden');
+            document.getElementById('loading').classList.add('flex');
+
+            try {
+                // Fetch from the local backend API on port 8007
+                const response = await fetch('http://localhost:8007/api/investigate', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ mystery: mysteryInput })
+                });
+
+                if (!response.ok) throw new Error('Network response was not ok');
+                const data = await response.json();
+
+                // Populate UI
+                document.getElementById('case-description').textContent = data.mystery;
+
+                // Lead
+                document.getElementById('lead-name').textContent = data.team[0].character;
+                document.getElementById('lead-approach').textContent = data.team[0].approach;
+                document.getElementById('lead-quote').textContent = `"${data.team[0].quote}"`;
+
+                // Expert
+                document.getElementById('expert-name').textContent = data.team[1].character;
+                document.getElementById('expert-approach').textContent = data.team[1].approach;
+                document.getElementById('expert-quote').textContent = `"${data.team[1].quote}"`;
+
+                // Wildcard
+                document.getElementById('wildcard-name').textContent = data.team[2].character;
+                document.getElementById('wildcard-approach').textContent = data.team[2].approach;
+                document.getElementById('wildcard-quote').textContent = `"${data.team[2].quote}"`;
+
+                // Conclusion
+                document.getElementById('conclusion-text').textContent = data.conclusion;
+
+                // Show Results
+                document.getElementById('loading').classList.add('hidden');
+                document.getElementById('loading').classList.remove('flex');
+                document.getElementById('results-container').classList.remove('hidden');
+
+            } catch (error) {
+                console.error("Error investigating:", error);
+                alert("Failed to connect to the Detective Agency. Ensure the backend is running on port 8007.");
+                document.getElementById('loading').classList.add('hidden');
+                document.getElementById('loading').classList.remove('flex');
+            }
+        });
+    </script>
+</body>
+</html>
