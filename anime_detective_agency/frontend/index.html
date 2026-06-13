@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anime Detective Agency AI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: radial-gradient(circle at center, #1a202c 0%, #000000 100%);
+            color: #e2e8f0;
+            min-height: 100vh;
+        }
+        .code-font {
+            font-family: 'Fira Code', monospace;
+        }
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06), 0 0 20px rgba(66, 153, 225, 0.2);
+        }
+        .glow-button {
+            transition: all 0.3s ease;
+        }
+        .glow-button:hover {
+            box-shadow: 0 0 15px rgba(66, 153, 225, 0.5);
+            transform: translateY(-2px);
+        }
+        .typing-effect {
+            border-right: 2px solid #4299e1;
+            white-space: nowrap;
+            overflow: hidden;
+            animation: typing 2s steps(40, end), blink-caret .75s step-end infinite;
+        }
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: #4299e1; }
+        }
+        .fade-in {
+            animation: fadeIn 0.5s ease-in forwards;
+            opacity: 0;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="flex flex-col items-center py-10 px-4">
+
+    <header class="text-center mb-10 fade-in">
+        <h1 class="text-5xl font-bold mb-2 text-blue-400 drop-shadow-[0_0_10px_rgba(66,153,225,0.8)]">Anime Detective Agency AI</h1>
+        <p class="text-gray-400 text-lg">Present your mystery, and our elite team of anime characters will solve it.</p>
+    </header>
+
+    <main class="w-full max-w-4xl flex flex-col gap-8">
+
+        <!-- Input Section -->
+        <section class="glass-panel rounded-2xl p-6 fade-in" style="animation-delay: 0.1s;">
+            <label for="mystery-input" class="block text-sm font-medium text-gray-300 mb-2">Describe the Mystery:</label>
+            <textarea id="mystery-input" rows="4" class="w-full bg-gray-800/50 border border-gray-600 rounded-lg p-4 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all resize-none code-font" placeholder="e.g. Someone stole the sacred scroll from the Hidden Leaf village archive..."></textarea>
+            <div class="mt-4 flex justify-end">
+                <button id="solve-btn" class="glow-button bg-blue-600 hover:bg-blue-500 text-white font-semibold py-2 px-6 rounded-lg">
+                    Investigate
+                </button>
+            </div>
+        </section>
+
+        <!-- Loading State -->
+        <section id="loading-state" class="hidden glass-panel rounded-2xl p-8 text-center">
+            <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-400 mb-4"></div>
+            <p class="code-font text-blue-400 typing-effect mx-auto" style="max-width: max-content;">Analyzing evidence and assigning agents...</p>
+        </section>
+
+        <!-- Results Section -->
+        <section id="results-container" class="hidden flex flex-col gap-6">
+
+            <div class="glass-panel rounded-2xl p-6">
+                <h2 class="text-2xl font-bold text-blue-300 mb-4 border-b border-gray-700 pb-2">Assigned Investigators</h2>
+                <div id="investigators-grid" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <!-- Investigators injected here -->
+                </div>
+            </div>
+
+            <div class="glass-panel rounded-2xl p-6">
+                <h2 class="text-2xl font-bold text-purple-300 mb-4 border-b border-gray-700 pb-2">The Investigation Process</h2>
+                <div id="clues-container" class="space-y-4">
+                    <!-- Clues injected here -->
+                </div>
+            </div>
+
+            <div class="glass-panel rounded-2xl p-6 bg-blue-900/20 border-blue-500/30">
+                <h2 class="text-2xl font-bold text-green-400 mb-4 border-b border-gray-700 pb-2">Final Conclusion</h2>
+                <p id="conclusion-text" class="text-lg leading-relaxed"></p>
+            </div>
+
+        </section>
+
+    </main>
+
+    <script>
+        const solveBtn = document.getElementById('solve-btn');
+        const mysteryInput = document.getElementById('mystery-input');
+        const loadingState = document.getElementById('loading-state');
+        const resultsContainer = document.getElementById('results-container');
+        const investigatorsGrid = document.getElementById('investigators-grid');
+        const cluesContainer = document.getElementById('clues-container');
+        const conclusionText = document.getElementById('conclusion-text');
+
+        solveBtn.addEventListener('click', async () => {
+            const mystery = mysteryInput.value.trim();
+            if (!mystery) return;
+
+            // UI State change
+            resultsContainer.classList.add('hidden');
+            loadingState.classList.remove('hidden');
+            solveBtn.disabled = true;
+            solveBtn.classList.add('opacity-50', 'cursor-not-allowed');
+
+            try {
+                const response = await fetch('http://localhost:8007/api/solve', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ mystery })
+                });
+
+                if (!response.ok) throw new Error('Network response was not ok');
+
+                const data = await response.json();
+
+                renderResults(data);
+
+            } catch (error) {
+                console.error("Failed to solve mystery:", error);
+                alert("Failed to analyze mystery. Ensure backend is running.");
+            } finally {
+                loadingState.classList.add('hidden');
+                solveBtn.disabled = false;
+                solveBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+            }
+        });
+
+        function renderResults(data) {
+            investigatorsGrid.innerHTML = '';
+            cluesContainer.innerHTML = '';
+
+            // Render Investigators
+            data.investigators.forEach((inv, index) => {
+                const card = document.createElement('div');
+                card.className = `bg-gray-800/60 p-4 rounded-xl border border-gray-600 flex items-center gap-4 fade-in`;
+                card.style.animationDelay = `${index * 0.1}s`;
+                card.innerHTML = `
+                    <img src="${inv.avatar}" alt="${inv.name}" class="w-16 h-16 rounded-full bg-gray-700 p-1 border-2 border-blue-400">
+                    <div>
+                        <h3 class="font-bold text-white">${inv.name}</h3>
+                        <span class="text-xs text-blue-300 font-medium tracking-wide uppercase code-font">${inv.role}</span>
+                    </div>
+                `;
+                investigatorsGrid.appendChild(card);
+            });
+
+            // Render Clues
+            data.clues.forEach((clue, index) => {
+                const item = document.createElement('div');
+                item.className = `bg-gray-800/40 p-4 rounded-lg border-l-4 border-purple-500 fade-in`;
+                item.style.animationDelay = `${(data.investigators.length * 0.1) + (index * 0.1)}s`;
+                item.innerHTML = `
+                    <div class="flex justify-between items-start mb-2">
+                        <span class="font-semibold text-purple-300">${clue.character} <span class="text-gray-500 text-sm font-normal">(${clue.role})</span></span>
+                        <span class="text-xs bg-purple-900/50 text-purple-200 px-2 py-1 rounded code-font">${clue.clue_type}</span>
+                    </div>
+                    <p class="text-gray-300">${clue.description}</p>
+                `;
+                cluesContainer.appendChild(item);
+            });
+
+            // Render Conclusion
+            conclusionText.textContent = data.conclusion;
+
+            resultsContainer.classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
