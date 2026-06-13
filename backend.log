@@ -1,0 +1,7 @@
+INFO:     Started server process [43521]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8007 (Press CTRL+C to quit)
+Loaded 14 characters.
+INFO:     127.0.0.1:35660 - "OPTIONS /api/solve HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35674 - "POST /api/solve HTTP/1.1" 200 OK
