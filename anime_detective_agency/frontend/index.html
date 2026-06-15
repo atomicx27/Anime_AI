@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anime Detective Agency AI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['Fira Code', 'monospace'],
+                    },
+                    colors: {
+                        dark: '#0f172a',
+                        card: 'rgba(30, 41, 59, 0.7)',
+                        accent: '#38bdf8',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #0f172a;
+            color: #f8fafc;
+            background-image: radial-gradient(circle at 50% 0%, #1e293b 0%, #0f172a 70%);
+            background-attachment: fixed;
+        }
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+            border-radius: 16px;
+        }
+        .hover-glow:hover {
+            box-shadow: 0 0 15px rgba(56, 189, 248, 0.5);
+            transform: translateY(-2px);
+            transition: all 0.3s ease;
+        }
+        .terminal-text {
+            color: #34d399;
+        }
+        .loading-dot {
+            animation: bounce 1.4s infinite ease-in-out both;
+        }
+        .loading-dot:nth-child(1) { animation-delay: -0.32s; }
+        .loading-dot:nth-child(2) { animation-delay: -0.16s; }
+        @keyframes bounce {
+            0%, 80%, 100% { transform: scale(0); }
+            40% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body class="min-h-screen font-sans flex flex-col items-center p-6">
+
+    <header class="w-full max-w-5xl mb-10 text-center mt-8">
+        <h1 class="text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-accent to-purple-400">
+            Anime Detective Agency AI
+        </h1>
+        <p class="text-slate-400 text-lg max-w-2xl mx-auto">
+            Submit a mystery. Our diverse cast of agents will generate unique investigation profiles based on their core philosophies.
+        </p>
+    </header>
+
+    <main class="w-full max-w-5xl flex flex-col gap-8">
+
+        <!-- Input Section -->
+        <section class="glass-panel p-8 w-full max-w-3xl mx-auto">
+            <h2 class="text-2xl font-semibold mb-4 text-accent flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+                Report a Mystery
+            </h2>
+            <textarea id="mystery-input" rows="4" class="w-full bg-slate-800 border border-slate-600 rounded-lg p-4 text-slate-200 focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-all resize-none font-mono text-sm" placeholder="e.g. Someone stole the Hokage's hat from the heavily guarded vault..."></textarea>
+
+            <button id="investigate-btn" class="mt-6 w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white font-semibold py-3 px-6 rounded-lg shadow-lg hover:shadow-cyan-500/50 transition-all duration-300">
+                Launch Investigation
+            </button>
+        </section>
+
+        <!-- Loading Indicator -->
+        <div id="loading" class="hidden flex justify-center items-center gap-2 my-8">
+            <div class="w-4 h-4 bg-accent rounded-full loading-dot"></div>
+            <div class="w-4 h-4 bg-accent rounded-full loading-dot"></div>
+            <div class="w-4 h-4 bg-accent rounded-full loading-dot"></div>
+        </div>
+
+        <!-- Results Section -->
+        <section id="results-container" class="hidden w-full flex flex-col gap-6 mb-20">
+            <div class="glass-panel p-6">
+                <h3 class="text-xl font-bold mb-2 text-slate-300">Case File:</h3>
+                <p id="case-title" class="text-accent font-mono text-lg italic bg-slate-800 p-3 rounded border border-slate-700"></p>
+            </div>
+
+            <div id="profiles-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Profiles will be injected here -->
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        document.getElementById('investigate-btn').addEventListener('click', async () => {
+            const mystery = document.getElementById('mystery-input').value;
+            if (!mystery.trim()) {
+                alert("Please describe a mystery first.");
+                return;
+            }
+
+            // UI State updates
+            document.getElementById('investigate-btn').disabled = true;
+            document.getElementById('investigate-btn').classList.add('opacity-50', 'cursor-not-allowed');
+            document.getElementById('loading').classList.remove('hidden');
+            document.getElementById('results-container').classList.add('hidden');
+
+            try {
+                const response = await fetch('http://localhost:8007/api/investigate', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ mystery: mystery })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const data = await response.json();
+                renderResults(data);
+
+            } catch (error) {
+                console.error("Error fetching investigation:", error);
+                alert("Failed to run investigation. Ensure backend is running on port 8007.");
+            } finally {
+                document.getElementById('investigate-btn').disabled = false;
+                document.getElementById('investigate-btn').classList.remove('opacity-50', 'cursor-not-allowed');
+                document.getElementById('loading').classList.add('hidden');
+            }
+        });
+
+        function renderResults(data) {
+            document.getElementById('results-container').classList.remove('hidden');
+            document.getElementById('case-title').textContent = `"${data.mystery}"`;
+
+            const grid = document.getElementById('profiles-grid');
+            grid.innerHTML = '';
+
+            data.investigation.forEach(profile => {
+                const card = document.createElement('div');
+                card.className = 'glass-panel p-6 hover-glow flex flex-col gap-3';
+
+                // Determine role color
+                let roleColor = 'text-slate-400';
+                if (profile.role.includes('Lead Investigator')) roleColor = 'text-purple-400';
+                else if (profile.role.includes('Field Operative')) roleColor = 'text-orange-400';
+                else if (profile.role.includes('Rogue')) roleColor = 'text-red-400';
+                else if (profile.role.includes('Liaison')) roleColor = 'text-green-400';
+                else if (profile.role.includes('Consultant')) roleColor = 'text-blue-400';
+
+                card.innerHTML = `
+                    <div class="border-b border-slate-700 pb-3">
+                        <h4 class="text-xl font-bold text-white">${profile.name}</h4>
+                        <p class="text-sm font-mono ${roleColor} mt-1">[Role: ${profile.role}]</p>
+                    </div>
+                    <div class="flex-grow">
+                        <p class="text-xs text-slate-400 uppercase tracking-wider mb-1 mt-2">Theory</p>
+                        <p class="text-sm text-slate-200 italic mb-3">"${profile.theory}"</p>
+
+                        <p class="text-xs text-slate-400 uppercase tracking-wider mb-1">Action</p>
+                        <p class="text-sm text-slate-300 font-mono bg-slate-800 p-2 rounded">${profile.action}</p>
+                    </div>
+                    <div class="mt-4 pt-3 border-t border-slate-700/50">
+                        <p class="text-xs text-slate-500">Driven by: <span class="text-slate-400">${profile.core_emotion}</span></p>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+    </script>
+</body>
+</html>
