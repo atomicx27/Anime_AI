@@ -75,10 +75,10 @@ function App() {
       {/* Sidebar */}
       <div className="w-72 bg-gray-900/50 backdrop-blur-md border-r border-gray-800 flex flex-col shadow-xl z-20">
         <div className="p-6 border-b border-gray-800 flex items-center gap-3">
-          <div className="bg-cyan-500/20 p-2 rounded-xl">
+          <div className="bg-cyan-500/20 p-2 rounded-xl shadow-[0_0_15px_rgba(34,211,238,0.3)]">
             <Sparkles className="w-6 h-6 text-cyan-400" />
           </div>
-          <h1 className="text-xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-blue-500 tracking-tight">Anime Agents</h1>
+          <h1 className="text-xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-blue-500 tracking-tight drop-shadow-[0_0_8px_rgba(34,211,238,0.4)]">Anime Agents</h1>
         </div>
         <div className="flex-1 overflow-y-auto py-2 custom-scrollbar">
           <AnimatePresence>
@@ -86,15 +86,15 @@ function App() {
               <motion.div
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
-                whileHover={{ scale: 1.02 }}
+                whileHover={{ scale: 1.02, x: 5 }}
                 whileTap={{ scale: 0.98 }}
                 transition={{ duration: 0.3, delay: index * 0.05 }}
                 key={agent.name}
                 onClick={() => selectAgent(agent)}
-                className={`mx-3 my-1 p-3 rounded-xl cursor-pointer transition-all duration-200 border border-transparent flex items-center gap-3 ${
+                className={`mx-3 my-1 p-3 rounded-xl cursor-pointer transition-all duration-300 border border-transparent flex items-center gap-3 group ${
                   selectedAgent?.name === agent.name
-                    ? 'bg-cyan-500/10 border-cyan-500/30 shadow-[0_0_15px_rgba(6,182,212,0.1)]'
-                    : 'hover:bg-gray-800/80 hover:border-gray-700'
+                    ? 'bg-gradient-to-r from-cyan-900/40 to-blue-900/40 border-cyan-500/50 shadow-[0_0_15px_rgba(6,182,212,0.3)]'
+                    : 'hover:bg-gray-800/80 hover:border-gray-600 hover:shadow-[0_0_10px_rgba(255,255,255,0.05)]'
                 }`}
               >
                 <div className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 transition-colors ${
@@ -271,7 +271,7 @@ function App() {
               >
                 <Bot size={48} className="text-cyan-400 -rotate-3 drop-shadow-[0_0_15px_rgba(34,211,238,0.5)]" />
               </motion.div>
-              <h2 className="text-2xl font-bold mb-3 text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-400">Welcome to Anime Agents</h2>
+              <h2 className="text-2xl font-bold mb-3 text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-400 drop-shadow-[0_0_8px_rgba(34,211,238,0.4)]">Welcome to Anime Agents</h2>
               <p className="text-gray-400 leading-relaxed text-[15px]">
                 Select a character from the sidebar to begin your conversation. Each agent has unique personality traits and philosophies.
               </p>

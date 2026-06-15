@@ -26,6 +26,8 @@
         }
     </script>
     <style>
+        body { font-family: 'Inter', sans-serif; }
+
         .message-enter {
             animation: slideInAndScale 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
             opacity: 0;
@@ -102,6 +104,7 @@
             40% { transform: scale(1); }
         }
     </style>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body class="bg-discord-base text-discord-text h-screen flex overflow-hidden font-sans">
 
@@ -175,9 +178,9 @@
     </div>
 
     <!-- Main Chat Area -->
-    <div class="flex-1 flex flex-col bg-transparent relative">
+    <div class="flex-1 flex flex-col bg-transparent relative backdrop-blur-md bg-white/5">
         <!-- Header -->
-        <div class="h-12 border-b border-black/20 flex items-center px-4 shadow-sm glass-panel z-10 shrink-0">
+        <div class="h-12 border-b border-black/20 flex items-center px-4 shadow-[0_0_15px_rgba(0,0,0,0.5)] z-10 shrink-0">
             <i class="fas fa-hashtag text-discord-muted text-xl mr-3"></i>
             <h2 class="font-bold text-white flex-1">general-chat</h2>
             <div class="flex text-discord-muted space-x-4">
@@ -324,7 +327,7 @@
 
         function appendMessage(sender, content, avatarUrl = null, isBot = false, timeStr = null) {
             const div = document.createElement('div');
-            div.className = 'hover:bg-discord-dark/40 px-4 py-1 flex items-start group mt-3 message-enter hover:translate-x-1 hover:shadow-md transition-all duration-200 rounded';
+            div.className = 'hover:bg-white/5 px-4 py-1 flex items-start group mt-3 message-enter hover:scale-[1.02] hover:-translate-y-1 hover:shadow-[0_0_15px_rgba(88,101,242,0.2)] transition-all duration-300 rounded';
 
             const time = timeStr || formatTime();
             const avatar = avatarUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(sender)}&background=random`;
