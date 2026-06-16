@@ -9,3 +9,13 @@ anime_team_builder/backend/__pycache__/
 anime_world_simulator/backend/__pycache__/
 __pycache__/
 anime_affinity_matcher/backend/__pycache__/
+
+# Background Logs
+*.log
+backend.log
+frontend.log
+
+# Test Artifacts
+test-results/
+*.png
+*.webm
