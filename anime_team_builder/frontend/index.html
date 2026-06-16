@@ -5,21 +5,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Anime Team Builder AI</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['Fira Code', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
     <style>
         body {
             background-color: #0f172a;
             color: #e2e8f0;
-            font-family: 'Inter', sans-serif;
-            background-image: radial-gradient(circle at 15% 50%, rgba(168, 85, 247, 0.15), transparent 25%),
-                              radial-gradient(circle at 85% 30%, rgba(236, 72, 153, 0.15), transparent 25%);
             background-attachment: fixed;
+            overflow-x: hidden;
         }
         .glass {
-            background: rgba(15, 23, 42, 0.6);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
         }
         .card-enter {
             animation: slideUp 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
@@ -43,12 +54,16 @@
             box-shadow: 0 0 10px rgba(236, 72, 153, 0.5);
         }
         .terminal {
-            background-color: rgba(0, 0, 0, 0.8);
-            color: #4ade80;
-            font-family: 'Courier New', Courier, monospace;
-            border: 1px solid rgba(74, 222, 128, 0.2);
-            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.8);
+            background-color: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(74, 222, 128, 0.3);
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.8), 0 0 15px rgba(16, 185, 129, 0.1);
         }
+
+        .terminal::-webkit-scrollbar { width: 6px; }
+        .terminal::-webkit-scrollbar-track { background: rgba(0,0,0,0.5); }
+        .terminal::-webkit-scrollbar-thumb { background: rgba(74, 222, 128, 0.4); border-radius: 4px; }
+        .terminal::-webkit-scrollbar-thumb:hover { background: rgba(74, 222, 128, 0.6); }
 
         /* Floating particles for background */
         .particles {
@@ -77,71 +92,83 @@
         }
     </style>
 </head>
-<body class="min-h-screen p-8 bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 relative">
+<body class="min-h-screen p-8 bg-slate-900 font-sans relative">
+
+    <!-- Ambient Background -->
+    <div class="absolute inset-0 bg-[radial-gradient(circle_at_15%_50%,_var(--tw-gradient-stops))] from-purple-900/20 via-slate-900 to-slate-900 -z-10"></div>
+    <div class="absolute inset-0 bg-[radial-gradient(circle_at_85%_30%,_var(--tw-gradient-stops))] from-pink-900/20 via-transparent to-transparent -z-10"></div>
     <div class="particles"></div>
+
     <div class="max-w-6xl mx-auto relative z-10">
         <header class="text-center mb-16 mt-8">
-            <h1 class="text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-fuchsia-500 to-pink-600 mb-6 drop-shadow-sm tracking-tight">
+            <h1 class="text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-fuchsia-400 to-pink-500 mb-6 drop-shadow-[0_0_15px_rgba(192,132,252,0.4)] tracking-tight">
                 Anime Team Builder AI
             </h1>
-            <p class="text-xl text-slate-400 font-light max-w-2xl mx-auto">Describe a complex mission, and our AI Commander will analyze traits and assemble the perfect squad.</p>
+            <p class="text-xl text-slate-300 font-medium max-w-2xl mx-auto">Describe a complex mission, and our AI Commander will analyze traits and assemble the perfect squad.</p>
         </header>
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
             <div class="lg:col-span-1">
-                <div class="glass p-8 rounded-3xl shadow-2xl relative overflow-hidden">
-                    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-purple-500 to-pink-500"></div>
-                    <h2 class="text-2xl font-bold mb-6 text-white flex items-center gap-3">
-                        <svg class="w-6 h-6 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>
+                <div class="glass p-8 rounded-3xl shadow-[0_8px_32px_rgba(0,0,0,0.3)] relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-purple-500 to-pink-500"></div>
+                    <div class="absolute inset-0 bg-gradient-to-b from-purple-500/5 to-transparent pointer-events-none"></div>
+
+                    <h2 class="text-2xl font-bold mb-6 text-white flex items-center gap-3 relative z-10">
+                        <svg class="w-7 h-7 text-purple-400 drop-shadow-[0_0_8px_rgba(192,132,252,0.6)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>
                         Mission Briefing
                     </h2>
-                    <form id="mission-form" class="space-y-6">
+                    <form id="mission-form" class="space-y-6 relative z-10">
                         <div>
-                            <label for="mission" class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Objective Description</label>
-                            <textarea id="mission" name="mission" rows="6" class="w-full bg-slate-800/50 border border-slate-700/50 rounded-xl p-4 text-white focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none transition-all resize-none shadow-inner placeholder-slate-600" placeholder="e.g., Infiltrate the enemy base, disable the magical barrier, and extract the hostage without raising any alarms." required></textarea>
+                            <label for="mission" class="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-3">Objective Description</label>
+                            <textarea id="mission" name="mission" rows="6" class="w-full bg-black/40 border border-white/10 rounded-xl p-4 text-slate-200 focus:ring-2 focus:ring-purple-500/50 focus:border-purple-500/50 outline-none transition-all resize-none shadow-[inset_0_2px_10px_rgba(0,0,0,0.3)] placeholder-slate-500 text-sm" placeholder="e.g., Infiltrate the enemy base, disable the magical barrier, and extract the hostage without raising any alarms." required></textarea>
                         </div>
                         <div>
-                            <label for="team_size" class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Team Size (1-5)</label>
-                            <input type="number" id="team_size" name="team_size" value="3" min="1" max="5" class="w-full bg-slate-800/50 border border-slate-700/50 rounded-xl p-4 text-white focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none transition-all shadow-inner">
+                            <label for="team_size" class="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-3">Team Size (1-5)</label>
+                            <input type="number" id="team_size" name="team_size" value="3" min="1" max="5" class="w-full bg-black/40 border border-white/10 rounded-xl p-4 text-slate-200 focus:ring-2 focus:ring-purple-500/50 focus:border-purple-500/50 outline-none transition-all shadow-inner">
                         </div>
-                        <button type="submit" id="submit-btn" class="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white font-bold py-4 px-6 rounded-xl transition-all duration-300 shadow-lg shadow-purple-500/30 transform hover:-translate-y-1 flex items-center justify-center gap-2">
+                        <button type="submit" id="submit-btn" class="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white font-bold py-4 px-6 rounded-xl transition-all duration-300 shadow-[0_0_15px_rgba(168,85,247,0.4)] hover:shadow-[0_0_25px_rgba(168,85,247,0.6)] transform hover:-translate-y-1 flex items-center justify-center gap-2">
                             <span>Assemble Squad</span>
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
                         </button>
                     </form>
                 </div>
 
-                <div class="mt-8 terminal p-5 rounded-2xl shadow-2xl h-72 overflow-y-auto" id="thought-terminal">
-                    <div class="text-xs mb-3 text-green-500/50 uppercase tracking-widest border-b border-green-500/20 pb-2">/// COMMANDER TERMINAL ///</div>
-                    <div id="logs-container" class="space-y-2 text-sm">
+                <div class="mt-8 terminal p-5 rounded-2xl h-72 overflow-hidden flex flex-col" id="thought-terminal">
+                    <div class="flex items-center mb-3 border-b border-green-500/30 pb-3">
+                        <div class="w-2.5 h-2.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.8)] mr-3 animate-pulse"></div>
+                        <div class="text-xs text-emerald-500/90 uppercase tracking-widest font-bold">Commander Terminal</div>
+                    </div>
+                    <div id="logs-container" class="space-y-2 text-[13px] overflow-y-auto flex-grow custom-scrollbar text-emerald-400 font-mono opacity-90">
                         <div class="animate-pulse">> System ready. Awaiting parameters...</div>
                     </div>
                 </div>
             </div>
 
             <div class="lg:col-span-2">
-                <div class="glass p-8 rounded-3xl shadow-2xl min-h-[650px] relative overflow-hidden">
-                    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 to-purple-500"></div>
-                    <h2 class="text-2xl font-bold mb-8 text-white border-b border-slate-700/50 pb-4 flex items-center gap-3">
-                        <svg class="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                <div class="glass p-8 rounded-3xl shadow-[0_8px_32px_rgba(0,0,0,0.3)] min-h-[650px] relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-blue-500 to-purple-500"></div>
+                    <div class="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-transparent pointer-events-none"></div>
+
+                    <h2 class="text-3xl font-black mb-8 text-white border-b border-white/10 pb-6 flex items-center gap-3 relative z-10">
+                        <svg class="w-8 h-8 text-blue-400 drop-shadow-[0_0_8px_rgba(96,165,250,0.6)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
                         Selected Operatives
                     </h2>
 
-                    <div id="loading-state" class="hidden flex flex-col items-center justify-center h-full pt-32">
-                        <div class="relative w-24 h-24 mb-6">
+                    <div id="loading-state" class="hidden flex flex-col items-center justify-center h-full pt-32 relative z-10">
+                        <div class="relative w-32 h-32 mb-8">
                             <div class="absolute inset-0 border-4 border-purple-500/20 rounded-full"></div>
                             <div class="absolute inset-0 border-4 border-t-purple-500 rounded-full animate-spin"></div>
                             <div class="radar-scan"></div>
                             <div class="radar-scan" style="animation-delay: 1s"></div>
                         </div>
-                        <p class="text-purple-300 animate-pulse font-medium">Commander is analyzing candidates...</p>
+                        <p class="text-purple-300 animate-pulse font-medium tracking-wide">Commander is analyzing candidates...</p>
                     </div>
 
-                    <div id="team-grid" class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div id="team-grid" class="grid grid-cols-1 md:grid-cols-2 gap-8 relative z-10">
                         <!-- Character cards will be injected here -->
                         <div class="col-span-2 flex flex-col items-center justify-center pt-32 opacity-50">
-                            <svg class="w-24 h-24 text-slate-600 mb-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
-                            <p class="text-slate-400 text-lg">No team assembled yet. Submit a mission to begin.</p>
+                            <svg class="w-24 h-24 text-slate-500 mb-6 drop-shadow-md" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                            <p class="text-slate-400 text-lg font-medium">No team assembled yet. Submit a mission to begin.</p>
                         </div>
                     </div>
                 </div>
@@ -217,23 +244,28 @@
                             borderColor = 'border-emerald-500'; shadowGlow = 'hover:shadow-emerald-500/40'; tagColor = 'bg-emerald-900 text-emerald-200'; barGradient = 'from-emerald-500 to-teal-500';
                         }
 
-                        card.className = `bg-slate-800 rounded-xl p-5 border-l-4 ${borderColor} shadow-md card-enter transition-shadow duration-300 ${shadowGlow}`;
+                        card.className = `bg-white/5 backdrop-blur-md rounded-2xl p-6 border border-white/10 border-l-4 ${borderColor} shadow-[0_4px_15px_rgba(0,0,0,0.1)] card-enter transition-all duration-300 ${shadowGlow} group relative overflow-hidden`;
                         card.style.animationDelay = `${index * 0.2}s`;
 
                         card.innerHTML = `
-                            <div class="flex justify-between items-start mb-3">
-                                <h3 class="text-xl font-bold text-white">${member.name}</h3>
-                                <span class="${tagColor} text-xs font-semibold px-2.5 py-0.5 rounded shadow-sm">${member.role}</span>
+                            <div class="absolute inset-0 bg-gradient-to-r ${barGradient} opacity-0 group-hover:opacity-5 transition-opacity duration-300 pointer-events-none"></div>
+
+                            <div class="flex justify-between items-start mb-4 relative z-10">
+                                <h3 class="text-2xl font-bold text-white group-hover:text-slate-200 transition-colors">${member.name}</h3>
+                                <span class="${tagColor} text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full border shadow-sm">${member.role}</span>
                             </div>
-                            <p class="text-sm text-slate-400 mb-2 font-medium">${member.archetype}</p>
-                            <p class="text-sm text-slate-300 italic mb-4 leading-relaxed">"${member.reasoning}"</p>
-                            <div class="mt-auto pt-3 border-t border-slate-700">
-                                <div class="flex justify-between mb-1">
-                                    <span class="text-xs font-medium text-slate-400">Aptitude Score</span>
-                                    <span class="text-xs font-bold text-slate-300">${member.score}/100</span>
+                            <p class="text-xs bg-black/40 text-slate-300 px-3 py-1.5 rounded-lg mb-4 font-medium inline-block border border-white/5 shadow-inner">${member.archetype}</p>
+                            <p class="text-sm text-slate-300 leading-relaxed mb-6 bg-white/5 p-4 rounded-xl border border-white/5 group-hover:border-white/10 transition-colors shadow-inner relative z-10"><span class="text-slate-500 font-serif text-lg leading-none absolute -top-1 -left-1 opacity-50">"</span>${member.reasoning}<span class="text-slate-500 font-serif text-lg leading-none absolute -bottom-3 right-2 opacity-50">"</span></p>
+
+                            <div class="mt-auto pt-4 border-t border-white/10 relative z-10">
+                                <div class="flex justify-between mb-2">
+                                    <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Aptitude Score</span>
+                                    <span class="text-sm font-black text-white">${member.score}<span class="text-slate-500 text-xs">/100</span></span>
                                 </div>
-                                <div class="w-full bg-slate-900 rounded-full h-2.5 shadow-inner">
-                                  <div class="bg-gradient-to-r ${barGradient} h-2.5 rounded-full score-bar shadow-sm" id="score-bar-${index}"></div>
+                                <div class="w-full bg-black/50 rounded-full h-3 shadow-inner border border-white/5">
+                                  <div class="bg-gradient-to-r ${barGradient} h-full rounded-full score-bar shadow-sm relative overflow-hidden" id="score-bar-${index}">
+                                    <div class="absolute inset-0 bg-white/20 w-full h-full -translate-x-full animate-[shimmer_2s_infinite]"></div>
+                                  </div>
                                 </div>
                             </div>
                         `;
