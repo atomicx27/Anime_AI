@@ -1,0 +1,19 @@
+/app/anime_power_scaler/backend/main.py:27: DeprecationWarning:
+        on_event is deprecated, use lifespan event handlers instead.
+
+        Read more about it in the
+        [FastAPI docs for Lifespan Events](https://fastapi.tiangolo.com/advanced/events/).
+
+  @app.on_event("startup")
+INFO:     Started server process [45422]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8006 (Press CTRL+C to quit)
+Loaded 14 characters.
+INFO:     127.0.0.1:35430 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35430 - "GET /api/characters HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35430 - "POST /api/battle HTTP/1.1" 200 OK
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [45422]
