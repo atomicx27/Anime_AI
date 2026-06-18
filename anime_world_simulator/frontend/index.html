@@ -32,6 +32,8 @@
 
         .card {
             transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
         }
         .card-enter {
             animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
@@ -46,26 +48,26 @@
             transform: translateY(-8px) scale(1.02);
             z-index: 10;
         }
-        .state-aggressive { border: 2px solid #ef4444; box-shadow: 0 0 15px rgba(239, 68, 68, 0.4); }
-        .state-aggressive:hover { box-shadow: 0 0 25px rgba(239, 68, 68, 0.6); transform: scale(1.02); }
+        .state-aggressive { border: 1px solid rgba(239, 68, 68, 0.5); box-shadow: 0 0 15px rgba(239, 68, 68, 0.3); }
+        .state-aggressive:hover { box-shadow: 0 0 25px rgba(239, 68, 68, 0.8); transform: scale(1.05); }
 
-        .state-defensive { border: 2px solid #3b82f6; box-shadow: 0 0 15px rgba(59, 130, 246, 0.4); }
-        .state-defensive:hover { box-shadow: 0 0 25px rgba(59, 130, 246, 0.6); transform: scale(1.02); }
+        .state-defensive { border: 1px solid rgba(59, 130, 246, 0.5); box-shadow: 0 0 15px rgba(59, 130, 246, 0.3); }
+        .state-defensive:hover { box-shadow: 0 0 25px rgba(59, 130, 246, 0.8); transform: scale(1.05); }
 
-        .state-diplomatic { border: 2px solid #10b981; box-shadow: 0 0 15px rgba(16, 185, 129, 0.4); }
-        .state-diplomatic:hover { box-shadow: 0 0 25px rgba(16, 185, 129, 0.6); transform: scale(1.02); }
+        .state-diplomatic { border: 1px solid rgba(16, 185, 129, 0.5); box-shadow: 0 0 15px rgba(16, 185, 129, 0.3); }
+        .state-diplomatic:hover { box-shadow: 0 0 25px rgba(16, 185, 129, 0.8); transform: scale(1.05); }
 
-        .state-strategic { border: 2px solid #8b5cf6; box-shadow: 0 0 15px rgba(139, 92, 246, 0.4); }
-        .state-strategic:hover { box-shadow: 0 0 25px rgba(139, 92, 246, 0.6); transform: scale(1.02); }
+        .state-strategic { border: 1px solid rgba(139, 92, 246, 0.5); box-shadow: 0 0 15px rgba(139, 92, 246, 0.3); }
+        .state-strategic:hover { box-shadow: 0 0 25px rgba(139, 92, 246, 0.8); transform: scale(1.05); }
 
-        .state-chaotic { border: 2px solid #f97316; box-shadow: 0 0 15px rgba(249, 115, 22, 0.4); }
-        .state-chaotic:hover { box-shadow: 0 0 25px rgba(249, 115, 22, 0.6); transform: scale(1.02); }
+        .state-chaotic { border: 1px solid rgba(249, 115, 22, 0.5); box-shadow: 0 0 15px rgba(249, 115, 22, 0.3); }
+        .state-chaotic:hover { box-shadow: 0 0 25px rgba(249, 115, 22, 0.8); transform: scale(1.05); }
 
-        .state-protective { border: 2px solid #ec4899; box-shadow: 0 0 15px rgba(236, 72, 153, 0.4); }
-        .state-protective:hover { box-shadow: 0 0 25px rgba(236, 72, 153, 0.6); transform: scale(1.02); }
+        .state-protective { border: 1px solid rgba(236, 72, 153, 0.5); box-shadow: 0 0 15px rgba(236, 72, 153, 0.3); }
+        .state-protective:hover { box-shadow: 0 0 25px rgba(236, 72, 153, 0.8); transform: scale(1.05); }
 
-        .state-neutral { border: 2px solid #64748b; }
-        .state-neutral:hover { box-shadow: 0 0 25px rgba(100, 116, 139, 0.6); transform: scale(1.02); }
+        .state-neutral { border: 1px solid rgba(100, 116, 139, 0.5); box-shadow: 0 0 15px rgba(100, 116, 139, 0.2); }
+        .state-neutral:hover { box-shadow: 0 0 25px rgba(100, 116, 139, 0.8); transform: scale(1.05); }
 
         .typewriter {
             overflow: hidden;
@@ -93,8 +95,7 @@
             background: rgba(30, 41, 59, 0.6);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
     </style>
 </head>
@@ -137,7 +138,7 @@
                 <p class="text-blue-400 font-medium tracking-widest uppercase text-sm animate-pulse">Simulating World State...</p>
             </div>
 
-            <div id="resultsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div id="resultsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <!-- Character cards will be injected here -->
             </div>
         </main>

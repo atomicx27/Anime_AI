@@ -25,8 +25,9 @@
     </script>
     <style>
         body {
-            background-image: radial-gradient(circle at top right, rgba(139, 92, 246, 0.1) 0%, transparent 40%),
-                              radial-gradient(circle at bottom left, rgba(59, 130, 246, 0.1) 0%, transparent 40%);
+            background-image: radial-gradient(circle at top right, rgba(139, 92, 246, 0.2) 0%, transparent 50%),
+                              radial-gradient(circle at bottom left, rgba(59, 130, 246, 0.2) 0%, transparent 50%),
+                              radial-gradient(circle at center, rgba(16, 185, 129, 0.05) 0%, transparent 60%);
             background-color: #111827;
         }
         .custom-scrollbar::-webkit-scrollbar { width: 6px; }
@@ -70,6 +71,11 @@
 
         .tier-row {
             transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .tier-row:hover {
+            box-shadow: 0 0 15px rgba(167, 139, 250, 0.6);
+            background-color: rgba(31, 41, 55, 0.6);
         }
 
         .tier-row.active-tier {
@@ -133,7 +139,7 @@
 <body class="text-gray-100 h-screen flex flex-col font-sans overflow-hidden">
 
     <!-- Header -->
-    <header class="bg-slate-900/70 backdrop-blur-xl border-b border-slate-700/50 p-4 shadow-lg z-10 flex items-center justify-between">
+    <header class="bg-gray-800/60 backdrop-blur-xl border-b border-gray-700 p-4 shadow-lg z-10 flex items-center justify-between">
         <div class="flex items-center gap-3">
             <div class="w-10 h-10 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-lg flex items-center justify-center shadow-lg shadow-purple-500/40 relative overflow-hidden group">
                 <div class="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
@@ -143,23 +149,25 @@
         </div>
     </header>
 
-    <div class="flex-1 flex overflow-hidden">
+    <div class="flex-1 flex overflow-hidden relative">
+        <!-- Background Decoration -->
+        <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-purple-900/10 via-transparent to-transparent pointer-events-none"></div>
 
         <!-- Sidebar: Agent Terminal -->
-        <div class="w-1/3 bg-slate-950/80 backdrop-blur-md border-r border-slate-800/50 flex flex-col shadow-2xl z-20">
-            <div class="p-4 border-b border-slate-800/50 bg-slate-900/50">
+        <div class="w-1/3 bg-gray-950/80 backdrop-blur-xl border-r border-gray-800/50 flex flex-col shadow-[10px_0_30px_rgba(0,0,0,0.5)] z-20">
+            <div class="p-4 border-b border-gray-800/50 bg-gray-900/50 backdrop-blur-md">
                 <h2 class="font-semibold text-purple-400 flex items-center gap-2">
                     <i class="fa-solid fa-terminal"></i> Agent Thoughts
                 </h2>
             </div>
-            <div id="terminal-content" class="flex-1 p-4 overflow-y-auto custom-scrollbar text-sm font-mono text-green-400 space-y-2">
+            <div id="terminal-content" class="flex-1 p-4 overflow-y-auto custom-scrollbar text-sm font-mono text-green-400 space-y-2 drop-shadow-[0_0_2px_rgba(74,222,128,0.3)]">
                 <div>System initialized. Waiting for scenario input...</div>
             </div>
-            <div class="p-4 bg-slate-900/80 border-t border-slate-800/50">
+            <div class="p-4 bg-gray-900/80 backdrop-blur-md border-t border-gray-800/50 shadow-inner">
                 <form id="scenario-form" class="flex flex-col gap-3">
-                    <label class="text-xs text-slate-400 font-semibold uppercase tracking-wider">Enter Scenario for Evaluation</label>
-                    <textarea id="scenario-input" rows="3" class="w-full bg-slate-800/60 border border-slate-700/50 rounded-lg p-3 text-sm focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none resize-none transition-all hover:bg-slate-800/80 shadow-inner placeholder-slate-500" placeholder="e.g. A high-stakes diplomatic negotiation to prevent a galactic war..."></textarea>
-                    <button type="submit" id="submit-btn" class="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-medium py-2 px-4 rounded-lg transition-all duration-300 shadow-[0_0_15px_rgba(168,85,247,0.3)] hover:shadow-[0_0_25px_rgba(168,85,247,0.5)] transform hover:-translate-y-0.5 flex items-center justify-center gap-2">
+                    <label class="text-xs text-gray-400 font-semibold uppercase tracking-wider flex items-center gap-2"><i class="fa-solid fa-pen-nib text-purple-400"></i> Enter Scenario for Evaluation</label>
+                    <textarea id="scenario-input" rows="3" class="w-full bg-gray-950/50 border border-gray-700 rounded-lg p-3 text-sm focus:ring-2 focus:ring-purple-500/50 focus:border-purple-500 outline-none resize-none transition-all placeholder-gray-600 shadow-inner" placeholder="e.g. A high-stakes diplomatic negotiation to prevent a galactic war..."></textarea>
+                    <button type="submit" id="submit-btn" class="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-medium py-2.5 px-4 rounded-lg transition-all flex items-center justify-center gap-2 shadow-lg shadow-purple-900/20 active:scale-[0.98]">
                         <i class="fa-solid fa-bolt"></i> Evaluate & Rank
                     </button>
                 </form>
@@ -305,7 +313,7 @@
                                     const delay = (rowChildCount * 0.1).toFixed(1);
                                     const charHtml = `
                                         <div class="tooltip relative cursor-help card-enter tier-card animate-pop-in" style="animation-delay: ${delay}s">
-                                            <div class="bg-gray-700 border border-gray-600 rounded px-3 py-2 flex items-center gap-2 hover:bg-gray-600 transition-colors shadow-sm">
+                                            <div class="bg-gray-700/60 backdrop-blur-sm border border-gray-500/30 rounded px-3 py-2 flex items-center gap-2 hover:bg-gray-600/80 transition-all shadow-[0_0_10px_rgba(0,0,0,0.3)]">
                                                 <div class="w-6 h-6 rounded-full bg-gray-800 flex items-center justify-center text-xs font-bold text-gray-300">
                                                     ${getInitials(ranking.name)}
                                                 </div>

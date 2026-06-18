@@ -187,6 +187,17 @@ python3 main.py
 # Open your browser and navigate to http://localhost:8005/
 ```
 
+### 7. Anime Debate Arena AI
+
+The **Anime Debate Arena AI** is a web-based, multi-agent application where you can watch iconic anime characters clash in a battle of ideals. You enter a topic, and the system selects two characters with contrasting traits to debate, while a third character acts as the judge to deliver a final verdict based on their unique philosophies.
+
+#### Folder Location
+`anime_debate_arena/`
+
+#### Features
+- **Dynamic Debater Selection**: Randomly selects two debaters and one judge from the roster to provide unique perspectives on the topic.
+- **Simulated Debate Generation**: Constructs an argument and rebuttal based on the characters' Core Emotion, Personality Profile, and Unique Quality.
+- **Sleek, Animated UI**: Features a modern, glassmorphism interface built with Tailwind CSS, displaying live character cards and a smoothly typing chat transcript.
 ### Anime Power Scaler AI
 
 The **Anime Power Scaler AI** is a web-based, multi-agent application that evaluates how anime characters from the database would scale against a user-provided opponent or threat. It dynamically evaluates their "Core Emotion", "Personality Profile", and "Unique Quality & Philosophy" to categorize them into power tiers like Overkill, Even Match, Underdog, or Support.
@@ -220,6 +231,7 @@ The **Anime Affinity Matcher AI** is a web-based, agentic application that acts 
 #### How to Run
 ```bash
 # Install dependencies
+cd anime_debate_arena/backend
 cd anime_power_scaler/backend
 cd anime_affinity_matcher/backend
 pip install -r requirements.txt
@@ -232,4 +244,70 @@ python3 main.py
 # Open your browser and navigate to the frontend/index.html file locally.
 # Open your browser and navigate to http://localhost:8006/
 # Open your browser and navigate to the frontend index.html file, or use a local HTTP server in the frontend directory.
+```
+
+### 8. Anime Detective Agency AI
+
+The **Anime Detective Agency AI** is a web-based, multi-agent application that acts as an intelligent investigative task force. Users submit a mystery or case description, and the AI evaluates all characters from the table based on their Core Emotion, Personality Profile, and Unique Quality to assign them specialized roles within the detective agency (e.g., Lead Detective, Medical Examiner, Interrogator, Forensics).
+The **Anime Detective Agency AI** is a web-based, multi-agent application that acts as a premier investigation team. Users submit a description of a crime or mystery, and the AI evaluates all characters from the table based on their Core Emotion, Personality Profile, and Unique Quality to assign them specialized investigation roles (e.g., Lead Investigator, Forensics Analyst, Interrogator, Profiler).
+The **Anime Detective Agency AI** is a web-based, multi-agent application where characters form an investigation team to solve mysteries submitted by the user.
+
+#### Folder Location
+`anime_detective_agency/`
+
+#### Features
+- **Dynamic Role Assignment**: The agent analyzes the user's mystery input and assigns highly specific investigation roles to each character based on their unique traits and psychological profiles.
+- **In-Character Insights**: Characters provide tailored insights or proposed actions for the investigation, reflecting their core philosophy (e.g., Naruto using "Talk no Jutsu" for interrogation).
+- **Agent Terminal Log**: An animated "Agent Thoughts Terminal" displays the system's live evaluation and assignment process.
+- **Sleek UI/UX**: Built with Vanilla HTML, JS, and Tailwind CSS, featuring a beautiful dark theme with glassmorphism, radial gradients, shadow glows, and smooth hover animations.
+- **Dynamic Character Loading**: Backend API automatically parses the root `README.md` to load character details dynamically.
+- **Dynamic Role Assignment**: The agent analyzes character traits and dynamically assigns them to specific investigative roles best suited to their personalities and skills.
+- **Agentic Simulation**: A backend `DetectiveAgencyAgent` generates unique, character-specific investigation strategies and findings for each assigned role.
+- **Modern UI/UX**: Features a highly polished interface built with Tailwind CSS, incorporating glassmorphism, radial gradients, shadow glows, and smooth hover animations.
+- **Dynamic Character Loading**: Backend API automatically parses the root `README.md` to load character details dynamically.
+- **Dynamic Role Assignment**: The DetectiveAgent automatically assigns roles like "Lead Detective", "Forensics/Analyst", and "Interrogator/Enforcer" based on the characters' Core Emotion, Personality Profile, and Unique Quality.
+- **Agentic Investigation Log**: A generated log showing how the assigned team evaluates the user's mystery, highlighting each character's unique traits in their actions.
+- **Sleek UI/UX**: Built with Vanilla HTML, JS, and Tailwind CSS, featuring glassmorphism panels, glowing shadow effects, and smooth rendering of the agent thought process.
+- **Dynamic Character Loading**: Backend API automatically parses the root `README.md` to dynamically load character details for the agency.
+### 8. Anime Courtroom AI
+
+The **Anime Courtroom AI** is a web-based, multi-agent application that simulates a trial where anime characters take on the roles of Judge, Prosecutor, Defense Attorney, and Jury. It dynamically evaluates their "Core Emotion", "Personality Profile", and "Unique Quality & Philosophy" to determine the verdict of a user-submitted case.
+
+### 8. Anime Courtroom AI
+
+The **Anime Courtroom AI** is a web-based, multi-agent application that simulates a trial based on a user-provided case or moral dilemma. The AI automatically assigns characters from the database to roles such as Judge, Prosecutor, Defense, and Jury based on their "Core Emotion" and "Personality Profile."
+### 8. Anime Courtroom AI
+
+The **Anime Courtroom AI** is a web-based, multi-agent application that simulates a trial based on a user-submitted crime or action. The AI dynamically assigns the roles of Judge, Prosecutor, and Defense Attorney to anime characters based on their Core Emotion and Personality Profile, and generates a realistic mock trial transcript.
+
+#### Folder Location
+`anime_courtroom/`
+
+#### Features
+- **Dynamic Role Assignment**: Agents analyze character traits to assign suitable courtroom roles (e.g., logical characters as Judges, protective characters as Defense).
+- **Agentic Trial Simulation**: Generates in-character opening statements, jury deliberation thoughts, and a final verdict based on the characters' worldviews.
+- **Sleek, Animated UI**: A modern, dark-themed interface built with Tailwind CSS featuring an animated trial transcript and distinct role cards with glassmorphism effects.
+- **Dynamic Role Assignment**: Characters are dynamically slotted into courtroom roles based on their traits (e.g., stoic/logical characters become Judges, empathetic characters become Defense).
+- **Agentic Simulation**: Generates a simulated trial transcript where each character argues the case according to their "Unique Quality & Philosophy."
+- **Cinematic UI/UX**: A modern, dark-themed interface built with Tailwind CSS featuring glassmorphism, radial gradients, shadow glows, smooth hover animations, and a real-time typing transcript.
+- **Dynamic Character Loading**: Backend API automatically parses the root `README.md` to load character details for the simulation.
+- **Dynamic Role Assignment**: Characters are categorized into Judicial, Prosecutorial, or Defense roles based on traits like logic, ambition, or empathy.
+- **Agentic Simulation**: Generates in-character opening statements, rebuttals, and a final verdict directly influenced by the characters' Unique Qualities.
+- **Sleek UI/UX**: A modern, dark-themed interface built with Tailwind CSS featuring glassmorphism, radial gradients, shadow glows, and smooth message animations.
+- **Dynamic Character Loading**: Backend API automatically parses the root `README.md` to load character details.
+
+#### How to Run
+```bash
+# Install dependencies
+cd anime_detective_agency/backend
+cd anime_courtroom/backend
+pip install -r requirements.txt
+
+# Run the server
+python3 main.py
+
+# Access the UI
+# Open your browser and navigate to http://localhost:8007/ if the frontend is served,
+# or open the anime_detective_agency/frontend/index.html file locally.
+# Open your browser and navigate to http://localhost:8007/
 ```
