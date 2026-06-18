@@ -22,8 +22,7 @@ class TeamBuilderAgent:
             "Wildcard": ["chaos", "despair", "nihilism", "pain", "trauma", "unpredictable", "magic", "limitless"]
         }
 
-        best_role_score = 0
-        best_role = "Support"
+        role_scores = {}
 
         for role, words in role_keywords.items():
             role_score = 0
@@ -33,9 +32,15 @@ class TeamBuilderAgent:
                     if word in core_emotion or word in personality or word in quality:
                         role_score += 15
                         score += 15
+            role_scores[role] = role_score
 
-            if role_score > best_role_score:
-                best_role_score = role_score
+        best_role = "Support"
+        best_role_score = 0
+
+        # Determine the primary role definitively
+        for role, r_score in role_scores.items():
+            if r_score > best_role_score:
+                best_role_score = r_score
                 best_role = role
 
         if best_role_score > 0:
@@ -71,6 +76,18 @@ class TeamBuilderAgent:
 
         roles_filled = [member["role"] for member in selected_team]
         logs.append(f"Team selected. Roles filled: {', '.join(roles_filled)}")
+
+        # Calculate Synergy
+        wildcard_count = roles_filled.count("Wildcard")
+        if wildcard_count >= 2:
+            logs.append("Synergy Warning: Too many Wildcards. Deducting 15 points from team cohesion.")
+            for member in selected_team:
+                member["score"] -= 15
+
+        if "Combat Specialist" in roles_filled and "Diplomat / Negotiator" in roles_filled and "Strategist / Tactician" in roles_filled:
+            logs.append("Synergy Bonus: Perfect role balance achieved. Adding 15 points to team aptitude.")
+            for member in selected_team:
+                member["score"] += 15
 
         return {
             "mission": mission,
