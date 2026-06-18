@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "/app/anime_detective_agency/backend/main.py", line 1, in <module>
+    from fastapi import FastAPI, HTTPException
+ModuleNotFoundError: No module named 'fastapi'

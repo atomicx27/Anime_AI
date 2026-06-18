@@ -245,6 +245,9 @@ python3 main.py
 # Open your browser and navigate to http://localhost:8006/
 # Open your browser and navigate to the frontend index.html file, or use a local HTTP server in the frontend directory.
 ```
+### 8. Anime Detective Agency AI
+
+The **Anime Detective Agency AI** is a web-based, multi-agent application that acts as an orchestration system for solving mysteries. Users submit a "case file" or mystery description, and the AI evaluates all characters from the database based on their Core Emotion, Personality Profile, and Unique Quality to assign them specialized roles within the detective agency (e.g., Lead Detective, Forensics, Interrogator, Enforcer).
 
 ### 8. Anime Detective Agency AI
 
@@ -257,6 +260,9 @@ The **Anime Detective Agency AI** is a web-based, multi-agent application where 
 `anime_detective_agency/`
 
 #### Features
+- **Dynamic Role Assignment**: The agent analyzes the case description and character traits to logically assign roles that best fit their psychological profiles and abilities.
+- **Investigative Insights**: Generates unique, character-specific strategies and insights on how they would approach solving the case.
+- **Sleek UI/UX**: Features a modern, cyberpunk-inspired dark theme built with Tailwind CSS, including an animated "Director AI Terminal" and stylish glassmorphism role cards.
 - **Dynamic Role Assignment**: The agent analyzes characters' psychological profiles to assign roles like "Forensic Analyst", "Psychological Profiler", or "Enforcer".
 - **Unique Deductions**: Each character investigates the case and provides simulated insights colored by their core emotion and philosophy.
 - **Sleek UI/UX**: Features a modern, dark-themed interface built with Tailwind CSS, including a typing-effect Chief Inspector terminal and visually appealing investigation cards.
@@ -311,6 +317,7 @@ pip install -r requirements.txt
 python3 main.py
 
 # Access the UI
+# Open your browser and navigate to the frontend index.html file locally.
 # Open your browser and navigate to http://localhost:8008/ using a local HTTP server in the frontend directory.
 # Open your browser and navigate to http://localhost:8007/ if the frontend is served,
 # or open the anime_detective_agency/frontend/index.html file locally.
