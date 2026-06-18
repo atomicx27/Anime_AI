@@ -12,11 +12,9 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 from parser import parse_readme_characters
 from agent import TeamBuilderAgent
 
-CHARACTERS = []
-AGENT = None
-
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+
     global CHARACTERS, AGENT
     CHARACTERS = parse_readme_characters()
     if CHARACTERS:
@@ -35,6 +33,9 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+CHARACTERS = []
+AGENT = None
 
 class MissionRequest(BaseModel):
     mission: str

@@ -1,30 +1,32 @@
-from contextlib import asynccontextmanager
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 from pydantic import BaseModel
+from contextlib import asynccontextmanager
 import os
 import sys
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 from parser import parse_readme_characters
-from agent import WorldSimulatorAgent
+from agent import CourtroomAgent
+
+CHARACTERS = []
+AGENT = None
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-
     global CHARACTERS, AGENT
     CHARACTERS = parse_readme_characters()
     if CHARACTERS:
         print(f"Loaded {len(CHARACTERS)} characters.")
-        AGENT = WorldSimulatorAgent(CHARACTERS)
+        AGENT = CourtroomAgent(CHARACTERS)
     else:
         print("Warning: Could not load characters from README.md")
     yield
 
-app = FastAPI(title="Anime World Simulator API", lifespan=lifespan)
+app = FastAPI(title="Anime Courtroom AI API", lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,
@@ -34,22 +36,15 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-CHARACTERS = []
-AGENT = None
+class TrialRequest(BaseModel):
+    crime: str
 
-class ScenarioRequest(BaseModel):
-    scenario: str
-
-@app.get("/api/characters")
-def get_characters():
-    return {"characters": CHARACTERS}
-
-@app.post("/api/simulate")
-def simulate(request: ScenarioRequest):
+@app.post("/api/trial")
+def host_trial(request: TrialRequest):
     if not AGENT:
         raise HTTPException(status_code=500, detail="Agent not initialized")
 
-    result = AGENT.simulate_world_event(request.scenario)
+    result = AGENT.host_trial(request.crime)
     return result
 
 frontend_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "frontend")
@@ -66,4 +61,4 @@ if os.path.exists(frontend_dir):
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8005)
+    uvicorn.run("main:app", host="0.0.0.0", port=8007, reload=False)

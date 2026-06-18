@@ -14,12 +14,9 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 from parser import parse_readme_characters
 from agent import OrchestratorAgent
 
-# Global variables
-CHARACTERS = []
-ORCHESTRATOR = None
-
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+
     global CHARACTERS, ORCHESTRATOR
 
     # Try multiple possible paths for README.md
@@ -57,6 +54,10 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Global variables
+CHARACTERS = []
+ORCHESTRATOR = None
 
 class ChatRequest(BaseModel):
     message: str
