@@ -9,9 +9,22 @@
     <style>
         body {
             background-color: #0f172a; /* slate-900 */
+            background-image: radial-gradient(circle at 20% 30%, rgba(236, 72, 153, 0.15) 0%, transparent 40%),
+                              radial-gradient(circle at 80% 70%, rgba(139, 92, 246, 0.15) 0%, transparent 40%);
             color: #f8fafc; /* slate-50 */
             font-family: 'Inter', sans-serif;
             overflow-x: hidden;
+            background-image: radial-gradient(circle at 10% 20%, rgba(236, 72, 153, 0.1), transparent 40%),
+                              radial-gradient(circle at 90% 80%, rgba(168, 85, 247, 0.1), transparent 40%);
+            background-attachment: fixed;
+        }
+
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
         }
 
         /* Custom Scrollbar */
@@ -127,20 +140,19 @@
             <div class="lg:col-span-1 flex flex-col gap-6">
 
                 <!-- Input Panel -->
-                <div class="bg-white/5 backdrop-blur-md rounded-2xl p-6 border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.2)] relative overflow-hidden">
-                    <div class="absolute inset-0 bg-gradient-to-b from-violet-500/5 to-transparent pointer-events-none"></div>
-                    <h2 class="text-xl font-bold mb-4 flex items-center text-slate-100 relative z-10">
-                        <i class="fas fa-user-circle mr-2 text-pink-400 drop-shadow-[0_0_8px_rgba(236,72,153,0.6)]"></i> Your Profile
+                <div class="bg-slate-800/40 backdrop-blur-xl rounded-xl p-6 border border-slate-700/50 shadow-xl">
+                    <h2 class="text-xl font-semibold mb-4 flex items-center">
+                        <i class="fas fa-user-circle mr-2 text-pink-400"></i> Your Profile
                     </h2>
 
                     <div class="mb-4 relative z-10">
                         <label for="profileInput" class="block text-sm font-medium text-slate-300 mb-2">Describe yourself (Personality, hobbies, goals):</label>
-                        <textarea id="profileInput" rows="4" class="w-full bg-black/40 border border-white/10 rounded-xl p-3.5 text-slate-200 focus:ring-2 focus:ring-violet-500/50 focus:border-transparent transition-all placeholder-slate-600 resize-none shadow-[inset_0_2px_10px_rgba(0,0,0,0.3)] text-sm" placeholder="E.g., I'm a quiet introvert who enjoys reading and peace, but I deeply admire people with strong ambition and drive..."></textarea>
+                        <textarea id="profileInput" rows="4" class="w-full bg-slate-800/60 border border-slate-600/50 rounded-xl p-3 text-slate-100 focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all placeholder-slate-500 resize-none hover:bg-slate-800/80 shadow-inner" placeholder="E.g., I'm a quiet introvert who enjoys reading and peace, but I deeply admire people with strong ambition and drive..."></textarea>
                     </div>
 
                     <div class="mb-6 relative z-10">
                         <label for="relationshipType" class="block text-sm font-medium text-slate-300 mb-2">Looking for:</label>
-                        <select id="relationshipType" class="w-full bg-black/40 border border-white/10 rounded-xl p-3.5 text-slate-200 focus:ring-2 focus:ring-violet-500/50 focus:border-transparent transition-all shadow-inner appearance-none">
+                        <select id="relationshipType" class="w-full bg-slate-800/60 border border-slate-600/50 rounded-xl p-3 text-slate-100 focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all hover:bg-slate-800/80 shadow-inner">
                             <option value="friendship">Friendship / Best Friend</option>
                             <option value="romantic">Romantic Partner</option>
                             <option value="rival">Rival / Competitor</option>
@@ -148,7 +160,7 @@
                         </select>
                     </div>
 
-                    <button id="findMatchesBtn" class="w-full bg-gradient-to-r from-violet-600 to-pink-600 hover:from-violet-500 hover:to-pink-500 text-white font-bold py-3.5 px-4 rounded-xl flex justify-center items-center shadow-[0_0_15px_rgba(139,92,246,0.4)] hover:shadow-[0_0_25px_rgba(139,92,246,0.6)] transition-all duration-300 transform hover:-translate-y-0.5 relative z-10 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-none">
+                    <button id="findMatchesBtn" class="w-full bg-gradient-to-r from-pink-500 to-violet-500 hover:from-pink-400 hover:to-violet-400 text-white font-bold py-3.5 px-4 rounded-xl flex justify-center items-center shadow-[0_0_15px_rgba(236,72,153,0.4)] hover:shadow-[0_0_25px_rgba(236,72,153,0.6)] transform hover:-translate-y-0.5 transition-all">
                         <span>Find My Match</span>
                         <i class="fas fa-heart ml-2"></i>
                     </button>
@@ -176,19 +188,19 @@
 
             <!-- Right Column: Results -->
             <div class="lg:col-span-2">
-                <div class="bg-white/5 backdrop-blur-md rounded-2xl p-6 lg:p-8 border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.2)] min-h-full">
-                    <div class="flex items-center justify-between mb-8 border-b border-white/10 pb-4">
-                        <h2 class="text-2xl font-bold flex items-center text-slate-100">
-                            <i class="fas fa-star mr-3 text-yellow-400 drop-shadow-[0_0_8px_rgba(250,204,21,0.6)]"></i> Top Matches
+                <div class="glass-panel rounded-2xl p-6 shadow-inner min-h-full relative overflow-hidden">
+                    <div class="flex items-center justify-between mb-8 border-b border-slate-700/50 pb-4">
+                        <h2 class="text-2xl font-bold flex items-center text-white">
+                            <i class="fas fa-star mr-3 text-yellow-400"></i> Top Matches
                         </h2>
-                        <span id="matchStatus" class="text-xs font-mono bg-emerald-500/20 text-emerald-300 px-3 py-1 rounded-full border border-emerald-500/30 hidden">Evaluation Complete</span>
+                        <span id="matchStatus" class="text-sm text-pink-400 font-semibold uppercase tracking-wider hidden">Evaluation Complete</span>
                     </div>
 
-                    <div id="resultsContainer" class="space-y-5">
+                    <div id="resultsContainer" class="space-y-6 relative z-10">
                         <!-- Initial Placeholder -->
-                        <div class="flex flex-col items-center justify-center h-64 text-slate-500 border-2 border-dashed border-white/10 rounded-2xl bg-black/20">
-                            <i class="fas fa-search text-5xl mb-4 opacity-40 text-violet-400"></i>
-                            <p class="font-medium text-slate-400">Fill out your profile and click "Find My Match"</p>
+                        <div class="flex flex-col items-center justify-center h-64 text-slate-500 border-2 border-dashed border-slate-700/50 rounded-2xl bg-slate-800/20">
+                            <i class="fas fa-search text-5xl mb-4 text-slate-600"></i>
+                            <p class="font-medium tracking-wide">Fill out your profile and click "Find My Match"</p>
                         </div>
                     </div>
                 </div>
@@ -238,12 +250,9 @@
             else if (match.match_level.includes('Incompatible')) { icon = 'fa-times-circle'; iconColor = 'text-red-400'; glowColor = 'rgba(248, 113, 113, 0.2)'; }
 
             return `
-                <div class="card-enter bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10 hover:border-white/20 transition-all duration-300 relative overflow-hidden group shadow-[0_4px_15px_rgba(0,0,0,0.1)] hover:shadow-[0_8px_25px_rgba(0,0,0,0.3)]" style="animation-delay: ${delay}s">
-
-                    <div class="absolute top-1/2 right-1/4 -translate-y-1/2 w-32 h-32 rounded-full blur-3xl pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500" style="background-color: ${glowColor};"></div>
-
-                    <div class="absolute top-0 right-0 bg-black/40 px-4 py-1.5 rounded-bl-2xl border-b border-l border-white/5 text-xs font-mono text-slate-400 shadow-inner">
-                        Rank #${index + 1} <span class="mx-1 text-slate-600">|</span> Score: <span class="text-emerald-400 font-bold">${match.score}</span>
+                <div class="card-enter bg-slate-800/40 backdrop-blur-md rounded-lg p-5 border border-slate-700/50 hover:-translate-y-2 hover:shadow-[0_0_20px_rgba(236,72,153,0.3)] hover:border-violet-500/50 transition-all duration-300 relative overflow-hidden" style="animation-delay: ${delay}s">
+                    <div class="absolute top-0 right-0 bg-slate-900/80 px-3 py-1 rounded-bl-lg border-b border-l border-slate-700/50 text-xs font-mono text-slate-400">
+                        Rank #${index + 1} | Score: ${match.score}
                     </div>
 
                     <div class="flex items-start gap-5 relative z-10">
