@@ -9,3 +9,6 @@ anime_team_builder/backend/__pycache__/
 anime_world_simulator/backend/__pycache__/
 anime_debate_arena/backend/__pycache__/
 anime_debate_arena/node_modules/
+node_modules/
+__pycache__/
+anime_affinity_matcher/backend/__pycache__/

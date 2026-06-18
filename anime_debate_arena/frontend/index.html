@@ -6,265 +6,171 @@
     <title>Anime Debate Arena AI</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body {
-            background-color: #0f172a;
-            color: #e2e8f0;
-            background-image: radial-gradient(circle at 50% 50%, #1e293b 0%, #0f172a 100%);
-            min-height: 100vh;
-            font-family: 'Inter', sans-serif;
+        .typing-indicator::after {
+            content: '...';
+            animation: typing 1s infinite;
         }
-
-        .glass-panel {
-            background: rgba(30, 41, 59, 0.6);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5), inset 0 0 10px rgba(255, 255, 255, 0.05);
+        @keyframes typing {
+            0% { content: '.'; }
+            33% { content: '..'; }
+            66% { content: '...'; }
         }
-
-        .glow-text {
-            text-shadow: 0 0 10px rgba(125, 211, 252, 0.5);
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
         }
-
-        .card-hover {
-            transition: all 0.3s ease;
-        }
-
-        .card-hover:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px -5px rgba(56, 189, 248, 0.2);
-            border-color: rgba(56, 189, 248, 0.3);
-        }
-
-        /* Custom scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: rgba(15, 23, 42, 0.5);
-        }
-        ::-webkit-scrollbar-thumb {
-            background: rgba(56, 189, 248, 0.3);
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: rgba(56, 189, 248, 0.5);
-        }
-
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
-
-        .animate-fade-in {
-            animation: fadeIn 0.5s ease-out forwards;
+        .terminal-log {
+            font-family: monospace;
+            color: #10b981;
         }
     </style>
 </head>
-<body class="p-6">
-    <div class="max-w-6xl mx-auto space-y-8">
+<body class="bg-gray-900 text-white min-h-screen font-sans">
 
-        <!-- Header -->
-        <header class="text-center space-y-4 pt-8">
-            <h1 class="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-blue-600 glow-text tracking-tight">
-                Anime Debate Arena AI
+    <div class="container mx-auto px-4 py-8 max-w-5xl">
+        <header class="text-center mb-12">
+            <h1 class="text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-purple-600 mb-4">
+                Anime Debate Arena
             </h1>
-            <p class="text-slate-400 text-lg max-w-2xl mx-auto">
-                Watch iconic anime characters clash in a battle of ideals. Enter a topic and let the agents debate based on their core emotions and unique philosophies.
-            </p>
+            <p class="text-gray-400 text-lg">Propose a topic and watch two opposing minds clash.</p>
         </header>
 
-        <!-- Input Area -->
-        <div class="glass-panel rounded-2xl p-6 max-w-3xl mx-auto">
-            <form id="debate-form" class="flex flex-col sm:flex-row gap-4">
-                <input
-                    type="text"
-                    id="topic-input"
-                    placeholder="Enter a debate topic (e.g., 'Is true peace achievable?')"
-                    class="flex-1 bg-slate-900/50 border border-slate-700 rounded-xl px-4 py-3 text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-all"
-                    required
-                >
-                <button
-                    type="submit"
-                    id="submit-btn"
-                    class="bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-400 hover:to-blue-500 text-white font-semibold py-3 px-8 rounded-xl transition-all shadow-[0_0_15px_rgba(56,189,248,0.4)] hover:shadow-[0_0_25px_rgba(56,189,248,0.6)] disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                    Start Debate
+        <!-- Input Section -->
+        <div class="bg-gray-800 rounded-xl p-6 shadow-2xl mb-8 border border-gray-700">
+            <h2 class="text-xl font-bold mb-4 text-purple-400">Propose a Debate Topic</h2>
+            <div class="flex space-x-4">
+                <input type="text" id="topicInput" placeholder="e.g., Is true peace achievable without sacrifice?"
+                       class="flex-1 bg-gray-700 text-white px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500">
+                <button id="debateBtn" class="bg-purple-600 hover:bg-purple-700 text-white px-8 py-3 rounded-lg font-bold transition duration-200">
+                    Host Debate
                 </button>
-            </form>
+            </div>
         </div>
 
-        <!-- Debate Arena Area -->
-        <div id="arena-container" class="hidden">
-            <!-- Debaters Info -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                <div id="char1-card" class="glass-panel rounded-xl p-6 card-hover border-l-4 border-l-rose-500 flex flex-col items-center text-center">
-                    <!-- populated by js -->
-                </div>
+        <!-- Main Arena (Hidden initially) -->
+        <div id="arenaContainer" class="hidden space-y-8">
 
-                <div id="judge-card" class="glass-panel rounded-xl p-6 card-hover border-t-4 border-t-amber-500 flex flex-col items-center text-center transform md:-translate-y-4">
-                     <!-- populated by js -->
-                </div>
+            <!-- Agent Terminal -->
+            <div class="bg-black rounded-lg p-4 border border-green-900 shadow-inner h-48 overflow-y-auto">
+                <h3 class="text-xs text-green-500 mb-2 uppercase tracking-wider">>> Agent Terminal Logs</h3>
+                <div id="terminalOutput" class="terminal-log text-sm space-y-1"></div>
+            </div>
 
-                <div id="char2-card" class="glass-panel rounded-xl p-6 card-hover border-r-4 border-r-indigo-500 flex flex-col items-center text-center">
-                     <!-- populated by js -->
+            <!-- VS Screen -->
+            <div id="vsScreen" class="hidden">
+                <div class="flex items-center justify-between bg-gray-800 rounded-xl p-8 border border-gray-700">
+                    <!-- Character 1 -->
+                    <div class="w-2/5 text-center fade-in">
+                        <div class="text-3xl font-bold text-blue-400 mb-2" id="char1Name"></div>
+                        <div class="text-sm text-gray-400 italic" id="char1Core"></div>
+                    </div>
+
+                    <!-- VS Logo -->
+                    <div class="w-1/5 text-center">
+                        <div class="text-5xl font-black text-red-500 italic transform -skew-x-12">VS</div>
+                    </div>
+
+                    <!-- Character 2 -->
+                    <div class="w-2/5 text-center fade-in">
+                        <div class="text-3xl font-bold text-red-400 mb-2" id="char2Name"></div>
+                        <div class="text-sm text-gray-400 italic" id="char2Core"></div>
+                    </div>
                 </div>
             </div>
 
             <!-- Debate Transcript -->
-            <div class="glass-panel rounded-2xl overflow-hidden flex flex-col" style="height: 600px;">
-                <div class="bg-slate-800/80 border-b border-slate-700/50 p-4">
-                    <h2 class="text-xl font-semibold flex items-center gap-2">
-                        <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
-                        Live Debate Transcript
-                    </h2>
-                </div>
-
-                <div id="chat-box" class="flex-1 overflow-y-auto p-6 flex flex-col gap-6">
-                    <!-- populated by js -->
-                </div>
+            <div id="transcriptContainer" class="hidden bg-gray-800 rounded-xl p-6 border border-gray-700">
+                <h3 class="text-xl font-bold mb-6 border-b border-gray-700 pb-2">Debate Transcript</h3>
+                <div id="transcript" class="space-y-6"></div>
             </div>
-        </div>
 
-        <!-- Loading Indicator -->
-        <div id="loading" class="hidden flex justify-center items-center py-12">
-            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-sky-400"></div>
         </div>
-
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const form = document.getElementById('debate-form');
-            const topicInput = document.getElementById('topic-input');
-            const submitBtn = document.getElementById('submit-btn');
-            const arenaContainer = document.getElementById('arena-container');
-            const loadingIndicator = document.getElementById('loading');
-            const chatBox = document.getElementById('chat-box');
+        const debateBtn = document.getElementById('debateBtn');
+        const topicInput = document.getElementById('topicInput');
+        const arenaContainer = document.getElementById('arenaContainer');
+        const terminalOutput = document.getElementById('terminalOutput');
+        const vsScreen = document.getElementById('vsScreen');
+        const transcriptContainer = document.getElementById('transcriptContainer');
+        const transcript = document.getElementById('transcript');
 
-            const char1Card = document.getElementById('char1-card');
-            const char2Card = document.getElementById('char2-card');
-            const judgeCard = document.getElementById('judge-card');
+        debateBtn.addEventListener('click', async () => {
+            const topic = topicInput.value.trim();
+            if (!topic) return;
 
-            form.addEventListener('submit', async (e) => {
-                e.preventDefault();
-                const topic = topicInput.value.trim();
-                if (!topic) return;
+            // Reset UI
+            arenaContainer.classList.remove('hidden');
+            vsScreen.classList.add('hidden');
+            transcriptContainer.classList.add('hidden');
+            terminalOutput.innerHTML = '';
+            transcript.innerHTML = '';
+            debateBtn.disabled = true;
+            debateBtn.innerHTML = '<span class="typing-indicator">Processing</span>';
 
-                // Reset UI
-                arenaContainer.classList.add('hidden');
-                loadingIndicator.classList.remove('hidden');
-                submitBtn.disabled = true;
-                chatBox.innerHTML = '';
+            try {
+                const response = await fetch('/api/debate', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ topic })
+                });
 
-                try {
-                    const response = await fetch('/api/debate', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({ topic })
-                    });
+                const data = await response.json();
 
-                    if (!response.ok) {
-                        throw new Error('Failed to generate debate');
-                    }
-
-                    const data = await response.json();
-
-                    // Render Characters
-                    renderCharacterCard(char1Card, data.char1, 'Debater 1', 'text-rose-400');
-                    renderCharacterCard(char2Card, data.char2, 'Debater 2', 'text-indigo-400');
-                    renderCharacterCard(judgeCard, data.judge, 'The Judge', 'text-amber-400');
-
-                    // Show Arena
-                    loadingIndicator.classList.add('hidden');
-                    arenaContainer.classList.remove('hidden');
-
-                    // Simulate typing/rendering script slowly
-                    await renderScript(data.script, data.char1.name, data.char2.name, data.judge.name);
-
-                } catch (error) {
-                    console.error('Error:', error);
-                    alert('An error occurred while generating the debate.');
-                    loadingIndicator.classList.add('hidden');
-                } finally {
-                    submitBtn.disabled = false;
+                // 1. Simulate Terminal Logs
+                for (let i = 0; i < data.logs.length; i++) {
+                    await new Promise(r => setTimeout(r, 600)); // Delay between logs
+                    const logEl = document.createElement('div');
+                    logEl.textContent = `> ${data.logs[i]}`;
+                    terminalOutput.appendChild(logEl);
+                    terminalOutput.scrollTop = terminalOutput.scrollHeight;
                 }
-            });
 
-            function renderCharacterCard(element, char, role, colorClass) {
-                element.innerHTML = `
-                    <div class="text-xs font-bold uppercase tracking-wider mb-2 ${colorClass}">${role}</div>
-                    <div class="w-16 h-16 rounded-full bg-slate-800 border-2 border-slate-600 mb-3 flex items-center justify-center text-2xl shadow-inner">
-                        👤
-                    </div>
-                    <h3 class="text-lg font-bold text-white mb-1">${char.name}</h3>
-                    <p class="text-xs text-slate-400 mb-2">${char.archetype}</p>
-                    <p class="text-xs text-slate-300 italic line-clamp-2" title="${char.core_emotion}">"${char.core_emotion}"</p>
-                `;
-            }
+                // 2. Show VS Screen
+                await new Promise(r => setTimeout(r, 1000));
+                document.getElementById('char1Name').textContent = data.debater1.name;
+                document.getElementById('char1Core').textContent = data.debater1.core_emotion;
+                document.getElementById('char2Name').textContent = data.debater2.name;
+                document.getElementById('char2Core').textContent = data.debater2.core_emotion;
+                vsScreen.classList.remove('hidden');
 
-            async function renderScript(script, char1Name, char2Name, judgeName) {
-                for (const line of script) {
-                    const messageEl = document.createElement('div');
-                    messageEl.className = 'animate-fade-in flex flex-col gap-1';
+                // 3. Show Transcript gradually
+                await new Promise(r => setTimeout(r, 1500));
+                transcriptContainer.classList.remove('hidden');
 
-                    let bgClass = 'bg-slate-800/60';
-                    let borderClass = 'border-l-4 border-slate-500';
-                    let alignClass = 'items-start';
-                    let marginClass = 'mr-auto';
-                    let nameColor = 'text-slate-300';
-                    let badgeColor = 'bg-slate-700';
+                for (let i = 0; i < data.transcript.length; i++) {
+                    await new Promise(r => setTimeout(r, 1500)); // Delay between messages
 
-                    if (line.speaker === char1Name) {
-                        borderClass = 'border-l-4 border-rose-500';
-                        nameColor = 'text-rose-400';
-                        badgeColor = 'bg-rose-900/50 text-rose-300 border-rose-700/50';
-                    } else if (line.speaker === char2Name) {
-                        borderClass = 'border-r-4 border-indigo-500';
-                        alignClass = 'items-end text-right';
-                        marginClass = 'ml-auto';
-                        nameColor = 'text-indigo-400';
-                        badgeColor = 'bg-indigo-900/50 text-indigo-300 border-indigo-700/50';
-                        messageEl.classList.remove('items-start');
-                    } else if (line.speaker === judgeName) {
-                        bgClass = 'bg-amber-900/20';
-                        borderClass = 'border-t-2 border-b-2 border-amber-500/50';
-                        alignClass = 'items-center text-center';
-                        marginClass = 'mx-auto w-full';
-                        nameColor = 'text-amber-400 text-xl';
-                        badgeColor = 'bg-amber-900/50 text-amber-300 border-amber-700/50';
-                    }
+                    const msg = data.transcript[i];
+                    const msgEl = document.createElement('div');
+                    msgEl.className = 'fade-in p-4 rounded-lg bg-gray-700/50 border-l-4 ' +
+                                      (msg.speaker === data.debater1.name ? 'border-blue-500' : 'border-red-500 ml-8');
 
-                    messageEl.classList.add(...alignClass.split(' '));
-
-                    const contentDiv = document.createElement('div');
-                    contentDiv.className = `${bgClass} ${borderClass} ${marginClass} max-w-[85%] rounded-lg p-4 shadow-md backdrop-blur-sm transition-all hover:bg-slate-700/50`;
-
-                    const headerHTML = `
-                        <div class="flex items-center gap-2 mb-2 ${line.speaker === char2Name ? 'justify-end' : (line.speaker === judgeName ? 'justify-center' : '')}">
-                            <span class="font-bold ${nameColor}">${line.speaker}</span>
-                            <span class="text-[10px] uppercase tracking-wider px-2 py-0.5 rounded border ${badgeColor}">${line.type}</span>
+                    msgEl.innerHTML = `
+                        <div class="font-bold mb-1 ${msg.speaker === data.debater1.name ? 'text-blue-400' : 'text-red-400'}">
+                            ${msg.speaker}
                         </div>
+                        <div class="text-gray-300">${msg.message}</div>
                     `;
-
-                    let bodyHTML = `<p class="text-slate-200 leading-relaxed text-sm md:text-base">${line.text}</p>`;
-
-                    if (line.type === 'Verdict') {
-                        bodyHTML += `<div class="mt-4 p-3 bg-amber-500/10 border border-amber-500/30 rounded text-amber-200 font-bold">Winner: ${line.winner}</div>`;
-                    }
-
-                    contentDiv.innerHTML = headerHTML + bodyHTML;
-                    messageEl.appendChild(contentDiv);
-
-                    chatBox.appendChild(messageEl);
-                    chatBox.scrollTop = chatBox.scrollHeight;
-
-                    // Wait before showing the next line for dramatic effect
-                    await new Promise(resolve => setTimeout(resolve, 1500));
+                    transcript.appendChild(msgEl);
                 }
+
+            } catch (error) {
+                console.error("Error hosting debate:", error);
+                terminalOutput.innerHTML += `<div class="text-red-500">> Error: Connection failed.</div>`;
+            } finally {
+                debateBtn.disabled = false;
+                debateBtn.textContent = 'Host Another Debate';
             }
+        });
+
+        // Allow pressing Enter to submit
+        topicInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') debateBtn.click();
         });
     </script>
 </body>

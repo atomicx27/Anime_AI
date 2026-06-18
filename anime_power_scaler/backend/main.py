@@ -3,40 +3,15 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 from pydantic import BaseModel
-from contextlib import asynccontextmanager
 import os
 import sys
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 from parser import parse_readme_characters
-from agent import DebateArenaAgent
+from agent import PowerScalerAgent
 
-# Global state
-app_state = {
-    "characters": [],
-    "agent": None
-}
-
-@asynccontextmanager
-async def lifespan(app: FastAPI):
-    # Startup
-    app_state["characters"] = parse_readme_characters()
-    if app_state["characters"]:
-        print(f"Loaded {len(app_state['characters'])} characters.")
-        app_state["agent"] = DebateArenaAgent(app_state["characters"])
-    else:
-        print("Warning: Could not load characters from README.md")
-
-    yield
-    # Shutdown (nothing specific to do)
-    print("Shutting down Debate Arena API")
-
-
-app = FastAPI(title="Anime Debate Arena API", lifespan=lifespan)
-from agent import DebateAgent
-
-app = FastAPI(title="Anime Debate Arena API")
+app = FastAPI(title="Anime Power Scaler API")
 
 app.add_middleware(
     CORSMiddleware,
@@ -46,22 +21,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-class TopicRequest(BaseModel):
-    topic: str
-
-@app.get("/api/characters")
-def get_characters():
-    return {"characters": app_state["characters"]}
-
-@app.post("/api/debate")
-def simulate_debate(request: TopicRequest):
-    if not app_state["agent"]:
-        raise HTTPException(status_code=500, detail="Agent not initialized")
-
-    result = app_state["agent"].simulate_debate(request.topic)
-    return result
-
-# Serve frontend
 CHARACTERS = []
 AGENT = None
 
@@ -71,19 +30,28 @@ def startup_event():
     CHARACTERS = parse_readme_characters()
     if CHARACTERS:
         print(f"Loaded {len(CHARACTERS)} characters.")
-        AGENT = DebateAgent(CHARACTERS)
+        AGENT = PowerScalerAgent(CHARACTERS)
     else:
         print("Warning: Could not load characters from README.md")
 
-class DebateRequest(BaseModel):
-    topic: str
+class BattleRequest(BaseModel):
+    char1: str
+    char2: str
+    context: str = "Neutral Arena"
 
-@app.post("/api/debate")
-def host_debate(request: DebateRequest):
+@app.get("/api/characters")
+def get_characters():
+    return {"characters": CHARACTERS}
+
+@app.post("/api/battle")
+def simulate_battle(request: BattleRequest):
     if not AGENT:
         raise HTTPException(status_code=500, detail="Agent not initialized")
 
-    result = AGENT.host_debate(request.topic)
+    result = AGENT.simulate_battle(request.char1, request.char2, request.context)
+    if "error" in result:
+        raise HTTPException(status_code=400, detail=result["error"])
+
     return result
 
 frontend_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "frontend")
@@ -101,4 +69,3 @@ if os.path.exists(frontend_dir):
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8006)
-    uvicorn.run(app, host="0.0.0.0", port=8005)

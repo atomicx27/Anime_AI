@@ -38,6 +38,11 @@ class WorldSimulatorAgent:
             if chosen_state == "Aggressive":
                 chosen_state = "Chaotic" # Might disrupt peace
 
+        # Add a slight chance for unpredictability
+        if random.random() < 0.15: # 15% chance to act out of character
+             alternative_states = [s for s in action_states if s != chosen_state]
+             chosen_state = random.choice(alternative_states)
+
         # Generate strategy/reaction text
         if chosen_state == "Aggressive":
             strategy = f"Charges headfirst into the situation, driven by {character['core_emotion']}. Relies on '{character['unique_quality'].split('.')[0]}' to overpower the challenge."
@@ -80,6 +85,12 @@ class WorldSimulatorAgent:
 
         summary = ", ".join([f"{count} {state}" for state, count in state_counts.items()])
         logs.append(f"Simulation complete. World state breakdown: {summary}")
+
+        total_reactions = len(reactions)
+        if state_counts.get("Chaotic", 0) > total_reactions / 2:
+            logs.append("WARNING: The world descends into absolute chaos.")
+        elif state_counts.get("Diplomatic", 0) > total_reactions / 2:
+            logs.append("NOTE: The world leans heavily towards a peaceful resolution.")
 
         return {
             "scenario": scenario,
