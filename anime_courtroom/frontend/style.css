@@ -1,0 +1,131 @@
+/* Global Styles & Variables */
+:root {
+    --glass-bg: rgba(20, 25, 40, 0.4);
+    --glass-border: rgba(255, 255, 255, 0.08);
+}
+
+body {
+    margin: 0;
+    padding: 0;
+}
+
+/* Background Effects */
+.radial-bg {
+    background: radial-gradient(circle at 50% 0%, #1a1e36 0%, #0b0f19 60%);
+    background-attachment: fixed;
+}
+
+/* Glassmorphism Classes */
+.glass-panel {
+    background: var(--glass-bg);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--glass-border);
+}
+
+.glass-nav {
+    background: rgba(11, 15, 25, 0.7);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--glass-border);
+}
+
+/* Shadows & Glows */
+.shadow-glow {
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+}
+
+.shadow-glow-small {
+    box-shadow: 0 0 15px rgba(255, 204, 0, 0.3);
+}
+
+.shadow-glow-blue {
+    box-shadow: 0 0 20px rgba(77, 148, 255, 0.2);
+}
+
+.shadow-glow-red {
+    box-shadow: 0 0 20px rgba(255, 77, 77, 0.2);
+}
+
+.shadow-glow-gold {
+    box-shadow: 0 0 20px rgba(255, 204, 0, 0.2);
+}
+
+/* Hover Animations */
+.hover-lift {
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease;
+}
+
+.hover-lift:hover {
+    transform: translateY(-5px);
+}
+
+.hover-lift.border-t-4.border-accentGold:hover {
+    box-shadow: 0 10px 25px rgba(255, 204, 0, 0.3);
+}
+
+.hover-lift.border-t-4.border-accentRed:hover {
+    box-shadow: 0 10px 25px rgba(255, 77, 77, 0.3);
+}
+
+.hover-lift.border-t-4.border-accentBlue:hover {
+    box-shadow: 0 10px 25px rgba(77, 148, 255, 0.3);
+}
+
+/* Entry Animations */
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.slide-up {
+    animation: slideUp 0.6s ease-out forwards;
+}
+
+.fade-in {
+    opacity: 0;
+    animation: fadeIn 0.8s ease-out forwards;
+}
+
+.delay-100 { animation-delay: 0.1s; }
+.delay-200 { animation-delay: 0.2s; }
+.delay-300 { animation-delay: 0.3s; }
+
+/* Custom Scrollbar */
+.custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* Statement Cards */
+.statement-card {
+    border-left: 3px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.statement-card:hover {
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.statement-Judge { border-left-color: #ffcc00; }
+.statement-Prosecutor { border-left-color: #ff4d4d; }
+.statement-Defense { border-left-color: #4d94ff; }
+.statement-Jury { border-left-color: #9ca3af; }

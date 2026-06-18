@@ -6,314 +6,185 @@
     <title>Anime Detective Agency AI</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
-
         body {
-            font-family: 'Inter', sans-serif;
             background-color: #0f172a;
-            color: #e2e8f0;
-            background-image:
-                radial-gradient(circle at 15% 50%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
-                radial-gradient(circle at 85% 30%, rgba(168, 85, 247, 0.15) 0%, transparent 50%);
-            background-attachment: fixed;
+            color: #f8fafc;
+            font-family: 'Inter', sans-serif;
+            background-image: radial-gradient(circle at top right, #1e1b4b, #0f172a 60%);
             min-height: 100vh;
         }
 
         .glass-panel {
-            background: rgba(30, 41, 59, 0.7);
+            background: rgba(30, 41, 59, 0.6);
             backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06), 0 0 20px rgba(99, 102, 241, 0.15);
+            border-radius: 1rem;
         }
 
-        .glow-input {
+        .glow-effect {
             transition: all 0.3s ease;
         }
 
-        .glow-input:focus {
+        .glow-effect:hover {
             box-shadow: 0 0 15px rgba(99, 102, 241, 0.5);
-            border-color: rgba(99, 102, 241, 0.8);
-        }
-
-        .glow-button {
-            transition: all 0.3s ease;
-        }
-
-        .glow-button:hover {
-            box-shadow: 0 0 20px rgba(168, 85, 247, 0.6);
             transform: translateY(-2px);
         }
 
-        .terminal-log {
-            font-family: 'Courier New', Courier, monospace;
-            background: rgba(15, 23, 42, 0.9);
-            border: 1px solid rgba(56, 189, 248, 0.3);
-            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+        .loading-dots::after {
+            content: '';
+            animation: dots 1.5s steps(4, end) infinite;
         }
 
-        .typing-effect {
-            border-right: 2px solid rgba(56, 189, 248, 0.8);
-            animation: blink 1s step-end infinite;
+        @keyframes dots {
+            0%, 20% { content: ''; }
+            40% { content: '.'; }
+            60% { content: '..'; }
+            80%, 100% { content: '...'; }
         }
 
-        @keyframes blink {
-            50% { border-color: transparent; }
-        }
-
-        .investigator-card {
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        .investigator-card:hover {
-            transform: scale(1.02) translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3), 0 0 15px rgba(56, 189, 248, 0.4);
-            border-color: rgba(56, 189, 248, 0.6);
-        }
-
-        /* Role-specific styling */
-        .role-badge-lead { background-color: rgba(59, 130, 246, 0.2); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.4); }
-        .role-badge-forensics { background-color: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.4); }
-        .role-badge-interrogator { background-color: rgba(239, 68, 68, 0.2); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.4); }
-        .role-badge-undercover { background-color: rgba(107, 114, 128, 0.2); color: #9ca3af; border: 1px solid rgba(107, 114, 128, 0.4); }
-        .role-badge-profiler { background-color: rgba(168, 85, 247, 0.2); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.4); }
-        .role-badge-wildcard { background-color: rgba(245, 158, 11, 0.2); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.4); }
-
-        .loading-pulse {
-            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: .5; }
+        .role-badge {
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: 600;
         }
     </style>
 </head>
-<body class="p-4 md:p-8">
-
+<body class="p-8">
     <div class="max-w-5xl mx-auto">
-        <header class="text-center mb-10">
-            <h1 class="text-4xl md:text-5xl font-bold mb-3 bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 drop-shadow-lg">
-                Anime Detective Agency
-            </h1>
-            <p class="text-slate-400 text-lg">Submit a mystery. Let the greatest minds solve it.</p>
+        <header class="text-center mb-12">
+            <h1 class="text-5xl font-extrabold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 to-purple-500 drop-shadow-[0_0_10px_rgba(99,102,241,0.5)]">Anime Detective Agency AI</h1>
+            <p class="text-xl text-slate-300">Submit a mystery and let our AI agents investigate</p>
         </header>
 
         <main class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-
             <!-- Input Section -->
             <div class="lg:col-span-1 space-y-6">
-                <div class="glass-panel rounded-2xl p-6">
-                    <h2 class="text-xl font-semibold mb-4 text-indigo-300 flex items-center">
-                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                        Case File
+                <div class="glass-panel p-6">
+                    <h2 class="text-2xl font-bold mb-4 flex items-center">
+                        <svg class="w-6 h-6 mr-2 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                        Report a Case
                     </h2>
-                    <form id="investigate-form" class="space-y-4">
-                        <div>
-                            <label for="mystery-input" class="block text-sm font-medium text-slate-300 mb-2">Describe the Crime or Mystery</label>
-                            <textarea id="mystery-input" rows="4"
-                                class="w-full bg-slate-800/50 border border-slate-600 rounded-lg p-3 text-slate-200 placeholder-slate-500 focus:outline-none glow-input resize-none"
-                                placeholder="E.g., The Mayor's prized diamond necklace was stolen from a locked vault overnight. Only a single black feather was left behind."></textarea>
-                        </div>
-                        <button type="submit" id="investigate-btn"
-                            class="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold py-3 px-4 rounded-lg glow-button flex justify-center items-center">
-                            <span>Open Investigation</span>
-                            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-                        </button>
-                    </form>
-                </div>
-
-                <!-- Agent Terminal -->
-                <div class="glass-panel rounded-2xl p-6 h-64 flex flex-col">
-                    <h2 class="text-sm font-semibold mb-2 text-sky-400 flex items-center tracking-wider uppercase">
-                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                        Agent Terminal
-                    </h2>
-                    <div id="terminal-content" class="terminal-log rounded-lg p-3 flex-grow overflow-y-auto text-sm text-sky-300">
-                        <div class="opacity-50">System ready. Awaiting case details...</div>
-                    </div>
+                    <textarea id="mysteryInput" rows="5" class="w-full bg-slate-800/50 border border-slate-600 rounded-lg p-4 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all" placeholder="Describe the mystery or crime..."></textarea>
+                    <button id="investigateBtn" class="w-full mt-4 bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-4 rounded-lg glow-effect flex justify-center items-center">
+                        Assign Team & Investigate
+                    </button>
                 </div>
             </div>
 
             <!-- Results Section -->
-            <div class="lg:col-span-2 space-y-6">
-
-                <div id="loading-state" class="hidden glass-panel rounded-2xl p-12 text-center flex-col items-center justify-center h-full min-h-[400px]">
-                    <div class="inline-block relative w-20 h-20 mb-6">
-                        <div class="absolute inset-0 rounded-full border-t-2 border-indigo-500 animate-spin"></div>
-                        <div class="absolute inset-2 rounded-full border-t-2 border-purple-500 animate-spin" style="animation-direction: reverse; animation-duration: 1.5s;"></div>
-                        <div class="absolute inset-4 rounded-full border-t-2 border-sky-500 animate-spin" style="animation-duration: 2s;"></div>
-                    </div>
-                    <h3 class="text-xl font-semibold text-indigo-300 loading-pulse">Assembling Task Force...</h3>
-                    <p class="text-slate-400 mt-2 text-sm">Evaluating character profiles and assigning roles.</p>
-                </div>
-
-                <div id="results-container" class="hidden space-y-6">
-                    <div class="glass-panel rounded-2xl p-6 border-l-4 border-indigo-500">
-                        <h2 class="text-2xl font-bold text-white mb-2">Case Conclusion</h2>
-                        <p id="conclusion-text" class="text-slate-300 text-lg italic"></p>
-                    </div>
-
-                    <h3 class="text-xl font-semibold text-slate-200 border-b border-slate-700 pb-2">Task Force Members</h3>
-                    <div id="investigators-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <!-- Cards injected here -->
+            <div class="lg:col-span-2 space-y-6" id="resultsSection" style="display: none;">
+                <!-- Team Section -->
+                <div class="glass-panel p-6">
+                    <h2 class="text-2xl font-bold mb-6">Assigned Investigation Team</h2>
+                    <div id="teamContainer" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <!-- Team members will be inserted here -->
                     </div>
                 </div>
 
-                <!-- Placeholder when empty -->
-                <div id="empty-state" class="glass-panel rounded-2xl p-12 text-center h-full min-h-[400px] flex flex-col items-center justify-center border-dashed border-2 border-slate-700 bg-slate-800/20">
-                    <svg class="w-16 h-16 text-slate-600 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 002-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
-                    <h3 class="text-lg font-medium text-slate-400">No Active Case</h3>
-                    <p class="text-slate-500 text-sm mt-1">Submit a mystery to see the agency in action.</p>
+                <!-- Investigation Log -->
+                <div class="glass-panel p-6">
+                    <h2 class="text-2xl font-bold mb-6">Investigation Log</h2>
+                    <div id="logContainer" class="space-y-4 max-h-96 overflow-y-auto pr-2">
+                        <!-- Logs will be inserted here -->
+                    </div>
                 </div>
+            </div>
 
+            <!-- Loading State -->
+            <div id="loadingSection" class="lg:col-span-2 glass-panel p-12 text-center" style="display: none;">
+                <svg class="animate-spin h-12 w-12 text-indigo-500 mx-auto mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                <p class="text-xl text-indigo-300">Agents are analyzing the scene<span class="loading-dots"></span></p>
             </div>
         </main>
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const form = document.getElementById('investigate-form');
-            const input = document.getElementById('mystery-input');
-            const terminal = document.getElementById('terminal-content');
-            const loadingState = document.getElementById('loading-state');
-            const resultsContainer = document.getElementById('results-container');
-            const emptyState = document.getElementById('empty-state');
-            const investigatorsGrid = document.getElementById('investigators-grid');
-            const conclusionText = document.getElementById('conclusion-text');
-            const btn = document.getElementById('investigate-btn');
-
-            function getRoleClass(role) {
-                const map = {
-                    "Lead Investigator": "role-badge-lead",
-                    "Forensics Analyst": "role-badge-forensics",
-                    "Interrogator": "role-badge-interrogator",
-                    "Undercover Operative": "role-badge-undercover",
-                    "Profiler": "role-badge-profiler",
-                    "Wildcard": "role-badge-wildcard"
-                };
-                return map[role] || "role-badge-wildcard";
+        document.getElementById('investigateBtn').addEventListener('click', async () => {
+            const mystery = document.getElementById('mysteryInput').value.trim();
+            if (!mystery) {
+                alert('Please describe a mystery first!');
+                return;
             }
 
-            async function typeLine(text, element) {
-                const div = document.createElement('div');
-                div.className = 'mb-1';
-                const span = document.createElement('span');
-                span.className = 'typing-effect';
-                div.appendChild(span);
-                element.appendChild(div);
+            // UI updates for loading
+            document.getElementById('resultsSection').style.display = 'none';
+            document.getElementById('loadingSection').style.display = 'block';
+            document.getElementById('investigateBtn').disabled = true;
+            document.getElementById('investigateBtn').classList.add('opacity-50', 'cursor-not-allowed');
 
-                for (let i = 0; i < text.length; i++) {
-                    span.textContent += text.charAt(i);
-                    element.scrollTop = element.scrollHeight;
-                    await new Promise(r => setTimeout(r, 15)); // Typing speed
-                }
-                span.className = ''; // Remove cursor after done
-                element.scrollTop = element.scrollHeight;
+            try {
+                const response = await fetch('/api/investigate', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ mystery })
+                });
+
+                if (!response.ok) throw new Error('API request failed');
+                const data = await response.json();
+
+                renderResults(data);
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Failed to investigate. Check console for details.');
+            } finally {
+                document.getElementById('loadingSection').style.display = 'none';
+                document.getElementById('investigateBtn').disabled = false;
+                document.getElementById('investigateBtn').classList.remove('opacity-50', 'cursor-not-allowed');
             }
-
-            form.addEventListener('submit', async (e) => {
-                e.preventDefault();
-                const mystery = input.value.trim();
-                if (!mystery) return;
-
-                // UI Reset & Loading State
-                btn.disabled = true;
-                btn.classList.add('opacity-70', 'cursor-not-allowed');
-                emptyState.classList.add('hidden');
-                resultsContainer.classList.add('hidden');
-                loadingState.classList.remove('hidden');
-                loadingState.classList.add('flex');
-
-                terminal.innerHTML = '';
-                await typeLine("> Initializing investigation protocol...", terminal);
-                await typeLine(`> Target Case: "${mystery.substring(0, 30)}..."`, terminal);
-
-                try {
-                    const response = await fetch('/api/investigate', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ mystery })
-                    });
-
-                    if (!response.ok) throw new Error('Investigation failed');
-
-                    const data = await response.json();
-
-                    // Print logs to terminal
-                    for (const log of data.logs) {
-                        await typeLine(`> ${log}`, terminal);
-                    }
-                    await typeLine("> Generating final report...", terminal);
-
-                    // Populate UI
-                    setTimeout(() => {
-                        loadingState.classList.add('hidden');
-                        loadingState.classList.remove('flex');
-                        resultsContainer.classList.remove('hidden');
-
-                        conclusionText.textContent = `"${data.conclusion}"`;
-                        investigatorsGrid.innerHTML = '';
-
-                        data.investigators.forEach((inv, index) => {
-                            const badgeClass = getRoleClass(inv.role);
-                            const card = document.createElement('div');
-                            card.className = `glass-panel investigator-card rounded-xl p-5 border border-slate-700/50 opacity-0 transform translate-y-4`;
-                            card.style.animation = `fadeInUp 0.5s ease forwards ${index * 0.15}s`;
-
-                            card.innerHTML = `
-                                <div class="flex justify-between items-start mb-3">
-                                    <div>
-                                        <h4 class="text-lg font-bold text-white">${inv.name}</h4>
-                                        <p class="text-xs text-slate-400">${inv.archetype}</p>
-                                    </div>
-                                    <span class="text-xs font-semibold px-2.5 py-1 rounded-full ${badgeClass}">
-                                        ${inv.role}
-                                    </span>
-                                </div>
-                                <div class="space-y-3">
-                                    <div class="bg-slate-800/40 rounded p-3 border-l-2 border-slate-600 text-sm text-slate-300">
-                                        <span class="text-indigo-400 font-semibold block text-xs mb-1 uppercase tracking-wider">Action</span>
-                                        ${inv.finding}
-                                    </div>
-                                    <div class="flex gap-2 text-xs">
-                                        <span class="bg-slate-800 text-slate-300 px-2 py-1 rounded truncate max-w-[50%]" title="Emotion: ${inv.core_emotion}">
-                                            <span class="text-slate-500 mr-1">E:</span>${inv.core_emotion}
-                                        </span>
-                                    </div>
-                                </div>
-                            `;
-                            investigatorsGrid.appendChild(card);
-                        });
-
-                        // Scroll to results on mobile
-                        if(window.innerWidth < 1024) {
-                            resultsContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                        }
-
-                    }, 500); // slight delay for effect
-
-                } catch (error) {
-                    console.error(error);
-                    await typeLine("> ERROR: Connection to agency server lost.", terminal);
-                    loadingState.classList.add('hidden');
-                    loadingState.classList.remove('flex');
-                    emptyState.classList.remove('hidden');
-                    emptyState.innerHTML = `<p class="text-red-400">Error: Could not complete investigation.</p>`;
-                } finally {
-                    btn.disabled = false;
-                    btn.classList.remove('opacity-70', 'cursor-not-allowed');
-                }
-            });
         });
-    </script>
-    <style>
-        @keyframes fadeInUp {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+
+        function renderResults(data) {
+            document.getElementById('resultsSection').style.display = 'block';
+
+            // Render Team
+            const teamContainer = document.getElementById('teamContainer');
+            teamContainer.innerHTML = '';
+            data.team.forEach(member => {
+                teamContainer.innerHTML += `
+                    <div class="bg-slate-800/80 rounded-lg p-4 text-center border border-slate-700 glow-effect">
+                        <img src="${member.character.avatar}" alt="${member.character.name}" class="w-20 h-20 mx-auto rounded-full mb-3 bg-slate-700">
+                        <h3 class="font-bold text-lg text-white mb-1">${member.character.name}</h3>
+                        <span class="role-badge mb-2 inline-block">${member.role}</span>
+                        <p class="text-xs text-slate-400 mt-2 line-clamp-2">${member.character.unique_quality}</p>
+                    </div>
+                `;
+            });
+
+            // Render Logs
+            const logContainer = document.getElementById('logContainer');
+            logContainer.innerHTML = '';
+
+            // Simulate typing effect by adding logs sequentially
+            let delay = 0;
+            data.logs.forEach((log, index) => {
+                setTimeout(() => {
+                    const logElement = document.createElement('div');
+                    logElement.className = 'bg-slate-800/60 rounded-lg p-4 border-l-4 border-indigo-500 animate-[fadeIn_0.5s_ease-out]';
+                    logElement.innerHTML = `
+                        <div class="flex items-start">
+                            <img src="${log.character.avatar}" alt="${log.character.name}" class="w-10 h-10 rounded-full mr-4 bg-slate-700">
+                            <div>
+                                <div class="flex items-baseline space-x-2">
+                                    <h4 class="font-bold text-indigo-300">${log.character.name}</h4>
+                                    <span class="text-xs text-slate-500">[${log.action}]</span>
+                                </div>
+                                <p class="text-slate-200 mt-1">${log.message}</p>
+                            </div>
+                        </div>
+                    `;
+                    logContainer.appendChild(logElement);
+                    logContainer.scrollTop = logContainer.scrollHeight;
+                }, delay);
+                delay += 1000; // 1 second delay between each log
+            });
         }
-    </style>
+    </script>
 </body>
 </html>
