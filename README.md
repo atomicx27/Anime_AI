@@ -245,6 +245,10 @@ python3 main.py
 # Open your browser and navigate to http://localhost:8006/
 # Open your browser and navigate to the frontend index.html file, or use a local HTTP server in the frontend directory.
 ```
+
+### 8. Anime Courtroom AI
+
+The **Anime Courtroom AI** is a web-based, multi-agent application that simulates a trial based on a user-provided case or moral dilemma. The AI automatically assigns characters from the database to roles such as Judge, Prosecutor, Defense, and Jury based on their "Core Emotion" and "Personality Profile."
 ### 8. Anime Courtroom AI
 
 The **Anime Courtroom AI** is a web-based, multi-agent application that simulates a trial based on a user-submitted crime or action. The AI dynamically assigns the roles of Judge, Prosecutor, and Defense Attorney to anime characters based on their Core Emotion and Personality Profile, and generates a realistic mock trial transcript.
@@ -253,6 +257,10 @@ The **Anime Courtroom AI** is a web-based, multi-agent application that simulate
 `anime_courtroom/`
 
 #### Features
+- **Dynamic Role Assignment**: Characters are dynamically slotted into courtroom roles based on their traits (e.g., stoic/logical characters become Judges, empathetic characters become Defense).
+- **Agentic Simulation**: Generates a simulated trial transcript where each character argues the case according to their "Unique Quality & Philosophy."
+- **Cinematic UI/UX**: A modern, dark-themed interface built with Tailwind CSS featuring glassmorphism, radial gradients, shadow glows, smooth hover animations, and a real-time typing transcript.
+- **Dynamic Character Loading**: Backend API automatically parses the root `README.md` to load character details for the simulation.
 - **Dynamic Role Assignment**: Characters are categorized into Judicial, Prosecutorial, or Defense roles based on traits like logic, ambition, or empathy.
 - **Agentic Simulation**: Generates in-character opening statements, rebuttals, and a final verdict directly influenced by the characters' Unique Qualities.
 - **Sleek UI/UX**: A modern, dark-themed interface built with Tailwind CSS featuring glassmorphism, radial gradients, shadow glows, and smooth message animations.
