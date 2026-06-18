@@ -1,5 +1,6 @@
 {
   "dependencies": {
-    "playwright": "^1.60.0"
+    "framer-motion": "^12.40.0",
+    "lucide-react": "^1.16.0"
   }
 }

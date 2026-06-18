@@ -24,14 +24,24 @@ class ScenarioRankerAgent:
         }
 
         for category, words in keywords.items():
-            if category in scenario_lower or any(w in scenario_lower for w in words):
+            matches_in_scenario = sum(1 for w in words if w in scenario_lower)
+            if category in scenario_lower:
+                 matches_in_scenario += 1
+
+            if matches_in_scenario > 0:
+                # Diminishing returns for multiple matches in the scenario
+                scenario_multiplier = 1.0 + (matches_in_scenario * 0.2)
+
                 for word in words:
                     if word in core_emotion:
-                        score += 12
+                        score += 12 * scenario_multiplier
                     if word in personality:
-                        score += 8
+                        score += 8 * scenario_multiplier
                     if word in quality:
                         score += 10
+            # Synergistic scoring: deduct points if category is in scenario but character lacks it
+            elif (category in scenario_lower) and not any(w in core_emotion or w in personality or w in quality for w in words):
+                score -= 10
 
         # Add some randomness to make it interesting
         score += random.randint(-5, 15)
