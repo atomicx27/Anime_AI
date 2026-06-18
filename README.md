@@ -187,6 +187,17 @@ python3 main.py
 # Open your browser and navigate to http://localhost:8005/
 ```
 
+### 7. Anime Debate Arena AI
+
+The **Anime Debate Arena AI** is a web-based, multi-agent application where you can watch iconic anime characters clash in a battle of ideals. You enter a topic, and the system selects two characters with contrasting traits to debate, while a third character acts as the judge to deliver a final verdict based on their unique philosophies.
+
+#### Folder Location
+`anime_debate_arena/`
+
+#### Features
+- **Dynamic Debater Selection**: Randomly selects two debaters and one judge from the roster to provide unique perspectives on the topic.
+- **Simulated Debate Generation**: Constructs an argument and rebuttal based on the characters' Core Emotion, Personality Profile, and Unique Quality.
+- **Sleek, Animated UI**: Features a modern, glassmorphism interface built with Tailwind CSS, displaying live character cards and a smoothly typing chat transcript.
 ### Anime Power Scaler AI
 
 The **Anime Power Scaler AI** is a web-based, multi-agent application that evaluates how anime characters from the database would scale against a user-provided opponent or threat. It dynamically evaluates their "Core Emotion", "Personality Profile", and "Unique Quality & Philosophy" to categorize them into power tiers like Overkill, Even Match, Underdog, or Support.
@@ -220,6 +231,7 @@ The **Anime Affinity Matcher AI** is a web-based, agentic application that acts 
 #### How to Run
 ```bash
 # Install dependencies
+cd anime_debate_arena/backend
 cd anime_power_scaler/backend
 cd anime_affinity_matcher/backend
 pip install -r requirements.txt

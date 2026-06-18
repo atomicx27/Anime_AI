@@ -11,6 +11,7 @@ def parse_readme_characters(filepath=None):
         print(f"Error: Could not find {filepath}")
         return characters
 
+    with open(filepath, "r", encoding="utf-8") as f:
     with open(filepath, "r") as f:
         content = f.read()
 
