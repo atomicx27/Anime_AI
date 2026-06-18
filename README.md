@@ -245,6 +245,19 @@ python3 main.py
 # Open your browser and navigate to http://localhost:8006/
 # Open your browser and navigate to the frontend index.html file, or use a local HTTP server in the frontend directory.
 ```
+
+### 8. Anime Detective Agency AI
+
+The **Anime Detective Agency AI** is a web-based, multi-agent application where characters form an investigation team to solve mysteries submitted by the user.
+
+#### Folder Location
+`anime_detective_agency/`
+
+#### Features
+- **Dynamic Role Assignment**: The DetectiveAgent automatically assigns roles like "Lead Detective", "Forensics/Analyst", and "Interrogator/Enforcer" based on the characters' Core Emotion, Personality Profile, and Unique Quality.
+- **Agentic Investigation Log**: A generated log showing how the assigned team evaluates the user's mystery, highlighting each character's unique traits in their actions.
+- **Sleek UI/UX**: Built with Vanilla HTML, JS, and Tailwind CSS, featuring glassmorphism panels, glowing shadow effects, and smooth rendering of the agent thought process.
+- **Dynamic Character Loading**: Backend API automatically parses the root `README.md` to dynamically load character details for the agency.
 ### 8. Anime Courtroom AI
 
 The **Anime Courtroom AI** is a web-based, multi-agent application that simulates a trial where anime characters take on the roles of Judge, Prosecutor, Defense Attorney, and Jury. It dynamically evaluates their "Core Emotion", "Personality Profile", and "Unique Quality & Philosophy" to determine the verdict of a user-submitted case.
@@ -275,6 +288,7 @@ The **Anime Courtroom AI** is a web-based, multi-agent application that simulate
 #### How to Run
 ```bash
 # Install dependencies
+cd anime_detective_agency/backend
 cd anime_courtroom/backend
 pip install -r requirements.txt
 
