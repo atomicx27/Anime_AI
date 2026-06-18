@@ -12,6 +12,7 @@ anime_debate_arena/node_modules/
 node_modules/
 __pycache__/
 anime_affinity_matcher/backend/__pycache__/
+screenshots/
 
 # Background Logs
 *.log

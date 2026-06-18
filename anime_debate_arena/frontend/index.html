@@ -5,6 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Anime Debate Arena AI</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['Fira Code', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@400;500;600;700&display=swap');
 
@@ -53,7 +66,7 @@
 
     <div class="container mx-auto px-4 py-8 max-w-5xl relative z-10">
         <header class="text-center mb-12">
-            <h1 class="text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-purple-600 mb-4">
+            <h1 class="text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-red-400 via-purple-500 to-indigo-500 mb-4 drop-shadow-[0_0_15px_rgba(168,85,247,0.4)]">
                 Anime Debate Arena
             </h1>
             <p class="text-slate-400 text-lg font-light">Propose a topic and watch two opposing minds clash.</p>
@@ -176,10 +189,13 @@
                                       (msg.speaker === data.debater1.name ? 'border-blue-500 hover:shadow-blue-500/20' : 'border-red-500 ml-8 hover:shadow-red-500/20');
 
                     msgEl.innerHTML = `
-                        <div class="font-bold mb-1 ${msg.speaker === data.debater1.name ? 'text-blue-400' : 'text-red-400'}">
-                            ${msg.speaker}
+                        <div class="flex items-center mb-2">
+                            <div class="w-2 h-2 rounded-full ${isDebater1 ? 'bg-blue-400 shadow-[0_0_8px_rgba(96,165,250,0.8)]' : 'bg-red-400 shadow-[0_0_8px_rgba(248,113,113,0.8)]'} mr-2"></div>
+                            <div class="font-bold text-sm tracking-wide ${isDebater1 ? 'text-blue-300' : 'text-red-300'}">
+                                ${msg.speaker}
+                            </div>
                         </div>
-                        <div class="text-gray-300">${msg.message}</div>
+                        <div class="text-gray-200 leading-relaxed text-[15px] pl-4 border-l-2 ${isDebater1 ? 'border-blue-500/20' : 'border-red-500/20'}">${msg.message}</div>
                     `;
                     transcript.appendChild(msgEl);
                 }

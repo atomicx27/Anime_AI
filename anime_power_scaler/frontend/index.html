@@ -5,11 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Anime Power Scaler AI</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['Fira Code', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@400;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@300;400;500;600;700&display=swap');
 
         body {
-            font-family: 'Inter', sans-serif;
             background-color: #0f172a; /* slate-900 */
             color: #f8fafc; /* slate-50 */
             background-image: radial-gradient(circle at 20% 30%, rgba(239, 68, 68, 0.15), transparent 40%),
@@ -44,13 +55,21 @@
         }
 
         .typing-cursor::after {
-            content: '▋';
-            animation: blink 1s step-start infinite;
+            content: '█';
+            animation: blink 1s step-end infinite;
+            color: #ef4444; /* red cursor */
         }
 
         @keyframes blink {
             50% { opacity: 0; }
         }
+
+        /* Custom scrollbar for terminal */
+        .terminal::-webkit-scrollbar { width: 6px; }
+        .terminal::-webkit-scrollbar-track { background: rgba(0,0,0,0.5); }
+        .terminal::-webkit-scrollbar-thumb { background: rgba(239, 68, 68, 0.5); border-radius: 4px; }
+        .terminal::-webkit-scrollbar-thumb:hover { background: rgba(239, 68, 68, 0.8); }
+
     </style>
 </head>
 <body class="min-h-screen flex flex-col items-center p-8">

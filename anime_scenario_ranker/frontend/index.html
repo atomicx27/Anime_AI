@@ -5,18 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Anime Scenario Ranker</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <script>
         tailwind.config = {
             theme: {
                 extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['Fira Code', 'monospace'],
+                    },
                     colors: {
                         tier: {
-                            s: '#ff7f7f',
-                            a: '#ffbf7f',
-                            b: '#ffff7f',
-                            c: '#7fff7f',
-                            d: '#7fbfff'
+                            s: '#ef4444', // Red-500
+                            a: '#f97316', // Orange-500
+                            b: '#eab308', // Yellow-500
+                            c: '#22c55e', // Green-500
+                            d: '#3b82f6'  // Blue-500
                         }
                     }
                 }
@@ -129,23 +134,31 @@
         }
 
         /* Tier gradients */
-        .tier-s-bg { background: linear-gradient(135deg, #ff7f7f, #ff4b4b); }
-        .tier-a-bg { background: linear-gradient(135deg, #ffbf7f, #ff9b4b); }
-        .tier-b-bg { background: linear-gradient(135deg, #ffff7f, #dfdf4b); }
-        .tier-c-bg { background: linear-gradient(135deg, #7fff7f, #4bff4b); }
-        .tier-d-bg { background: linear-gradient(135deg, #7fbfff, #4b9bff); }
+        .tier-s-bg { background: linear-gradient(135deg, #ef4444, #b91c1c); }
+        .tier-a-bg { background: linear-gradient(135deg, #f97316, #c2410c); }
+        .tier-b-bg { background: linear-gradient(135deg, #eab308, #a16207); }
+        .tier-c-bg { background: linear-gradient(135deg, #22c55e, #15803d); }
+        .tier-d-bg { background: linear-gradient(135deg, #3b82f6, #1d4ed8); }
     </style>
 </head>
-<body class="text-gray-100 h-screen flex flex-col font-sans overflow-hidden">
+<body class="text-slate-100 h-screen flex flex-col font-sans overflow-hidden relative">
+
+    <!-- Ambient Background -->
+    <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-indigo-900/20 via-slate-900 to-slate-900 -z-10"></div>
+    <div class="absolute inset-0 bg-[radial-gradient(circle_at_bottom_left,_var(--tw-gradient-stops))] from-purple-900/20 via-transparent to-transparent -z-10"></div>
 
     <!-- Header -->
     <header class="bg-gray-800/60 backdrop-blur-xl border-b border-gray-700 p-4 shadow-lg z-10 flex items-center justify-between">
         <div class="flex items-center gap-3">
-            <div class="w-10 h-10 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-lg flex items-center justify-center shadow-lg shadow-purple-500/40 relative overflow-hidden group">
+            <div class="w-10 h-10 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center shadow-lg shadow-indigo-500/30 relative overflow-hidden group border border-white/20">
                 <div class="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
                 <i class="fa-solid fa-ranking-star text-white relative z-10 group-hover:scale-110 transition-transform"></i>
             </div>
-            <h1 class="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-indigo-400 tracking-wide">Anime Scenario Ranker AI</h1>
+            <h1 class="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 tracking-wide drop-shadow-[0_0_8px_rgba(168,85,247,0.3)]">Anime Scenario Ranker AI</h1>
+        </div>
+        <div class="text-xs font-mono text-slate-300 border border-white/10 px-3 py-1.5 rounded-full bg-black/40 shadow-inner flex items-center">
+            <span class="w-2 h-2 rounded-full bg-emerald-500 mr-2 shadow-[0_0_8px_rgba(16,185,129,0.8)] animate-pulse"></span>
+            Agent Online
         </div>
     </header>
 
@@ -177,47 +190,47 @@
         <!-- Main Content: Tier List -->
         <div class="flex-1 bg-slate-900/40 backdrop-blur-sm p-8 overflow-y-auto custom-scrollbar flex flex-col gap-4 relative" id="tier-list-container">
             <!-- Background Grid -->
-            <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGQ9Ik00MCAwSDBWNDBIMHoiIGZpbGw9Im5vbmUiLz4KPHBhdGggZD0iTTQwIDBoLTF2NDBoMVYwek0wIDQwaDQwdi0xSDB2MXoiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4wNSkiLz4KPC9zdmc+')] pointer-events-none opacity-50"></div>
+            <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGQ9Ik00MCAwSDBWNDBIMHoiIGZpbGw9Im5vbmUiLz4KPHBhdGggZD0iTTQwIDBoLTF2NDBoMVYwek0wIDQwaDQwdi0xSDB2MXoiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4wNSkiLz4KPC9zdmc+')] pointer-events-none opacity-40"></div>
 
             <!-- Background Decoration -->
-            <div class="absolute inset-0 flex items-center justify-center pointer-events-none opacity-[0.03]">
-                <i class="fa-solid fa-ranking-star text-[25rem] text-purple-300"></i>
+            <div class="absolute inset-0 flex items-center justify-center pointer-events-none opacity-[0.02]">
+                <i class="fa-solid fa-ranking-star text-[30rem] text-indigo-300"></i>
             </div>
 
             <!-- Tier Rows will be generated here -->
-            <div id="tier-S" class="flex border border-gray-700 rounded-lg overflow-hidden bg-gray-800/50 shadow-[0_0_15px_rgba(255,127,127,0.5)] min-h-[100px]">
-                <div class="w-24 bg-tier-s flex items-center justify-center border-r border-gray-700 shrink-0">
-                    <span class="text-3xl font-black text-gray-900 drop-shadow-sm">S</span>
+            <div id="tier-S" class="tier-row flex border border-white/10 rounded-2xl overflow-hidden bg-white/5 backdrop-blur-sm shadow-[0_0_20px_rgba(239,68,68,0.2)] hover:shadow-[0_0_25px_rgba(239,68,68,0.3)] transition-all duration-300 min-h-[120px] relative z-10">
+                <div class="w-28 tier-s-bg flex items-center justify-center border-r border-white/20 shrink-0 shadow-inner">
+                    <span class="text-4xl font-black text-white drop-shadow-md">S</span>
                 </div>
-                <div class="flex-1 p-4 flex flex-wrap gap-4 items-center" id="row-S"></div>
+                <div class="flex-1 p-5 flex flex-wrap gap-4 items-center relative z-10" id="row-S"></div>
             </div>
 
-            <div id="tier-A" class="tier-row flex border border-gray-700 rounded-lg overflow-hidden bg-gray-800/50 shadow-lg min-h-[100px] z-10 relative">
-                <div class="w-24 bg-tier-a flex items-center justify-center border-r border-gray-700 shrink-0">
-                    <span class="text-3xl font-black text-gray-900 drop-shadow-sm">A</span>
+            <div id="tier-A" class="tier-row flex border border-white/10 rounded-2xl overflow-hidden bg-white/5 backdrop-blur-sm shadow-[0_0_20px_rgba(249,115,22,0.1)] hover:shadow-[0_0_25px_rgba(249,115,22,0.2)] transition-all duration-300 min-h-[120px] relative z-10">
+                <div class="w-28 tier-a-bg flex items-center justify-center border-r border-white/20 shrink-0 shadow-inner">
+                    <span class="text-4xl font-black text-white drop-shadow-md">A</span>
                 </div>
-                <div class="flex-1 p-4 flex flex-wrap gap-4 items-center" id="row-A"></div>
+                <div class="flex-1 p-5 flex flex-wrap gap-4 items-center relative z-10" id="row-A"></div>
             </div>
 
-            <div id="tier-B" class="tier-row flex border border-gray-700 rounded-lg overflow-hidden bg-gray-800/50 shadow-lg min-h-[100px] z-10 relative">
-                <div class="w-24 bg-tier-b flex items-center justify-center border-r border-gray-700 shrink-0">
-                    <span class="text-3xl font-black text-gray-900 drop-shadow-sm">B</span>
+            <div id="tier-B" class="tier-row flex border border-white/10 rounded-2xl overflow-hidden bg-white/5 backdrop-blur-sm shadow-[0_0_20px_rgba(234,179,8,0.1)] hover:shadow-[0_0_25px_rgba(234,179,8,0.2)] transition-all duration-300 min-h-[120px] relative z-10">
+                <div class="w-28 tier-b-bg flex items-center justify-center border-r border-white/20 shrink-0 shadow-inner">
+                    <span class="text-4xl font-black text-white drop-shadow-md">B</span>
                 </div>
-                <div class="flex-1 p-4 flex flex-wrap gap-4 items-center" id="row-B"></div>
+                <div class="flex-1 p-5 flex flex-wrap gap-4 items-center relative z-10" id="row-B"></div>
             </div>
 
-            <div id="tier-C" class="tier-row flex border border-gray-700 rounded-lg overflow-hidden bg-gray-800/50 shadow-lg min-h-[100px] z-10 relative">
-                <div class="w-24 bg-tier-c flex items-center justify-center border-r border-gray-700 shrink-0">
-                    <span class="text-3xl font-black text-gray-900 drop-shadow-sm">C</span>
+            <div id="tier-C" class="tier-row flex border border-white/10 rounded-2xl overflow-hidden bg-white/5 backdrop-blur-sm shadow-[0_0_20px_rgba(34,197,94,0.1)] hover:shadow-[0_0_25px_rgba(34,197,94,0.2)] transition-all duration-300 min-h-[120px] relative z-10">
+                <div class="w-28 tier-c-bg flex items-center justify-center border-r border-white/20 shrink-0 shadow-inner">
+                    <span class="text-4xl font-black text-white drop-shadow-md">C</span>
                 </div>
-                <div class="flex-1 p-4 flex flex-wrap gap-4 items-center" id="row-C"></div>
+                <div class="flex-1 p-5 flex flex-wrap gap-4 items-center relative z-10" id="row-C"></div>
             </div>
 
-            <div id="tier-D" class="tier-row flex border border-gray-700 rounded-lg overflow-hidden bg-gray-800/50 shadow-lg min-h-[100px] z-10 relative">
-                <div class="w-24 bg-tier-d flex items-center justify-center border-r border-gray-700 shrink-0">
-                    <span class="text-3xl font-black text-gray-900 drop-shadow-sm">D</span>
+            <div id="tier-D" class="tier-row flex border border-white/10 rounded-2xl overflow-hidden bg-white/5 backdrop-blur-sm shadow-[0_0_20px_rgba(59,130,246,0.1)] hover:shadow-[0_0_25px_rgba(59,130,246,0.2)] transition-all duration-300 min-h-[120px] relative z-10">
+                <div class="w-28 tier-d-bg flex items-center justify-center border-r border-white/20 shrink-0 shadow-inner">
+                    <span class="text-4xl font-black text-white drop-shadow-md">D</span>
                 </div>
-                <div class="flex-1 p-4 flex flex-wrap gap-4 items-center" id="row-D"></div>
+                <div class="flex-1 p-5 flex flex-wrap gap-4 items-center relative z-10" id="row-D"></div>
             </div>
         </div>
     </div>
@@ -317,11 +330,11 @@
                                                 <div class="w-6 h-6 rounded-full bg-gray-800 flex items-center justify-center text-xs font-bold text-gray-300">
                                                     ${getInitials(ranking.name)}
                                                 </div>
-                                                <span class="text-sm font-semibold text-gray-100 tracking-wide">${ranking.name}</span>
+                                                <span class="text-sm font-bold text-white tracking-wide">${ranking.name}</span>
                                             </div>
                                             <div class="tooltip-text">
-                                                <div class="font-bold text-purple-400 mb-1 border-b border-gray-700 pb-1">${ranking.name}</div>
-                                                <div class="text-gray-300 leading-relaxed">${ranking.reasoning}</div>
+                                                <div class="font-bold text-indigo-300 mb-2 border-b border-white/10 pb-2 flex items-center gap-2"><i class="fa-solid fa-brain text-xs opacity-70"></i> ${ranking.name}</div>
+                                                <div class="text-slate-300 leading-relaxed text-left text-sm font-medium opacity-90">${ranking.reasoning}</div>
                                             </div>
                                         </div>
                                     `;

@@ -5,20 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Anime Group Chat</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <script>
         tailwind.config = {
             theme: {
                 extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['Fira Code', 'monospace'],
+                    },
                     colors: {
                         discord: {
-                            darker: '#202225',
-                            dark: '#2f3136',
-                            base: '#36393f',
-                            light: '#40444b',
+                            darker: '#1e1f22',
+                            dark: '#2b2d31',
+                            base: '#313338',
+                            light: '#383a40',
                             primary: '#5865F2',
-                            text: '#dcddde',
-                            muted: '#72767d'
+                            text: '#dbdee1',
+                            muted: '#80848e'
                         }
                     }
                 }
@@ -208,15 +213,15 @@
         <!-- Chat History -->
         <div id="chat-history" class="flex-1 overflow-y-auto px-4 py-6 flex flex-col relative z-0">
             <!-- Background Decoration -->
-            <div class="absolute inset-0 pointer-events-none opacity-[0.03] bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4IiBoZWlnaHQ9IjgiPgo8cmVjdCB3aWR0aD0iOCIgaGVpZ2h0PSI4IiBmaWxsPSIjZmZmIj48L3JlY3Q+CjxwYXRoIGQ9Ik0wIDBMODggWk04IDBMMCA4IFoiIHN0cm9rZT0iIzAwMCIgc3Ryb2tlLXdpZHRoPSIxIj48L3BhdGg+Cjwvc3ZnPg==')] mix-blend-overlay"></div>
+            <div class="absolute inset-0 pointer-events-none opacity-[0.02] bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4IiBoZWlnaHQ9IjgiPgo8cmVjdCB3aWR0aD0iOCIgaGVpZ2h0PSI4IiBmaWxsPSIjZmZmIj48L3JlY3Q+CjxwYXRoIGQ9Ik0wIDBMODggWk04IDBMMCA4IFoiIHN0cm9rZT0iIzAwMCIgc3Ryb2tlLXdpZHRoPSIxIj48L3BhdGg+Cjwvc3ZnPg==')] mix-blend-overlay"></div>
 
             <!-- Welcome Message -->
             <div class="mt-auto mb-6 relative z-10">
-                <div class="w-[72px] h-[72px] bg-discord-dark rounded-full flex items-center justify-center mb-4 shadow-lg border border-discord-light/30">
-                    <i class="fas fa-hashtag text-white text-3xl"></i>
+                <div class="w-[72px] h-[72px] bg-discord-dark rounded-full flex items-center justify-center mb-4 shadow-[0_4px_15px_rgba(0,0,0,0.2)] border border-discord-light/30">
+                    <i class="fas fa-hashtag text-white text-3xl drop-shadow-md"></i>
                 </div>
-                <h1 class="text-white text-4xl font-extrabold mb-2 tracking-tight">Welcome to #general-chat!</h1>
-                <p class="text-discord-muted text-lg">This is the start of the #general-chat channel. Say hi to the anime council!</p>
+                <h1 class="text-white text-4xl font-black mb-2 tracking-tight">Welcome to #general-chat!</h1>
+                <p class="text-discord-muted text-[15px]">This is the start of the #general-chat channel. Say hi to the anime council!</p>
             </div>
 
             <div class="w-full border-t border-discord-dark/50 my-4 flex justify-center relative z-10">
@@ -333,7 +338,7 @@
                 hash = str.charCodeAt(i) + ((hash << 5) - hash);
             }
             const h = hash % 360;
-            return `hsl(${h}, 70%, 65%)`;
+            return `hsl(${h}, 80%, 75%)`;
         }
 
         function appendMessage(sender, content, avatarUrl = null, isBot = false, timeStr = null) {
@@ -344,23 +349,23 @@
             const avatar = avatarUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(sender)}&background=random`;
             const color = isBot ? getStringColor(sender) : 'white';
 
-            const botTag = isBot ? `<span class="bg-discord-primary text-white text-[10px] font-bold px-1 rounded ml-1 uppercase leading-tight relative top-[-1px] shadow-sm">Bot</span>` : '';
+            const botTag = isBot ? `<span class="bg-discord-primary text-white text-[10px] font-bold px-1.5 py-0.5 rounded ml-1.5 uppercase leading-tight relative top-[-1px] shadow-sm tracking-wide">Bot</span>` : '';
 
             // Highlight mentions
-            let formattedContent = content.replace(/@([a-zA-Z0-9_ ]+)/g, '<span class="bg-indigo-500/30 text-indigo-300 px-1 rounded cursor-pointer hover:bg-indigo-500/50 hover:underline transition-colors">@$1</span>');
+            let formattedContent = content.replace(/@([a-zA-Z0-9_ ]+)/g, '<span class="bg-indigo-500/20 text-indigo-300 px-1.5 py-0.5 rounded cursor-pointer hover:bg-indigo-500/40 hover:underline transition-colors font-medium">@$1</span>');
 
             // Highlight action text *...*
             formattedContent = formattedContent.replace(/\*(.*?)\*/g, '<span class="italic text-discord-muted group-hover:text-discord-muted/80 transition-colors">* $1 *</span>');
 
-            div.innerHTML = `
-                <img src="${avatar}" alt="${sender}" class="w-10 h-10 rounded-full bg-discord-darker object-cover mr-4 cursor-pointer mt-0.5 hover:scale-110 hover:shadow-lg transition-transform duration-300">
-                <div class="flex-1 group-hover:translate-x-1 transition-transform duration-200">
-                    <div class="flex items-baseline">
-                        <span class="font-medium text-[15px] cursor-pointer hover:underline" style="color: ${color}">${sender}</span>
+            div.innerHTML += `
+                <img src="${avatar}" alt="${sender}" class="w-10 h-10 rounded-full bg-discord-darker object-cover mr-4 cursor-pointer mt-0.5 hover:scale-[1.15] hover:shadow-[0_4px_15px_rgba(0,0,0,0.3)] transition-all duration-300 border border-transparent hover:border-white/10 z-10 relative">
+                <div class="flex-1 relative z-10">
+                    <div class="flex items-baseline mb-1">
+                        <span class="font-semibold text-[15px] cursor-pointer hover:underline tracking-wide" style="color: ${color}">${sender}</span>
                         ${botTag}
-                        <span class="text-xs text-discord-muted ml-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">${time}</span>
+                        <span class="text-[11px] font-medium text-discord-muted ml-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">${time}</span>
                     </div>
-                    <div class="text-[15px] text-discord-text leading-[1.375rem] whitespace-pre-wrap">${formattedContent}</div>
+                    <div class="text-[15px] text-discord-text leading-[1.4rem] whitespace-pre-wrap font-medium">${formattedContent}</div>
                 </div>
             `;
 
