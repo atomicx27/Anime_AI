@@ -11,7 +11,7 @@ def parse_readme_characters(filepath=None):
         print(f"Error: Could not find {filepath}")
         return characters
 
-    with open(filepath, "r", encoding="utf-8") as f:
+    with open(filepath, "r") as f:
         content = f.read()
 
     table_pattern = re.compile(r'\| Character \| Archetype & MBTI \| Core Emotion \| Personality Profile \| Unique Quality & Philosophy \|\n\|---\|---\|---\|---\|---\|\n(.*?)(?=\n\n|\n---|$)', re.DOTALL)

@@ -3,9 +3,9 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 from pydantic import BaseModel
+from contextlib import asynccontextmanager
 import os
 import sys
-from contextlib import asynccontextmanager
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
@@ -25,9 +25,6 @@ async def lifespan(app: FastAPI):
     else:
         print("Warning: Could not load characters from README.md")
     yield
-    # Clean up
-    CHARACTERS = []
-    AGENT = None
 
 app = FastAPI(title="Anime Courtroom AI API", lifespan=lifespan)
 
@@ -40,18 +37,14 @@ app.add_middleware(
 )
 
 class TrialRequest(BaseModel):
-    case_description: str
-
-@app.get("/api/characters")
-def get_characters():
-    return {"characters": CHARACTERS}
+    crime: str
 
 @app.post("/api/trial")
-def run_trial(request: TrialRequest):
+def host_trial(request: TrialRequest):
     if not AGENT:
         raise HTTPException(status_code=500, detail="Agent not initialized")
 
-    result = AGENT.simulate_trial(request.case_description)
+    result = AGENT.host_trial(request.crime)
     return result
 
 frontend_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "frontend")
@@ -68,4 +61,4 @@ if os.path.exists(frontend_dir):
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8007)
+    uvicorn.run("main:app", host="0.0.0.0", port=8007, reload=False)
