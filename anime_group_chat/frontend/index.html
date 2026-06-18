@@ -103,10 +103,10 @@
         }
     </style>
 </head>
-<body class="bg-discord-base text-discord-text h-screen flex overflow-hidden font-sans">
+<body class="bg-discord-dark text-discord-text h-screen flex overflow-hidden font-sans">
 
     <!-- Sidebar: Servers (Mock) -->
-    <div class="w-18 bg-discord-darker flex flex-col items-center py-3 space-y-4">
+    <div class="w-18 bg-discord-darker/80 backdrop-blur-md flex flex-col items-center py-3 space-y-4 z-20">
         <div class="w-12 h-12 bg-discord-primary rounded-2xl flex items-center justify-center text-white cursor-pointer hover:rounded-xl transition-all duration-300">
             <i class="fas fa-meteor fa-lg"></i>
         </div>
@@ -117,7 +117,7 @@
     </div>
 
     <!-- Sidebar: Channels/Online Users -->
-    <div class="w-60 bg-discord-dark flex flex-col border-l border-discord-darker">
+    <div class="w-60 bg-discord-dark/80 backdrop-blur-md flex flex-col border-l border-discord-darker/50 z-20">
         <!-- Header -->
         <div class="h-12 border-b border-discord-darker flex items-center px-4 shadow-sm hover:bg-discord-light cursor-pointer transition-all duration-200 hover:pl-5">
             <h1 class="font-bold text-white flex-1 truncate">Anime All-Stars</h1>
@@ -131,7 +131,7 @@
                     <span>Text Channels</span>
                     <i class="fas fa-plus text-discord-muted hover:text-white transition-colors opacity-0 group-hover/channels:opacity-100"></i>
                 </div>
-                <div class="flex items-center px-2 py-1 bg-discord-light text-white rounded cursor-pointer mb-1 group transition-all duration-200 hover:bg-discord-light hover:translate-x-1">
+                <div class="flex items-center px-2 py-1 bg-discord-light text-white rounded cursor-pointer mb-1 group transition-all duration-200 hover:bg-discord-light/50 hover:translate-x-1 hover:shadow-[0_0_8px_rgba(88,101,242,0.2)]">
                     <i class="fas fa-hashtag text-discord-text mr-2 transition-colors group-hover:text-white"></i>
                     <span class="flex-1">general-chat</span>
                 </div>
@@ -175,9 +175,9 @@
     </div>
 
     <!-- Main Chat Area -->
-    <div class="flex-1 flex flex-col bg-transparent relative">
+    <div class="flex-1 flex flex-col bg-[radial-gradient(ellipse_at_top_right,_rgba(88,101,242,0.1),_transparent_50%),_radial-gradient(ellipse_at_bottom_left,_rgba(235,69,158,0.1),_transparent_50%)] bg-discord-base relative">
         <!-- Header -->
-        <div class="h-12 border-b border-black/20 flex items-center px-4 shadow-sm glass-panel z-10 shrink-0">
+        <div class="h-12 border-b border-discord-darker/50 flex items-center px-4 shadow-sm bg-discord-base/70 backdrop-blur-lg z-10 shrink-0">
             <i class="fas fa-hashtag text-discord-muted text-xl mr-3"></i>
             <h2 class="font-bold text-white flex-1">general-chat</h2>
             <div class="flex text-discord-muted space-x-4">
@@ -214,7 +214,7 @@
             </div>
 
             <!-- Typing Indicator -->
-            <div id="typing-container" class="hidden text-xs text-discord-muted font-bold px-4 py-2 flex items-center mt-2 relative z-10 bg-discord-darker/50 rounded-lg w-max ml-4 mb-2 shadow-sm border border-discord-light/10">
+            <div id="typing-container" class="hidden text-xs text-discord-muted font-bold px-4 py-2 flex items-center mt-2 relative z-10 bg-discord-darker/70 backdrop-blur-md rounded-lg w-max ml-4 mb-2 shadow-[0_0_10px_rgba(0,0,0,0.2)] border border-discord-light/20">
                 <div class="typing-indicator mr-3">
                     <div class="typing-dot"></div>
                     <div class="typing-dot"></div>
@@ -228,7 +228,7 @@
 
         <!-- Input Area -->
         <div class="px-4 pb-6 pt-2 relative">
-            <form id="chat-form" class="bg-discord-light rounded-lg flex items-center px-4 py-2 relative transition-all duration-300 focus-within:ring-1 focus-within:ring-discord-primary shadow-sm hover:shadow-md">
+            <form id="chat-form" class="bg-discord-light/80 backdrop-blur-sm rounded-lg flex items-center px-4 py-2 relative transition-all duration-300 focus-within:ring-2 focus-within:ring-discord-primary focus-within:shadow-[0_0_15px_rgba(88,101,242,0.3)] shadow-sm hover:shadow-md">
                 <div class="text-discord-muted hover:text-white hover:bg-discord-primary transition-colors duration-200 cursor-pointer w-6 h-6 flex items-center justify-center mr-3 bg-discord-darker rounded-full">
                     <i class="fas fa-plus text-xs"></i>
                 </div>

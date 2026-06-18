@@ -1,3 +1,4 @@
+
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
@@ -5,7 +6,6 @@ from parser import parse_readme_characters
 from agent import AffinityMatcherAgent
 
 app = FastAPI(title="Anime Affinity Matcher API")
-
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
