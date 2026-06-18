@@ -60,8 +60,13 @@
             pointer-events: none;
             z-index: -1;
             background-image: radial-gradient(circle, #fff 1px, transparent 1px);
-            background-size: 50px 50px;
-            opacity: 0.03;
+            background-size: 40px 40px;
+            opacity: 0.05;
+            animation: floatBackground 60s linear infinite;
+        }
+        @keyframes floatBackground {
+            from { background-position: 0 0; }
+            to { background-position: 100% 100%; }
         }
         .radar-scan {
             position: absolute;
@@ -98,11 +103,11 @@
                     <form id="mission-form" class="space-y-6">
                         <div>
                             <label for="mission" class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Objective Description</label>
-                            <textarea id="mission" name="mission" rows="6" class="w-full bg-slate-800/50 border border-slate-700/50 rounded-xl p-4 text-white focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none transition-all resize-none shadow-inner placeholder-slate-600" placeholder="e.g., Infiltrate the enemy base, disable the magical barrier, and extract the hostage without raising any alarms." required></textarea>
+                            <textarea id="mission" name="mission" rows="6" class="w-full bg-slate-800/60 border border-slate-600/50 rounded-xl p-4 text-white focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none transition-all resize-none shadow-inner hover:bg-slate-800/80 placeholder-slate-500" placeholder="e.g., Infiltrate the enemy base, disable the magical barrier, and extract the hostage without raising any alarms." required></textarea>
                         </div>
                         <div>
                             <label for="team_size" class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Team Size (1-5)</label>
-                            <input type="number" id="team_size" name="team_size" value="3" min="1" max="5" class="w-full bg-slate-800/50 border border-slate-700/50 rounded-xl p-4 text-white focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none transition-all shadow-inner">
+                            <input type="number" id="team_size" name="team_size" value="3" min="1" max="5" class="w-full bg-slate-800/60 border border-slate-600/50 rounded-xl p-4 text-white focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none transition-all shadow-inner hover:bg-slate-800/80">
                         </div>
                         <button type="submit" id="submit-btn" class="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white font-bold py-4 px-6 rounded-xl transition-all duration-300 shadow-lg shadow-purple-500/30 hover:shadow-[0_0_20px_rgba(168,85,247,0.5)] transform hover:-translate-y-1 flex items-center justify-center gap-2">
                             <span>Assemble Squad</span>
