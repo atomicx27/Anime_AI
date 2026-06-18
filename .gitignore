@@ -25,3 +25,6 @@ test-results/
 *.webm
 __pycache__/
 node_modules/
+
+backend_venture_capital.log
+screenshots/venture_capital.png

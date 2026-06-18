@@ -323,3 +323,30 @@ python3 main.py
 # or open the anime_detective_agency/frontend/index.html file locally.
 # Open your browser and navigate to http://localhost:8007/
 ```
+
+### 9. Anime Venture Capital AI
+
+The **Anime Venture Capital AI** is a web-based, multi-agent application where you pitch a startup idea or product to a panel of legendary anime characters acting as VC investors. The AI assigns roles like Pragmatist, Visionary, Skeptic, and Wildcard to characters based on their Core Emotion and Personality Profile, simulating a ruthless but insightful boardroom pitch meeting.
+
+#### Folder Location
+`anime_venture_capital/`
+
+#### Features
+- **Dynamic Investor Roles**: The agent categorizes characters into VC archetypes (Pragmatist, Visionary, Skeptic, Wildcard) based on their psychological traits.
+- **Simulated Pitch Feedback**: Each assigned character evaluates your pitch through the lens of their unique philosophy, ultimately deciding to "Invest", "Pass", or "Wait & See".
+- **Boardroom Consensus**: The system aggregates the individual decisions into a final boardroom verdict on your pitch.
+- **Sleek UI/UX**: Built with Tailwind CSS, featuring a glassmorphism dark theme, smooth animations, an AI thought terminal, and visually distinct role cards.
+- **Dynamic Character Loading**: Backend API automatically parses the root `README.md` to load character details dynamically.
+
+#### How to Run
+```bash
+# Install dependencies
+cd anime_venture_capital/backend
+pip install -r requirements.txt
+
+# Run the server
+python3 main.py
+
+# Access the UI
+# Open your browser and navigate to http://localhost:8009/
+```
