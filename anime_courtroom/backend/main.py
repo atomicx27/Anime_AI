@@ -25,10 +25,8 @@ async def lifespan(app: FastAPI):
     else:
         print("Warning: Could not load characters from README.md")
     yield
-    # Clean up
-    CHARACTERS.clear()
 
-app = FastAPI(title="Anime Courtroom API", lifespan=lifespan)
+app = FastAPI(title="Anime Courtroom AI API", lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,
@@ -38,19 +36,15 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-class CaseRequest(BaseModel):
-    case_description: str
+class TrialRequest(BaseModel):
+    crime: str
 
-@app.get("/api/characters")
-def get_characters():
-    return {"characters": CHARACTERS}
-
-@app.post("/api/simulate")
-def simulate_case(request: CaseRequest):
+@app.post("/api/trial")
+def host_trial(request: TrialRequest):
     if not AGENT:
         raise HTTPException(status_code=500, detail="Agent not initialized")
 
-    result = AGENT.simulate_trial(request.case_description)
+    result = AGENT.host_trial(request.crime)
     return result
 
 frontend_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "frontend")
@@ -67,4 +61,4 @@ if os.path.exists(frontend_dir):
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run("main:app", host="0.0.0.0", port=8007, reload=True)
+    uvicorn.run("main:app", host="0.0.0.0", port=8007, reload=False)

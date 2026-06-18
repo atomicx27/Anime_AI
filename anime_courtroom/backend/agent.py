@@ -4,131 +4,129 @@ class CourtroomAgent:
     def __init__(self, characters):
         self.characters = characters
 
-    def _assign_roles(self, case_description):
-        # Sort characters based on some logic or just assign randomly for the simulation
-        shuffled_chars = random.sample(self.characters, len(self.characters))
+    def assign_roles(self):
+        judge_pool = []
+        prosecutor_pool = []
+        defense_pool = []
 
-        roles = {
-            "Judge": None,
-            "Prosecutor": None,
-            "Defense": None,
-            "Defendant": None, # The user is usually the defendant or plaintiff, but let's assign an anime char or leave it to user
-            "Jury": []
-        }
+        for char in self.characters:
+            core = char["core_emotion"].lower()
+            mbti = char["archetype"].lower()
+            prof = char["personality_profile"].lower()
 
-        for char in shuffled_chars:
-            profile = (char['core_emotion'] + " " + char['personality_profile']).lower()
-            if not roles["Judge"] and ("logic" in profile or "wisdom" in profile or "control" in profile or "stoic" in profile):
-                roles["Judge"] = char
-            elif not roles["Prosecutor"] and ("justice" in profile or "vengeance" in profile or "duty" in profile or "pride" in profile):
-                roles["Prosecutor"] = char
-            elif not roles["Defense"] and ("protect" in profile or "empathy" in profile or "hope" in profile):
-                roles["Defense"] = char
-            else:
-                roles["Jury"].append(char)
+            # Judge traits: logic, peace, wisdom, rules, control
+            if "logic" in core or "peace" in core or "wisdom" in prof or "control" in core or "intj" in mbti or "infj" in mbti:
+                judge_pool.append(char)
 
-        # Fallback if roles not filled
-        if not roles["Judge"]:
-            roles["Judge"] = shuffled_chars[0]
-            shuffled_chars.remove(shuffled_chars[0])
-        if not roles["Prosecutor"]:
-            roles["Prosecutor"] = shuffled_chars[1]
-            shuffled_chars.remove(shuffled_chars[1])
-        if not roles["Defense"]:
-            roles["Defense"] = shuffled_chars[2]
-            shuffled_chars.remove(shuffled_chars[2])
+            # Prosecutor traits: ambition, justice, duty, conflict, cynical
+            if "ambition" in core or "justice" in core or "duty" in core or "cynical" in prof or "entj" in mbti or "antagonist" in mbti:
+                prosecutor_pool.append(char)
 
-        # Limit jury size
-        roles["Jury"] = roles["Jury"][:5]
+            # Defense traits: empathy, protection, hope, love
+            if "empathy" in core or "protect" in core or "hope" in core or "love" in core or "enfp" in mbti or "infp" in mbti:
+                defense_pool.append(char)
 
-        return roles
+        # Fallback to random if empty
+        if not judge_pool: judge_pool = self.characters
+        if not prosecutor_pool: prosecutor_pool = self.characters
+        if not defense_pool: defense_pool = self.characters
 
-    def _generate_statement(self, character, role, case_description, phase):
-        name = character['name']
-        emotion = character['core_emotion']
-        quality = character['unique_quality']
+        judge = random.choice(judge_pool)
 
-        if role == "Judge":
-            if phase == "opening":
-                return f"Order in the court! I, {name}, preside over this case regarding '{case_description}'. I will judge based on my {emotion}. Let the trial begin!"
-            elif phase == "verdict":
-                return f"Having heard both sides, my {quality} guides my decision. The court finds the defendant... guilty/not guilty (left up to interpretation)."
+        prosecutor = random.choice([c for c in prosecutor_pool if c["name"] != judge["name"]]) if len(prosecutor_pool) > 1 else random.choice([c for c in self.characters if c["name"] != judge["name"]])
 
-        elif role == "Prosecutor":
-            if phase == "opening":
-                return f"Your Honor, the prosecution will prove beyond a doubt that the defendant is guilty of '{case_description}'. My {emotion} demands justice!"
-            elif phase == "rebuttal":
-                return f"Objection! The defense's arguments are as weak as their resolve. I will crush them with my {quality}!"
+        defense = random.choice([c for c in defense_pool if c["name"] not in (judge["name"], prosecutor["name"])]) if len(defense_pool) > 2 else random.choice([c for c in self.characters if c["name"] not in (judge["name"], prosecutor["name"])])
 
-        elif role == "Defense":
-            if phase == "opening":
-                return f"Your Honor, my client is innocent of '{case_description}'! I will protect them with my {emotion}!"
-            elif phase == "rebuttal":
-                return f"Take that! The prosecution's evidence is circumstantial. I'll turn this case around using my {quality}!"
+        return judge, prosecutor, defense
 
-        elif role == "Jury":
-            return f"As a jury member, my {emotion} makes me feel conflicted about this case. I must consider {quality}."
+    def generate_statement(self, character, role, crime, phase):
+        core = character["core_emotion"]
+        phil = character["unique_quality"].split(".")[0]
 
-        return "No comment."
+        if phase == "opening_prosecutor":
+            templates = [
+                f"The defendant is accused of {crime}. Driven by {core}, I see this as an absolute violation of order. My approach of {phil} demands strict punishment.",
+                f"As Prosecutor, I must address this offense: {crime}. Because my philosophy involves {phil}, I cannot let this slide. {core} compells me to seek justice."
+            ]
+        elif phase == "opening_defense":
+            templates = [
+                f"My client is accused of {crime}, but let us look deeper. Influenced by {core}, I urge the court to consider the circumstances. Using {phil}, I see hope for redemption.",
+                f"The charge of {crime} is severe, yes. However, guided by {core}, we must understand the pain behind the action. {phil} is the key here."
+            ]
+        elif phase == "rebuttal_prosecutor":
+            templates = [
+                f"The defense speaks of redemption, but what of the victims of {crime}? My {core} will not be swayed by such naive ideals.",
+                f"Objection! The defense's reliance on empathy ignores the harsh reality. {phil} proves that consequences are necessary."
+            ]
+        elif phase == "rebuttal_defense":
+            templates = [
+                f"The prosecution is too rigid! If we only punish for {crime} without understanding, the cycle of hatred continues. My {core} refuses that outcome.",
+                f"Objection! You're focusing only on the act, not the person. My {phil} allows me to see the potential for change."
+            ]
+        elif phase == "verdict":
+            # Judge's verdict
+            templates = [
+                f"I have heard both sides regarding the charge of {crime}. Balancing the arguments with my {core}, and applying my wisdom of {phil}, I find the defendant... Guilty, but with room for atonement.",
+                f"Order in the court! The charge of {crime} has been debated. Guided by {core}, and my principle of {phil}, I decree the defendant... Not Guilty due to extenuating circumstances."
+            ]
 
-    def simulate_trial(self, case_description):
-        roles = self._assign_roles(case_description)
+        return random.choice(templates)
 
-        trial_log = []
+    def host_trial(self, crime):
+        logs = []
+        logs.append(f"Agent initiated. Analyzing trial for crime: '{crime}'")
 
-        trial_log.append({
-            "character": roles["Judge"],
-            "role": "Judge",
-            "phase": "Opening",
-            "statement": self._generate_statement(roles["Judge"], "Judge", case_description, "opening")
-        })
+        judge, prosecutor, defense = self.assign_roles()
+        logs.append(f"Selected Judge: {judge['name']} ({judge['core_emotion']})")
+        logs.append(f"Selected Prosecutor: {prosecutor['name']} ({prosecutor['core_emotion']})")
+        logs.append(f"Selected Defense Attorney: {defense['name']} ({defense['core_emotion']})")
 
-        trial_log.append({
-            "character": roles["Prosecutor"],
-            "role": "Prosecutor",
-            "phase": "Opening",
-            "statement": self._generate_statement(roles["Prosecutor"], "Prosecutor", case_description, "opening")
-        })
+        transcript = []
 
-        trial_log.append({
-            "character": roles["Defense"],
-            "role": "Defense",
-            "phase": "Opening",
-            "statement": self._generate_statement(roles["Defense"], "Defense", case_description, "opening")
-        })
+        # Prosecutor Opening
+        logs.append("Generating Prosecutor Opening Statement...")
+        msg1 = self.generate_statement(prosecutor, "Prosecutor", crime, "opening_prosecutor")
+        transcript.append({"speaker": prosecutor["name"], "role": "Prosecutor", "message": msg1})
 
-        trial_log.append({
-            "character": roles["Prosecutor"],
-            "role": "Prosecutor",
-            "phase": "Rebuttal",
-            "statement": self._generate_statement(roles["Prosecutor"], "Prosecutor", case_description, "rebuttal")
-        })
+        # Defense Opening
+        logs.append("Generating Defense Opening Statement...")
+        msg2 = self.generate_statement(defense, "Defense Attorney", crime, "opening_defense")
+        transcript.append({"speaker": defense["name"], "role": "Defense Attorney", "message": msg2})
 
-        trial_log.append({
-            "character": roles["Defense"],
-            "role": "Defense",
-            "phase": "Rebuttal",
-            "statement": self._generate_statement(roles["Defense"], "Defense", case_description, "rebuttal")
-        })
+        # Prosecutor Rebuttal
+        logs.append("Generating Prosecutor Rebuttal...")
+        msg3 = self.generate_statement(prosecutor, "Prosecutor", crime, "rebuttal_prosecutor")
+        transcript.append({"speaker": prosecutor["name"], "role": "Prosecutor", "message": msg3})
 
-        # Add a couple jury thoughts
-        for juror in roles["Jury"][:2]:
-            trial_log.append({
-                "character": juror,
-                "role": "Jury",
-                "phase": "Deliberation",
-                "statement": self._generate_statement(juror, "Jury", case_description, "deliberation")
-            })
+        # Defense Rebuttal
+        logs.append("Generating Defense Rebuttal...")
+        msg4 = self.generate_statement(defense, "Defense Attorney", crime, "rebuttal_defense")
+        transcript.append({"speaker": defense["name"], "role": "Defense Attorney", "message": msg4})
 
-        trial_log.append({
-            "character": roles["Judge"],
-            "role": "Judge",
-            "phase": "Verdict",
-            "statement": self._generate_statement(roles["Judge"], "Judge", case_description, "verdict")
-        })
+        # Verdict
+        logs.append("Generating Judge Verdict...")
+        msg5 = self.generate_statement(judge, "Judge", crime, "verdict")
+        transcript.append({"speaker": judge["name"], "role": "Judge", "message": msg5})
+
+        logs.append("Trial concluded.")
 
         return {
-            "case": case_description,
-            "roles": roles,
-            "trial_log": trial_log
+            "crime": crime,
+            "judge": judge,
+            "prosecutor": prosecutor,
+            "defense": defense,
+            "transcript": transcript,
+            "logs": logs
         }
+
+if __name__ == "__main__":
+    from parser import parse_readme_characters
+    chars = parse_readme_characters()
+    agent = CourtroomAgent(chars)
+    res = agent.host_trial("Stealing a sweetroll")
+    print("LOGS:")
+    for log in res["logs"]:
+        print(log)
+    print("\nTRANSCRIPT:")
+    for t in res["transcript"]:
+        print(f"[{t['role']}] {t['speaker']}: {t['message']}")
