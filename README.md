@@ -245,6 +245,9 @@ python3 main.py
 # Open your browser and navigate to http://localhost:8006/
 # Open your browser and navigate to the frontend index.html file, or use a local HTTP server in the frontend directory.
 ```
+### 8. Anime Courtroom AI
+
+The **Anime Courtroom AI** is a web-based, multi-agent application that simulates a trial where anime characters take on the roles of Judge, Prosecutor, Defense Attorney, and Jury. It dynamically evaluates their "Core Emotion", "Personality Profile", and "Unique Quality & Philosophy" to determine the verdict of a user-submitted case.
 
 ### 8. Anime Courtroom AI
 
@@ -257,6 +260,9 @@ The **Anime Courtroom AI** is a web-based, multi-agent application that simulate
 `anime_courtroom/`
 
 #### Features
+- **Dynamic Role Assignment**: Agents analyze character traits to assign suitable courtroom roles (e.g., logical characters as Judges, protective characters as Defense).
+- **Agentic Trial Simulation**: Generates in-character opening statements, jury deliberation thoughts, and a final verdict based on the characters' worldviews.
+- **Sleek, Animated UI**: A modern, dark-themed interface built with Tailwind CSS featuring an animated trial transcript and distinct role cards with glassmorphism effects.
 - **Dynamic Role Assignment**: Characters are dynamically slotted into courtroom roles based on their traits (e.g., stoic/logical characters become Judges, empathetic characters become Defense).
 - **Agentic Simulation**: Generates a simulated trial transcript where each character argues the case according to their "Unique Quality & Philosophy."
 - **Cinematic UI/UX**: A modern, dark-themed interface built with Tailwind CSS featuring glassmorphism, radial gradients, shadow glows, smooth hover animations, and a real-time typing transcript.
