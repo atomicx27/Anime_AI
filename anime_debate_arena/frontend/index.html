@@ -26,21 +26,71 @@
             font-family: monospace;
             color: #10b981;
         }
+
+        /* Modern Glassmorphism */
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.45);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+            border-radius: 1rem;
+        }
+
+        .glass-hover:hover {
+            background: rgba(30, 41, 59, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 20px rgba(139, 92, 246, 0.3), 0 0 40px rgba(139, 92, 246, 0.1);
+        }
+
+        /* Glowing Text */
+        .text-glow {
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3), 0 0 20px rgba(255, 255, 255, 0.2);
+        }
+
+        .text-glow-primary {
+            text-shadow: 0 0 10px rgba(139, 92, 246, 0.5), 0 0 20px rgba(139, 92, 246, 0.3);
+        }
+
+        /* Smooth Hover Animations */
+        .smooth-hover {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .smooth-hover:hover {
+            transform: translateY(-2px);
+        }
+
+        @keyframes fadeSlideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-fade-slide-up {
+            animation: fadeSlideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
     </style>
 </head>
 <body class="bg-gray-900 text-white min-h-screen font-sans">
 
     <div class="container mx-auto px-4 py-8 max-w-5xl">
         <header class="text-center mb-12">
-            <h1 class="text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-purple-600 mb-4">
+            <h1 class="text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-purple-600 mb-4 text-glow-primary">
                 Anime Debate Arena
             </h1>
             <p class="text-gray-400 text-lg">Propose a topic and watch two opposing minds clash.</p>
         </header>
 
         <!-- Input Section -->
-        <div class="bg-gray-800 rounded-xl p-6 shadow-2xl mb-8 border border-gray-700">
-            <h2 class="text-xl font-bold mb-4 text-purple-400">Propose a Debate Topic</h2>
+        <div class="glass-panel smooth-hover glass-hover  rounded-xl p-6 shadow-2xl mb-8 border border-gray-700">
+            <h2 class="text-xl font-bold mb-4 text-purple-400 text-glow">Propose a Debate Topic</h2>
             <div class="flex space-x-4">
                 <input type="text" id="topicInput" placeholder="e.g., Is true peace achievable without sacrifice?"
                        class="flex-1 bg-gray-700 text-white px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500">
@@ -61,7 +111,7 @@
 
             <!-- VS Screen -->
             <div id="vsScreen" class="hidden">
-                <div class="flex items-center justify-between bg-gray-800 rounded-xl p-8 border border-gray-700">
+                <div class="flex items-center justify-between glass-panel smooth-hover glass-hover  rounded-xl p-8 border border-gray-700">
                     <!-- Character 1 -->
                     <div class="w-2/5 text-center fade-in">
                         <div class="text-3xl font-bold text-blue-400 mb-2" id="char1Name"></div>
@@ -82,7 +132,7 @@
             </div>
 
             <!-- Debate Transcript -->
-            <div id="transcriptContainer" class="hidden bg-gray-800 rounded-xl p-6 border border-gray-700">
+            <div id="transcriptContainer" class="hidden glass-panel smooth-hover glass-hover  rounded-xl p-6 border border-gray-700">
                 <h3 class="text-xl font-bold mb-6 border-b border-gray-700 pb-2">Debate Transcript</h3>
                 <div id="transcript" class="space-y-6"></div>
             </div>

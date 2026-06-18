@@ -7,12 +7,18 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
+
         body {
-            background-color: #0f172a; /* slate-900 */
-            color: #f8fafc; /* slate-50 */
+            background-image: radial-gradient(circle at top right, rgba(139, 92, 246, 0.15) 0%, transparent 40%),
+                              radial-gradient(circle at bottom left, rgba(59, 130, 246, 0.15) 0%, transparent 40%);
+            background-color: #0f172a;
+            background-attachment: fixed;
+            color: #e2e8f0;
             font-family: 'Inter', sans-serif;
-            overflow-x: hidden;
+            margin: 0;
+            min-height: 100vh;
         }
+
 
         /* Custom Scrollbar */
         ::-webkit-scrollbar {
@@ -100,6 +106,56 @@
             transform: none;
             box-shadow: none;
         }
+
+        /* Modern Glassmorphism */
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.45);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+            border-radius: 1rem;
+        }
+
+        .glass-hover:hover {
+            background: rgba(30, 41, 59, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 20px rgba(139, 92, 246, 0.3), 0 0 40px rgba(139, 92, 246, 0.1);
+        }
+
+        /* Glowing Text */
+        .text-glow {
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3), 0 0 20px rgba(255, 255, 255, 0.2);
+        }
+
+        .text-glow-primary {
+            text-shadow: 0 0 10px rgba(139, 92, 246, 0.5), 0 0 20px rgba(139, 92, 246, 0.3);
+        }
+
+        /* Smooth Hover Animations */
+        .smooth-hover {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .smooth-hover:hover {
+            transform: translateY(-2px);
+        }
+
+        @keyframes fadeSlideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-fade-slide-up {
+            animation: fadeSlideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
     </style>
 </head>
 <body class="min-h-screen flex flex-col items-center py-10 px-4 md:px-8">
@@ -107,7 +163,7 @@
     <div class="max-w-6xl w-full">
         <!-- Header -->
         <header class="text-center mb-12">
-            <h1 class="text-5xl font-extrabold mb-4 tracking-tight">
+            <h1 class="text-5xl font-extrabold mb-4 tracking-tight text-glow-primary">
                 <span class="text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-violet-500">
                     Anime Matchmaker AI
                 </span>
@@ -123,8 +179,8 @@
             <div class="lg:col-span-1 flex flex-col gap-6">
 
                 <!-- Input Panel -->
-                <div class="bg-slate-800 rounded-xl p-6 border border-slate-700 shadow-xl">
-                    <h2 class="text-xl font-semibold mb-4 flex items-center">
+                <div class="glass-panel smooth-hover glass-hover  rounded-xl p-6 border border-slate-700 shadow-xl">
+                    <h2 class="text-xl font-semibold mb-4 flex items-center text-glow">
                         <i class="fas fa-user-circle mr-2 text-pink-400"></i> Your Profile
                     </h2>
 
@@ -151,7 +207,7 @@
 
                 <!-- Agent Terminal -->
                 <div class="terminal-container rounded-xl flex flex-col flex-grow h-[400px]">
-                    <div class="bg-slate-800 px-4 py-2 border-b border-slate-700 rounded-t-xl flex items-center justify-between">
+                    <div class="glass-panel smooth-hover glass-hover  px-4 py-2 border-b border-slate-700 rounded-t-xl flex items-center justify-between">
                         <div class="flex items-center space-x-2">
                             <span class="pulse-dot"></span>
                             <span class="text-sm font-mono text-emerald-400">Matchmaker Agent</span>
@@ -171,9 +227,9 @@
 
             <!-- Right Column: Results -->
             <div class="lg:col-span-2">
-                <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 shadow-inner min-h-full">
+                <div class="glass-panel smooth-hover glass-hover rounded-xl p-6 border border-slate-700 shadow-inner min-h-full">
                     <div class="flex items-center justify-between mb-6">
-                        <h2 class="text-2xl font-semibold flex items-center">
+                        <h2 class="text-2xl font-semibold flex items-center text-glow">
                             <i class="fas fa-star mr-2 text-yellow-400"></i> Top Matches
                         </h2>
                         <span id="matchStatus" class="text-sm text-slate-400 hidden">Evaluation Complete</span>
@@ -232,7 +288,7 @@
             else if (match.match_level.includes('Incompatible')) { icon = 'fa-times-circle'; iconColor = 'text-red-500'; }
 
             return `
-                <div class="card-enter bg-slate-800 rounded-lg p-5 border border-slate-700 hover:border-violet-500/50 transition-colors relative overflow-hidden" style="animation-delay: ${delay}s">
+                <div class="card-enter glass-panel smooth-hover glass-hover  rounded-lg p-5 border border-slate-700 hover:border-violet-500/50 transition-colors relative overflow-hidden" style="animation-delay: ${delay}s">
                     <div class="absolute top-0 right-0 bg-slate-900 px-3 py-1 rounded-bl-lg border-b border-l border-slate-700 text-xs font-mono text-slate-400">
                         Rank #${index + 1} | Score: ${match.score}
                     </div>

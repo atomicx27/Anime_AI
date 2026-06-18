@@ -101,6 +101,56 @@
             0%, 80%, 100% { transform: scale(0); }
             40% { transform: scale(1); }
         }
+
+        /* Modern Glassmorphism */
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.45);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+            border-radius: 1rem;
+        }
+
+        .glass-hover:hover {
+            background: rgba(30, 41, 59, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 20px rgba(139, 92, 246, 0.3), 0 0 40px rgba(139, 92, 246, 0.1);
+        }
+
+        /* Glowing Text */
+        .text-glow {
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3), 0 0 20px rgba(255, 255, 255, 0.2);
+        }
+
+        .text-glow-primary {
+            text-shadow: 0 0 10px rgba(139, 92, 246, 0.5), 0 0 20px rgba(139, 92, 246, 0.3);
+        }
+
+        /* Smooth Hover Animations */
+        .smooth-hover {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .smooth-hover:hover {
+            transform: translateY(-2px);
+        }
+
+        @keyframes fadeSlideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-fade-slide-up {
+            animation: fadeSlideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
     </style>
 </head>
 <body class="bg-discord-base text-discord-text h-screen flex overflow-hidden font-sans">
@@ -120,7 +170,7 @@
     <div class="w-60 bg-discord-dark flex flex-col border-l border-discord-darker">
         <!-- Header -->
         <div class="h-12 border-b border-discord-darker flex items-center px-4 shadow-sm hover:bg-discord-light cursor-pointer transition-all duration-200 hover:pl-5">
-            <h1 class="font-bold text-white flex-1 truncate">Anime All-Stars</h1>
+            <h1 class="font-bold text-white flex-1 truncate text-glow-primary">Anime All-Stars</h1>
             <i class="fas fa-chevron-down text-sm text-discord-muted transition-transform duration-200 group-hover:text-white"></i>
         </div>
 
@@ -179,7 +229,7 @@
         <!-- Header -->
         <div class="h-12 border-b border-black/20 flex items-center px-4 shadow-sm glass-panel z-10 shrink-0">
             <i class="fas fa-hashtag text-discord-muted text-xl mr-3"></i>
-            <h2 class="font-bold text-white flex-1">general-chat</h2>
+            <h2 class="font-bold text-white flex-1 text-glow">general-chat</h2>
             <div class="flex text-discord-muted space-x-4">
                 <i class="fas fa-bell cursor-pointer hover:text-white transition-colors"></i>
                 <i class="fas fa-thumbtack cursor-pointer hover:text-white transition-colors"></i>
@@ -201,7 +251,7 @@
                 <div class="w-[72px] h-[72px] bg-discord-dark rounded-full flex items-center justify-center mb-4 shadow-lg border border-discord-light/30">
                     <i class="fas fa-hashtag text-white text-3xl"></i>
                 </div>
-                <h1 class="text-white text-4xl font-extrabold mb-2 tracking-tight">Welcome to #general-chat!</h1>
+                <h1 class="text-white text-4xl font-extrabold mb-2 tracking-tight text-glow-primary">Welcome to #general-chat!</h1>
                 <p class="text-discord-muted text-lg">This is the start of the #general-chat channel. Say hi to the anime council!</p>
             </div>
 
