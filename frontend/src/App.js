@@ -73,12 +73,12 @@ function App() {
   return (
     <div className="flex h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 animate-gradient-x text-white font-sans">
       {/* Sidebar */}
-      <div className="w-72 bg-gray-900/50 backdrop-blur-md border-r border-gray-800 flex flex-col shadow-xl z-20">
+      <div className="w-72 bg-white/5 backdrop-blur-xl border-r border-white/10 flex flex-col shadow-[0_0_30px_rgba(6,182,212,0.15)] z-20">
         <div className="p-6 border-b border-gray-800 flex items-center gap-3">
-          <div className="bg-cyan-500/20 p-2 rounded-xl">
+          <div className="bg-cyan-500/20 p-2 rounded-xl shadow-[0_0_15px_rgba(34,211,238,0.3)]">
             <Sparkles className="w-6 h-6 text-cyan-400" />
           </div>
-          <h1 className="text-xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-blue-500 tracking-tight">Anime Agents</h1>
+          <h1 className="text-xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-blue-500 tracking-tight drop-shadow-[0_0_8px_rgba(34,211,238,0.4)]">Anime Agents</h1>
         </div>
         <div className="flex-1 overflow-y-auto py-2 custom-scrollbar">
           <AnimatePresence>
@@ -86,15 +86,15 @@ function App() {
               <motion.div
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
-                whileHover={{ scale: 1.02 }}
+                whileHover={{ scale: 1.02, x: 5 }}
                 whileTap={{ scale: 0.98 }}
                 transition={{ duration: 0.3, delay: index * 0.05 }}
                 key={agent.name}
                 onClick={() => selectAgent(agent)}
-                className={`mx-3 my-1 p-3 rounded-xl cursor-pointer transition-all duration-200 border border-transparent flex items-center gap-3 ${
+                className={`mx-3 my-1 p-3 rounded-xl cursor-pointer transition-all duration-300 border border-transparent flex items-center gap-3 group ${
                   selectedAgent?.name === agent.name
-                    ? 'bg-cyan-500/10 border-cyan-500/30 shadow-[0_0_15px_rgba(6,182,212,0.1)]'
-                    : 'hover:bg-gray-800/80 hover:border-gray-700'
+                    ? 'bg-gradient-to-r from-cyan-900/40 to-blue-900/40 border-cyan-500/50 shadow-[0_0_15px_rgba(6,182,212,0.3)]'
+                    : 'hover:bg-gray-800/80 hover:border-gray-600 hover:shadow-[0_0_10px_rgba(255,255,255,0.05)]'
                 }`}
               >
                 <div className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 transition-colors ${
@@ -113,11 +113,11 @@ function App() {
       </div>
 
       {/* Main Chat Area */}
-      <div className="flex-1 flex flex-col relative bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-gray-800/40 via-gray-900 to-black animate-gradient-xy">
+      <div className="flex-1 flex flex-col relative bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-gray-900 via-gray-800 to-black animate-gradient-xy">
         {selectedAgent ? (
           <>
             {/* Header */}
-            <div className="p-5 bg-gray-900/80 backdrop-blur-md border-b border-gray-800 shadow-sm flex items-center gap-4 z-10">
+            <div className="p-5 bg-white/5 backdrop-blur-lg border-b border-white/10 shadow-sm flex items-center gap-4 z-10">
               <div className="w-12 h-12 bg-cyan-500 rounded-full flex items-center justify-center text-white shadow-lg shadow-cyan-500/20 shrink-0">
                 <Bot size={24} />
               </div>
@@ -154,7 +154,7 @@ function App() {
                         <div className={`flex flex-col ${msg.role === 'user' ? 'items-end' : 'items-start'}`}>
                           {/* Thought Process (only for agent) */}
                           {msg.role === 'agent' && msg.log && (
-                            <div className="mb-2 bg-gray-900/60 backdrop-blur-sm rounded-xl p-3 text-xs border border-gray-800 shadow-inner w-full max-w-xl">
+                            <div className="mb-2 bg-black/80 backdrop-blur-md rounded-xl p-3 text-xs border border-cyan-500/30 shadow-[0_0_15px_rgba(6,182,212,0.1)] w-full max-w-xl font-mono">
                               <details className="cursor-pointer outline-none group">
                                 <summary className="text-cyan-400/80 font-medium hover:text-cyan-300 transition-colors flex items-center gap-2 list-none">
                                   <div className="w-4 h-4 flex items-center justify-center transition-transform group-open:rotate-90">
@@ -184,8 +184,8 @@ function App() {
                           {/* The actual message bubble */}
                           <div className={`p-4 rounded-2xl shadow-md text-[15px] leading-relaxed ${
                             msg.role === 'user'
-                              ? 'bg-gradient-to-br from-blue-600 to-blue-700 text-white rounded-tr-sm shadow-blue-900/20'
-                              : 'bg-gray-800/90 backdrop-blur-sm text-gray-100 rounded-tl-sm border border-gray-700 shadow-black/20'
+                              ? 'bg-gradient-to-r from-cyan-500 to-blue-500 shadow-[0_0_15px_rgba(6,182,212,0.4)] text-white rounded-tr-sm'
+                              : 'bg-white/10 backdrop-blur-md border border-white/10 shadow-[0_4px_15px_rgba(0,0,0,0.2)] text-gray-100 rounded-tl-sm'
                           }`}>
                             {msg.content}
                           </div>
@@ -228,7 +228,7 @@ function App() {
             </div>
 
             {/* Input Area */}
-            <div className="p-5 bg-gray-900/80 backdrop-blur-md border-t border-gray-800 z-10">
+            <div className="p-5 bg-white/5 backdrop-blur-lg border-t border-white/10 z-10">
               <form onSubmit={sendMessage} className="flex gap-3 max-w-4xl mx-auto">
                 <div className="relative flex-1">
                   <input
@@ -245,7 +245,7 @@ function App() {
                   whileTap={{ scale: 0.95 }}
                   type="submit"
                   disabled={loading || !input.trim()}
-                  className="bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 disabled:opacity-50 disabled:cursor-not-allowed text-white px-6 py-4 rounded-2xl font-semibold transition-all shadow-lg shadow-cyan-900/40 flex items-center justify-center shrink-0"
+                  className="bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 disabled:opacity-50 disabled:cursor-not-allowed text-white px-6 py-4 rounded-2xl font-semibold transition-all shadow-[0_0_15px_rgba(6,182,212,0.4)] flex items-center justify-center shrink-0"
                 >
                   <Send size={20} className={input.trim() && !loading ? "translate-x-1 transition-transform duration-300" : ""} />
                 </motion.button>
@@ -265,13 +265,13 @@ function App() {
               className="text-center z-10 max-w-sm px-6"
             >
               <motion.div
-                animate={{ y: [0, -10, 0] }}
+                animate={{ y: [0, -20, 0] }}
                 transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
                 className="w-24 h-24 bg-gradient-to-tr from-cyan-500/20 to-blue-500/20 rounded-3xl mx-auto flex items-center justify-center mb-6 shadow-[0_0_30px_rgba(6,182,212,0.15)] border border-gray-700/50 backdrop-blur-xl rotate-3"
               >
                 <Bot size={48} className="text-cyan-400 -rotate-3 drop-shadow-[0_0_15px_rgba(34,211,238,0.5)]" />
               </motion.div>
-              <h2 className="text-2xl font-bold mb-3 text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-400">Welcome to Anime Agents</h2>
+              <h2 className="text-2xl font-bold mb-3 text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-400 drop-shadow-[0_0_8px_rgba(34,211,238,0.4)]">Welcome to Anime Agents</h2>
               <p className="text-gray-400 leading-relaxed text-[15px]">
                 Select a character from the sidebar to begin your conversation. Each agent has unique personality traits and philosophies.
               </p>
