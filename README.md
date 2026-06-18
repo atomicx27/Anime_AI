@@ -248,6 +248,7 @@ python3 main.py
 
 ### 8. Anime Detective Agency AI
 
+The **Anime Detective Agency AI** is a web-based, multi-agent application that acts as an intelligent investigative task force. Users submit a mystery or case description, and the AI evaluates all characters from the table based on their Core Emotion, Personality Profile, and Unique Quality to assign them specialized roles within the detective agency (e.g., Lead Detective, Medical Examiner, Interrogator, Forensics).
 The **Anime Detective Agency AI** is a web-based, multi-agent application that acts as a premier investigation team. Users submit a description of a crime or mystery, and the AI evaluates all characters from the table based on their Core Emotion, Personality Profile, and Unique Quality to assign them specialized investigation roles (e.g., Lead Investigator, Forensics Analyst, Interrogator, Profiler).
 The **Anime Detective Agency AI** is a web-based, multi-agent application where characters form an investigation team to solve mysteries submitted by the user.
 
@@ -255,6 +256,11 @@ The **Anime Detective Agency AI** is a web-based, multi-agent application where 
 `anime_detective_agency/`
 
 #### Features
+- **Dynamic Role Assignment**: The agent analyzes the user's mystery input and assigns highly specific investigation roles to each character based on their unique traits and psychological profiles.
+- **In-Character Insights**: Characters provide tailored insights or proposed actions for the investigation, reflecting their core philosophy (e.g., Naruto using "Talk no Jutsu" for interrogation).
+- **Agent Terminal Log**: An animated "Agent Thoughts Terminal" displays the system's live evaluation and assignment process.
+- **Sleek UI/UX**: Built with Vanilla HTML, JS, and Tailwind CSS, featuring a beautiful dark theme with glassmorphism, radial gradients, shadow glows, and smooth hover animations.
+- **Dynamic Character Loading**: Backend API automatically parses the root `README.md` to load character details dynamically.
 - **Dynamic Role Assignment**: The agent analyzes character traits and dynamically assigns them to specific investigative roles best suited to their personalities and skills.
 - **Agentic Simulation**: A backend `DetectiveAgencyAgent` generates unique, character-specific investigation strategies and findings for each assigned role.
 - **Modern UI/UX**: Features a highly polished interface built with Tailwind CSS, incorporating glassmorphism, radial gradients, shadow glows, and smooth hover animations.
@@ -301,5 +307,7 @@ pip install -r requirements.txt
 python3 main.py
 
 # Access the UI
+# Open your browser and navigate to http://localhost:8007/ if the frontend is served,
+# or open the anime_detective_agency/frontend/index.html file locally.
 # Open your browser and navigate to http://localhost:8007/
 ```
