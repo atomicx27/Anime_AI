@@ -101,6 +101,7 @@
             box-shadow: none;
         }
     </style>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body class="min-h-screen flex flex-col items-center py-10 px-4 md:px-8">
 
@@ -130,12 +131,12 @@
 
                     <div class="mb-4">
                         <label for="profileInput" class="block text-sm font-medium text-slate-300 mb-2">Describe yourself (Personality, hobbies, goals):</label>
-                        <textarea id="profileInput" rows="4" class="w-full bg-slate-900 border border-slate-600 rounded-lg p-3 text-slate-100 focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all placeholder-slate-500 resize-none" placeholder="E.g., I'm a quiet introvert who enjoys reading and peace, but I deeply admire people with strong ambition and drive..."></textarea>
+                        <textarea id="profileInput" rows="4" class="w-full bg-slate-900/90 backdrop-blur-xl border border-slate-600 rounded-lg p-3 text-slate-100 focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all placeholder-slate-500 resize-none" placeholder="E.g., I'm a quiet introvert who enjoys reading and peace, but I deeply admire people with strong ambition and drive..."></textarea>
                     </div>
 
                     <div class="mb-6">
                         <label for="relationshipType" class="block text-sm font-medium text-slate-300 mb-2">Looking for:</label>
-                        <select id="relationshipType" class="w-full bg-slate-900 border border-slate-600 rounded-lg p-3 text-slate-100 focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all">
+                        <select id="relationshipType" class="w-full bg-slate-900/90 backdrop-blur-xl border border-slate-600 rounded-lg p-3 text-slate-100 focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all">
                             <option value="friendship">Friendship / Best Friend</option>
                             <option value="romantic">Romantic Partner</option>
                             <option value="rival">Rival / Competitor</option>
@@ -233,12 +234,12 @@
 
             return `
                 <div class="card-enter bg-slate-800 rounded-lg p-5 border border-slate-700 hover:border-violet-500/50 transition-colors relative overflow-hidden" style="animation-delay: ${delay}s">
-                    <div class="absolute top-0 right-0 bg-slate-900 px-3 py-1 rounded-bl-lg border-b border-l border-slate-700 text-xs font-mono text-slate-400">
+                    <div class="absolute top-0 right-0 bg-slate-900/90 backdrop-blur-xl px-3 py-1 rounded-bl-lg border-b border-l border-slate-700 text-xs font-mono text-slate-400">
                         Rank #${index + 1} | Score: ${match.score}
                     </div>
 
                     <div class="flex items-start gap-4">
-                        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-slate-900 flex items-center justify-center border border-slate-700">
+                        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-slate-900/90 backdrop-blur-xl flex items-center justify-center border border-slate-700">
                             <i class="fas ${icon} ${iconColor} text-xl"></i>
                         </div>
 
@@ -251,7 +252,7 @@
                                 ${match.match_level}
                             </div>
 
-                            <div class="bg-slate-900/50 rounded-md p-3 border border-slate-700/50">
+                            <div class="bg-slate-900/90 backdrop-blur-xl rounded-md p-3 border border-slate-700/50">
                                 <p class="text-slate-300 text-sm leading-relaxed"><strong class="text-slate-400">Agent Reasoning:</strong> ${match.reasoning}</p>
                             </div>
                         </div>

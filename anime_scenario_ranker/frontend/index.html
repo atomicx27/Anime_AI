@@ -25,6 +25,9 @@
     </script>
     <style>
         body {
+            font-family: 'Inter', sans-serif;
+        }
+        body {
             background-image: radial-gradient(circle at top right, rgba(139, 92, 246, 0.1) 0%, transparent 40%),
                               radial-gradient(circle at bottom left, rgba(59, 130, 246, 0.1) 0%, transparent 40%);
             background-color: #111827;
@@ -129,11 +132,12 @@
         .tier-c-bg { background: linear-gradient(135deg, #7fff7f, #4bff4b); }
         .tier-d-bg { background: linear-gradient(135deg, #7fbfff, #4b9bff); }
     </style>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
-<body class="text-gray-100 h-screen flex flex-col font-sans overflow-hidden">
+<body class="text-slate-100 h-screen flex flex-col font-sans overflow-hidden">
 
     <!-- Header -->
-    <header class="bg-gray-800/80 backdrop-blur-md border-b border-gray-700 p-4 shadow-lg z-10 flex items-center justify-between">
+    <header class="bg-slate-800/80 backdrop-blur-md border-b border-slate-700/50 p-4 shadow-lg z-10 flex items-center justify-between">
         <div class="flex items-center gap-3">
             <div class="w-10 h-10 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-lg flex items-center justify-center shadow-lg shadow-purple-500/40 relative overflow-hidden group">
                 <div class="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
@@ -146,8 +150,8 @@
     <div class="flex-1 flex overflow-hidden">
 
         <!-- Sidebar: Agent Terminal -->
-        <div class="w-1/3 bg-gray-950 border-r border-gray-800 flex flex-col shadow-2xl z-20">
-            <div class="p-4 border-b border-gray-800 bg-gray-900/50">
+        <div class="w-1/3 bg-gray-950 border-r border-slate-800/50 flex flex-col shadow-2xl z-20">
+            <div class="p-4 border-b border-slate-800/50 bg-slate-900/90 backdrop-blur-xl">
                 <h2 class="font-semibold text-purple-400 flex items-center gap-2">
                     <i class="fa-solid fa-terminal"></i> Agent Thoughts
                 </h2>
@@ -155,10 +159,10 @@
             <div id="terminal-content" class="flex-1 p-4 overflow-y-auto custom-scrollbar text-sm font-mono text-green-400 space-y-2">
                 <div>System initialized. Waiting for scenario input...</div>
             </div>
-            <div class="p-4 bg-gray-900 border-t border-gray-800">
+            <div class="p-4 bg-slate-900/90 backdrop-blur-xl border-t border-slate-800/50">
                 <form id="scenario-form" class="flex flex-col gap-3">
-                    <label class="text-xs text-gray-400 font-semibold uppercase tracking-wider">Enter Scenario for Evaluation</label>
-                    <textarea id="scenario-input" rows="3" class="w-full bg-gray-800 border border-gray-700 rounded-lg p-3 text-sm focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none resize-none transition-all placeholder-gray-500" placeholder="e.g. A high-stakes diplomatic negotiation to prevent a galactic war..."></textarea>
+                    <label class="text-xs text-slate-400 font-semibold uppercase tracking-wider">Enter Scenario for Evaluation</label>
+                    <textarea id="scenario-input" rows="3" class="w-full bg-slate-800/80 backdrop-blur-md border border-slate-700/50 rounded-lg p-3 text-sm focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none resize-none transition-all placeholder-gray-500" placeholder="e.g. A high-stakes diplomatic negotiation to prevent a galactic war..."></textarea>
                     <button type="submit" id="submit-btn" class="bg-purple-600 hover:bg-purple-500 text-white font-medium py-2 px-4 rounded-lg transition-colors flex items-center justify-center gap-2">
                         <i class="fa-solid fa-bolt"></i> Evaluate & Rank
                     </button>
@@ -167,7 +171,7 @@
         </div>
 
         <!-- Main Content: Tier List -->
-        <div class="flex-1 bg-gray-900 p-8 overflow-y-auto custom-scrollbar flex flex-col gap-4 relative" id="tier-list-container">
+        <div class="flex-1 bg-slate-900/90 backdrop-blur-xl p-8 overflow-y-auto custom-scrollbar flex flex-col gap-4 relative" id="tier-list-container">
             <!-- Background Grid -->
             <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGQ9Ik00MCAwSDBWNDBIMHoiIGZpbGw9Im5vbmUiLz4KPHBhdGggZD0iTTQwIDBoLTF2NDBoMVYwek0wIDQwaDQwdi0xSDB2MXoiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4wNSkiLz4KPC9zdmc+')] pointer-events-none opacity-50"></div>
 
@@ -177,37 +181,37 @@
             </div>
 
             <!-- Tier Rows will be generated here -->
-            <div id="tier-S" class="flex border border-gray-700 rounded-lg overflow-hidden bg-gray-800/50 shadow-[0_0_15px_rgba(255,127,127,0.5)] min-h-[100px]">
-                <div class="w-24 bg-tier-s flex items-center justify-center border-r border-gray-700 shrink-0">
-                    <span class="text-3xl font-black text-gray-900 drop-shadow-sm">S</span>
+            <div id="tier-S" class="flex border border-slate-700/50 rounded-lg overflow-hidden bg-slate-800/80 backdrop-blur-md shadow-[0_0_15px_rgba(255,127,127,0.5)] min-h-[100px]">
+                <div class="w-24 bg-tier-s flex items-center justify-center border-r border-slate-700/50 shrink-0">
+                    <span class="text-3xl font-black text-slate-900 drop-shadow-sm">S</span>
                 </div>
                 <div class="flex-1 p-4 flex flex-wrap gap-4 items-center" id="row-S"></div>
             </div>
 
-            <div id="tier-A" class="tier-row flex border border-gray-700 rounded-lg overflow-hidden bg-gray-800/50 shadow-lg min-h-[100px] z-10 relative">
-                <div class="w-24 bg-tier-a flex items-center justify-center border-r border-gray-700 shrink-0">
-                    <span class="text-3xl font-black text-gray-900 drop-shadow-sm">A</span>
+            <div id="tier-A" class="tier-row flex border border-slate-700/50 rounded-lg overflow-hidden bg-slate-800/80 backdrop-blur-md shadow-lg min-h-[100px] z-10 relative">
+                <div class="w-24 bg-tier-a flex items-center justify-center border-r border-slate-700/50 shrink-0">
+                    <span class="text-3xl font-black text-slate-900 drop-shadow-sm">A</span>
                 </div>
                 <div class="flex-1 p-4 flex flex-wrap gap-4 items-center" id="row-A"></div>
             </div>
 
-            <div id="tier-B" class="tier-row flex border border-gray-700 rounded-lg overflow-hidden bg-gray-800/50 shadow-lg min-h-[100px] z-10 relative">
-                <div class="w-24 bg-tier-b flex items-center justify-center border-r border-gray-700 shrink-0">
-                    <span class="text-3xl font-black text-gray-900 drop-shadow-sm">B</span>
+            <div id="tier-B" class="tier-row flex border border-slate-700/50 rounded-lg overflow-hidden bg-slate-800/80 backdrop-blur-md shadow-lg min-h-[100px] z-10 relative">
+                <div class="w-24 bg-tier-b flex items-center justify-center border-r border-slate-700/50 shrink-0">
+                    <span class="text-3xl font-black text-slate-900 drop-shadow-sm">B</span>
                 </div>
                 <div class="flex-1 p-4 flex flex-wrap gap-4 items-center" id="row-B"></div>
             </div>
 
-            <div id="tier-C" class="tier-row flex border border-gray-700 rounded-lg overflow-hidden bg-gray-800/50 shadow-lg min-h-[100px] z-10 relative">
-                <div class="w-24 bg-tier-c flex items-center justify-center border-r border-gray-700 shrink-0">
-                    <span class="text-3xl font-black text-gray-900 drop-shadow-sm">C</span>
+            <div id="tier-C" class="tier-row flex border border-slate-700/50 rounded-lg overflow-hidden bg-slate-800/80 backdrop-blur-md shadow-lg min-h-[100px] z-10 relative">
+                <div class="w-24 bg-tier-c flex items-center justify-center border-r border-slate-700/50 shrink-0">
+                    <span class="text-3xl font-black text-slate-900 drop-shadow-sm">C</span>
                 </div>
                 <div class="flex-1 p-4 flex flex-wrap gap-4 items-center" id="row-C"></div>
             </div>
 
-            <div id="tier-D" class="tier-row flex border border-gray-700 rounded-lg overflow-hidden bg-gray-800/50 shadow-lg min-h-[100px] z-10 relative">
-                <div class="w-24 bg-tier-d flex items-center justify-center border-r border-gray-700 shrink-0">
-                    <span class="text-3xl font-black text-gray-900 drop-shadow-sm">D</span>
+            <div id="tier-D" class="tier-row flex border border-slate-700/50 rounded-lg overflow-hidden bg-slate-800/80 backdrop-blur-md shadow-lg min-h-[100px] z-10 relative">
+                <div class="w-24 bg-tier-d flex items-center justify-center border-r border-slate-700/50 shrink-0">
+                    <span class="text-3xl font-black text-slate-900 drop-shadow-sm">D</span>
                 </div>
                 <div class="flex-1 p-4 flex flex-wrap gap-4 items-center" id="row-D"></div>
             </div>
@@ -305,15 +309,15 @@
                                     const delay = (rowChildCount * 0.1).toFixed(1);
                                     const charHtml = `
                                         <div class="tooltip relative cursor-help card-enter tier-card animate-pop-in" style="animation-delay: ${delay}s">
-                                            <div class="bg-gray-700 border border-gray-600 rounded px-3 py-2 flex items-center gap-2 hover:bg-gray-600 transition-colors shadow-sm">
-                                                <div class="w-6 h-6 rounded-full bg-gray-800 flex items-center justify-center text-xs font-bold text-gray-300">
+                                            <div class="bg-slate-700/50 border border-slate-600 rounded px-3 py-2 flex items-center gap-2 hover:bg-slate-600 transition-colors shadow-sm">
+                                                <div class="w-6 h-6 rounded-full bg-slate-800/80 backdrop-blur-md flex items-center justify-center text-xs font-bold text-slate-300">
                                                     ${getInitials(ranking.name)}
                                                 </div>
-                                                <span class="text-sm font-semibold text-gray-100 tracking-wide">${ranking.name}</span>
+                                                <span class="text-sm font-semibold text-slate-100 tracking-wide">${ranking.name}</span>
                                             </div>
                                             <div class="tooltip-text">
-                                                <div class="font-bold text-purple-400 mb-1 border-b border-gray-700 pb-1">${ranking.name}</div>
-                                                <div class="text-gray-300 leading-relaxed">${ranking.reasoning}</div>
+                                                <div class="font-bold text-purple-400 mb-1 border-b border-slate-700/50 pb-1">${ranking.name}</div>
+                                                <div class="text-slate-300 leading-relaxed">${ranking.reasoning}</div>
                                             </div>
                                         </div>
                                     `;

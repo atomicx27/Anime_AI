@@ -6,6 +6,9 @@
     <title>Anime Debate Arena AI</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
         .typing-indicator::after {
             content: '...';
             animation: typing 1s infinite;
@@ -26,24 +29,32 @@
             font-family: monospace;
             color: #10b981;
         }
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+        }
     </style>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
-<body class="bg-gray-900 text-white min-h-screen font-sans">
+<body class="bg-slate-900/90  text-white min-h-screen font-sans">
 
     <div class="container mx-auto px-4 py-8 max-w-5xl">
         <header class="text-center mb-12">
             <h1 class="text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-purple-600 mb-4">
                 Anime Debate Arena
             </h1>
-            <p class="text-gray-400 text-lg">Propose a topic and watch two opposing minds clash.</p>
+            <p class="text-slate-400 text-lg">Propose a topic and watch two opposing minds clash.</p>
         </header>
 
         <!-- Input Section -->
-        <div class="bg-gray-800 rounded-xl p-6 shadow-2xl mb-8 border border-gray-700">
+        <div class="glass-panel rounded-xl p-6 shadow-2xl mb-8 border border-slate-700/50">
             <h2 class="text-xl font-bold mb-4 text-purple-400">Propose a Debate Topic</h2>
             <div class="flex space-x-4">
                 <input type="text" id="topicInput" placeholder="e.g., Is true peace achievable without sacrifice?"
-                       class="flex-1 bg-gray-700 text-white px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500">
+                       class="flex-1 bg-slate-700/50 text-white px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500">
                 <button id="debateBtn" class="bg-purple-600 hover:bg-purple-700 text-white px-8 py-3 rounded-lg font-bold transition duration-200">
                     Host Debate
                 </button>
@@ -61,11 +72,11 @@
 
             <!-- VS Screen -->
             <div id="vsScreen" class="hidden">
-                <div class="flex items-center justify-between bg-gray-800 rounded-xl p-8 border border-gray-700">
+                <div class="flex items-center justify-between glass-panel rounded-xl p-8 border border-slate-700/50">
                     <!-- Character 1 -->
                     <div class="w-2/5 text-center fade-in">
                         <div class="text-3xl font-bold text-blue-400 mb-2" id="char1Name"></div>
-                        <div class="text-sm text-gray-400 italic" id="char1Core"></div>
+                        <div class="text-sm text-slate-400 italic" id="char1Core"></div>
                     </div>
 
                     <!-- VS Logo -->
@@ -76,14 +87,14 @@
                     <!-- Character 2 -->
                     <div class="w-2/5 text-center fade-in">
                         <div class="text-3xl font-bold text-red-400 mb-2" id="char2Name"></div>
-                        <div class="text-sm text-gray-400 italic" id="char2Core"></div>
+                        <div class="text-sm text-slate-400 italic" id="char2Core"></div>
                     </div>
                 </div>
             </div>
 
             <!-- Debate Transcript -->
-            <div id="transcriptContainer" class="hidden bg-gray-800 rounded-xl p-6 border border-gray-700">
-                <h3 class="text-xl font-bold mb-6 border-b border-gray-700 pb-2">Debate Transcript</h3>
+            <div id="transcriptContainer" class="hidden glass-panel rounded-xl p-6 border border-slate-700/50">
+                <h3 class="text-xl font-bold mb-6 border-b border-slate-700/50 pb-2">Debate Transcript</h3>
                 <div id="transcript" class="space-y-6"></div>
             </div>
 
@@ -147,14 +158,14 @@
 
                     const msg = data.transcript[i];
                     const msgEl = document.createElement('div');
-                    msgEl.className = 'fade-in p-4 rounded-lg bg-gray-700/50 border-l-4 ' +
+                    msgEl.className = 'fade-in p-4 rounded-lg bg-slate-700/50 border-l-4 ' +
                                       (msg.speaker === data.debater1.name ? 'border-blue-500' : 'border-red-500 ml-8');
 
                     msgEl.innerHTML = `
                         <div class="font-bold mb-1 ${msg.speaker === data.debater1.name ? 'text-blue-400' : 'text-red-400'}">
                             ${msg.speaker}
                         </div>
-                        <div class="text-gray-300">${msg.message}</div>
+                        <div class="text-slate-300">${msg.message}</div>
                     `;
                     transcript.appendChild(msgEl);
                 }

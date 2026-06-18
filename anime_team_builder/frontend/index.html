@@ -19,7 +19,7 @@
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
             border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
         }
         .card-enter {
             animation: slideUp 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
@@ -76,6 +76,7 @@
             100% { transform: scale(1.5); opacity: 0; }
         }
     </style>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body class="min-h-screen p-8 bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 relative">
     <div class="particles"></div>
@@ -232,7 +233,7 @@
                                     <span class="text-xs font-medium text-slate-400">Aptitude Score</span>
                                     <span class="text-xs font-bold text-slate-300">${member.score}/100</span>
                                 </div>
-                                <div class="w-full bg-slate-900 rounded-full h-2.5 shadow-inner">
+                                <div class="w-full bg-slate-900/90 backdrop-blur-xl rounded-full h-2.5 shadow-inner">
                                   <div class="bg-gradient-to-r ${barGradient} h-2.5 rounded-full score-bar shadow-sm" id="score-bar-${index}"></div>
                                 </div>
                             </div>

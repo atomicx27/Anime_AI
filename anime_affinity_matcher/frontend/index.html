@@ -7,6 +7,9 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
         .custom-scrollbar::-webkit-scrollbar { width: 6px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background-color: rgba(75, 85, 99, 0.4); border-radius: 10px; }
@@ -34,19 +37,27 @@
         .bg-gradient-category-mentor { background: linear-gradient(135deg, #3b82f6, #6366f1); }
         .bg-gradient-category-acquaintance { background: linear-gradient(135deg, #10b981, #059669); }
         .bg-gradient-category-enemy { background: linear-gradient(135deg, #6b7280, #374151); }
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+        }
     </style>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
-<body class="bg-gray-900 text-white h-screen flex flex-col font-sans overflow-hidden">
+<body class="bg-slate-900/90  text-white h-screen flex flex-col font-sans overflow-hidden">
 
     <!-- Header -->
-    <header class="bg-gray-800 border-b border-gray-700 p-4 flex justify-between items-center z-10 shrink-0">
+    <header class="bg-slate-800/80 backdrop-blur-md border-b border-slate-700/50 p-4 flex justify-between items-center z-10 shrink-0">
         <div class="flex items-center space-x-3">
             <div class="w-10 h-10 bg-purple-600 rounded-full flex items-center justify-center shadow-lg shadow-purple-500/30">
                 <i class="fas fa-heart text-xl text-white"></i>
             </div>
             <div>
                 <h1 class="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-500">Anime Affinity Matcher AI</h1>
-                <p class="text-xs text-gray-400">Discover your anime soulmates and rivals.</p>
+                <p class="text-xs text-slate-400">Discover your anime soulmates and rivals.</p>
             </div>
         </div>
     </header>
@@ -61,18 +72,18 @@
         </div>
 
         <!-- Left Panel: Input Area -->
-        <div class="w-full lg:w-1/3 p-6 flex flex-col border-r border-gray-800 bg-gray-900/50 backdrop-blur-sm z-10 shrink-0 h-1/2 lg:h-full overflow-y-auto custom-scrollbar">
-            <h2 class="text-lg font-semibold mb-4 flex items-center text-gray-200">
+        <div class="w-full lg:w-1/3 p-6 flex flex-col border-r border-slate-800/50 bg-slate-900/90 backdrop-blur-xl z-10 shrink-0 h-1/2 lg:h-full overflow-y-auto custom-scrollbar">
+            <h2 class="text-lg font-semibold mb-4 flex items-center text-slate-200">
                 <i class="fas fa-user-edit mr-2 text-purple-400"></i> Describe Yourself
             </h2>
 
-            <div class="bg-gray-800 rounded-xl p-4 border border-gray-700 flex-1 flex flex-col">
-                <p class="text-sm text-gray-400 mb-4">
+            <div class="glass-panel rounded-xl p-4 border border-slate-700/50 flex-1 flex flex-col">
+                <p class="text-sm text-slate-400 mb-4">
                     Enter a brief description of your personality, goals, and values. The Agent will analyze your traits and match you with characters from the database.
                 </p>
                 <textarea
                     id="descriptionInput"
-                    class="w-full flex-1 bg-gray-900 border border-gray-600 rounded-lg p-3 text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 resize-none transition-all custom-scrollbar"
+                    class="w-full flex-1 bg-slate-900/90 backdrop-blur-xl border border-slate-600 rounded-lg p-3 text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 resize-none transition-all custom-scrollbar"
                     placeholder="E.g., I am very calm, calculating, and prefer diplomacy over fighting. I like peace and hate unnecessary conflict..."></textarea>
 
                 <button
@@ -83,25 +94,25 @@
             </div>
 
             <!-- Agent Terminal/Logs -->
-            <div class="mt-6 bg-black rounded-xl p-4 border border-gray-800 flex-1 flex flex-col min-h-[200px]">
-                <div class="flex items-center mb-2 pb-2 border-b border-gray-800">
+            <div class="mt-6 bg-black rounded-xl p-4 border border-slate-800/50 flex-1 flex flex-col min-h-[200px]">
+                <div class="flex items-center mb-2 pb-2 border-b border-slate-800/50">
                     <i class="fas fa-terminal text-green-400 mr-2 text-sm"></i>
-                    <h3 class="text-xs font-mono text-gray-400 uppercase tracking-wider">Agent Thought Process</h3>
+                    <h3 class="text-xs font-mono text-slate-400 uppercase tracking-wider">Agent Thought Process</h3>
                 </div>
-                <div id="terminal" class="flex-1 overflow-y-auto custom-scrollbar font-mono text-xs text-gray-300 space-y-1">
-                    <div class="text-gray-500">Waiting for user input...</div>
+                <div id="terminal" class="flex-1 overflow-y-auto custom-scrollbar font-mono text-xs text-slate-300 space-y-1">
+                    <div class="text-slate-500">Waiting for user input...</div>
                 </div>
             </div>
         </div>
 
         <!-- Right Panel: Results Area -->
         <div class="w-full lg:w-2/3 p-6 flex flex-col z-10 h-1/2 lg:h-full overflow-y-auto custom-scrollbar">
-            <h2 class="text-lg font-semibold mb-4 flex items-center text-gray-200">
+            <h2 class="text-lg font-semibold mb-4 flex items-center text-slate-200">
                 <i class="fas fa-users mr-2 text-pink-400"></i> Match Results
             </h2>
 
             <div id="resultsContainer" class="flex-1 flex flex-col space-y-6">
-                <div class="flex-1 flex items-center justify-center text-gray-500">
+                <div class="flex-1 flex items-center justify-center text-slate-500">
                     <div class="text-center">
                         <i class="fas fa-search text-4xl mb-3 opacity-50"></i>
                         <p>Awaiting analysis. Enter your description and click "Find My Matches".</p>
@@ -126,7 +137,7 @@
             if (category.includes('Soulmate')) return { icon: 'fa-heart', color: 'text-pink-400', bg: 'bg-gradient-category-soulmate' };
             if (category.includes('Rival')) return { icon: 'fa-bolt', color: 'text-amber-400', bg: 'bg-gradient-category-rival' };
             if (category.includes('Mentor')) return { icon: 'fa-book-open', color: 'text-blue-400', bg: 'bg-gradient-category-mentor' };
-            if (category.includes('Enemy') || category.includes('Opposite')) return { icon: 'fa-skull', color: 'text-gray-400', bg: 'bg-gradient-category-enemy' };
+            if (category.includes('Enemy') || category.includes('Opposite')) return { icon: 'fa-skull', color: 'text-slate-400', bg: 'bg-gradient-category-enemy' };
             return { icon: 'fa-handshake', color: 'text-emerald-400', bg: 'bg-gradient-category-acquaintance' };
         }
 
@@ -134,7 +145,7 @@
             const style = getCategoryStyle(match.category);
 
             return `
-                <div class="bg-gray-800 rounded-xl border border-gray-700 overflow-hidden card-hover animate-fade-in" style="animation-delay: ${index * 0.1}s">
+                <div class="glass-panel rounded-xl border border-slate-700/50 overflow-hidden card-hover animate-fade-in" style="animation-delay: ${index * 0.1}s">
                     <div class="${style.bg} p-3 flex justify-between items-center">
                         <span class="font-bold text-white shadow-sm flex items-center">
                             <i class="fas ${style.icon} mr-2"></i> ${match.category}
@@ -144,12 +155,12 @@
                         <div class="flex justify-between items-start mb-3">
                             <div>
                                 <h3 class="text-xl font-bold text-white">${match.name}</h3>
-                                <span class="text-xs bg-gray-700 text-gray-300 px-2 py-1 rounded-full mt-1 inline-block">${match.archetype}</span>
+                                <span class="text-xs bg-slate-700/50 text-slate-300 px-2 py-1 rounded-full mt-1 inline-block">${match.archetype}</span>
                             </div>
                         </div>
-                        <div class="bg-gray-900/50 rounded-lg p-3 border border-gray-700/50">
-                            <p class="text-sm text-gray-300 leading-relaxed">
-                                <span class="text-gray-500 font-semibold mb-1 block text-xs uppercase tracking-wider">Agent's Reasoning</span>
+                        <div class="bg-slate-900/90 backdrop-blur-xl rounded-lg p-3 border border-slate-700/50">
+                            <p class="text-sm text-slate-300 leading-relaxed">
+                                <span class="text-slate-500 font-semibold mb-1 block text-xs uppercase tracking-wider">Agent's Reasoning</span>
                                 ${match.reasoning}
                             </p>
                         </div>
@@ -194,7 +205,7 @@
                 elements.terminal.innerHTML = '';
                 for (let i = 0; i < data.logs.length; i++) {
                     setTimeout(() => {
-                        elements.terminal.innerHTML += `<div class="mb-1 ${data.logs[i].includes('Result:') ? 'text-pink-400' : 'text-gray-400'}">> ${data.logs[i]}</div>`;
+                        elements.terminal.innerHTML += `<div class="mb-1 ${data.logs[i].includes('Result:') ? 'text-pink-400' : 'text-slate-400'}">> ${data.logs[i]}</div>`;
                         elements.terminal.scrollTop = elements.terminal.scrollHeight;
                     }, i * 50); // Fast log typing effect
                 }
@@ -209,7 +220,7 @@
                     if (grouped["Soulmate/Best Friend"]) {
                         elements.results.innerHTML += `
                             <div>
-                                <h3 class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-3 border-b border-gray-700 pb-2">High Compatibility</h3>
+                                <h3 class="text-sm font-bold text-slate-400 uppercase tracking-wider mb-3 border-b border-slate-700/50 pb-2">High Compatibility</h3>
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     ${grouped["Soulmate/Best Friend"].map((m, i) => createMatchCard(m, i)).join('')}
                                 </div>
@@ -221,7 +232,7 @@
                     if (grouped["Mentor"]) {
                          elements.results.innerHTML += `
                             <div class="mt-6">
-                                <h3 class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-3 border-b border-gray-700 pb-2">Potential Mentors</h3>
+                                <h3 class="text-sm font-bold text-slate-400 uppercase tracking-wider mb-3 border-b border-slate-700/50 pb-2">Potential Mentors</h3>
                                 <div class="grid grid-cols-1 gap-4">
                                     ${grouped["Mentor"].map((m, i) => createMatchCard(m, i)).join('')}
                                 </div>
@@ -233,7 +244,7 @@
                     if (grouped["Rival"]) {
                          elements.results.innerHTML += `
                             <div class="mt-6">
-                                <h3 class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-3 border-b border-gray-700 pb-2">Challengers / Rivals</h3>
+                                <h3 class="text-sm font-bold text-slate-400 uppercase tracking-wider mb-3 border-b border-slate-700/50 pb-2">Challengers / Rivals</h3>
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     ${grouped["Rival"].map((m, i) => createMatchCard(m, i)).join('')}
                                 </div>
@@ -249,7 +260,7 @@
                     if (others.length > 0) {
                         elements.results.innerHTML += `
                             <div class="mt-6 opacity-75">
-                                <h3 class="text-sm font-bold text-gray-500 uppercase tracking-wider mb-3 border-b border-gray-800 pb-2">Other Affinities</h3>
+                                <h3 class="text-sm font-bold text-slate-500 uppercase tracking-wider mb-3 border-b border-slate-800/50 pb-2">Other Affinities</h3>
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     ${others.map((m, i) => createMatchCard(m, i)).join('')}
                                 </div>
