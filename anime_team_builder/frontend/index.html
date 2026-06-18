@@ -15,11 +15,11 @@
             background-attachment: fixed;
         }
         .glass {
-            background: rgba(15, 23, 42, 0.6);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            background: rgba(15, 23, 42, 0.5);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
         }
         .card-enter {
             animation: slideUp 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
@@ -217,7 +217,7 @@
                             borderColor = 'border-emerald-500'; shadowGlow = 'hover:shadow-emerald-500/40'; tagColor = 'bg-emerald-900 text-emerald-200'; barGradient = 'from-emerald-500 to-teal-500';
                         }
 
-                        card.className = `bg-slate-800 rounded-xl p-5 border-l-4 ${borderColor} shadow-md card-enter transition-shadow duration-300 ${shadowGlow}`;
+                        card.className = `bg-slate-800/80 backdrop-blur-sm rounded-xl p-5 border-l-4 ${borderColor} border border-white/5 shadow-[0_4px_20px_rgba(0,0,0,0.2)] card-enter transition-all duration-300 ${shadowGlow} hover:-translate-y-1`;
                         card.style.animationDelay = `${index * 0.2}s`;
 
                         card.innerHTML = `

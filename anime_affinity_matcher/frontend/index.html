@@ -61,23 +61,23 @@
         </div>
 
         <!-- Left Panel: Input Area -->
-        <div class="w-full lg:w-1/3 p-6 flex flex-col border-r border-gray-800 bg-gray-900/50 backdrop-blur-sm z-10 shrink-0 h-1/2 lg:h-full overflow-y-auto custom-scrollbar">
-            <h2 class="text-lg font-semibold mb-4 flex items-center text-gray-200">
-                <i class="fas fa-user-edit mr-2 text-purple-400"></i> Describe Yourself
+        <div class="w-full lg:w-1/3 p-6 flex flex-col border-r border-gray-800 bg-gray-900/40 backdrop-blur-md z-10 shrink-0 h-1/2 lg:h-full overflow-y-auto custom-scrollbar">
+            <h2 class="text-lg font-semibold mb-4 flex items-center text-gray-200 drop-shadow-sm">
+                <i class="fas fa-user-edit mr-2 text-purple-400 drop-shadow-[0_0_5px_rgba(192,132,252,0.5)]"></i> Describe Yourself
             </h2>
 
-            <div class="bg-gray-800 rounded-xl p-4 border border-gray-700 flex-1 flex flex-col">
-                <p class="text-sm text-gray-400 mb-4">
+            <div class="bg-gray-800/60 backdrop-blur-md rounded-xl p-4 border border-white/10 flex-1 flex flex-col shadow-lg">
+                <p class="text-sm text-gray-300 mb-4 font-medium">
                     Enter a brief description of your personality, goals, and values. The Agent will analyze your traits and match you with characters from the database.
                 </p>
                 <textarea
                     id="descriptionInput"
-                    class="w-full flex-1 bg-gray-900 border border-gray-600 rounded-lg p-3 text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 resize-none transition-all custom-scrollbar"
+                    class="w-full flex-1 bg-gray-900/80 border border-gray-600/50 rounded-lg p-3 text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 resize-none transition-all custom-scrollbar shadow-inner hover:bg-gray-900"
                     placeholder="E.g., I am very calm, calculating, and prefer diplomacy over fighting. I like peace and hate unnecessary conflict..."></textarea>
 
                 <button
                     id="matchBtn"
-                    class="mt-4 w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white font-bold py-3 px-4 rounded-lg shadow-lg shadow-purple-500/25 transition-all transform hover:scale-[1.02] active:scale-95 flex items-center justify-center">
+                    class="mt-4 w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white font-bold py-3 px-4 rounded-lg shadow-[0_4px_15px_rgba(168,85,247,0.4)] hover:shadow-[0_0_25px_rgba(168,85,247,0.6)] transition-all transform hover:-translate-y-0.5 active:scale-95 flex items-center justify-center">
                     <i class="fas fa-magic mr-2"></i> Find My Matches
                 </button>
             </div>
@@ -134,22 +134,22 @@
             const style = getCategoryStyle(match.category);
 
             return `
-                <div class="bg-gray-800 rounded-xl border border-gray-700 overflow-hidden card-hover animate-fade-in" style="animation-delay: ${index * 0.1}s">
-                    <div class="${style.bg} p-3 flex justify-between items-center">
-                        <span class="font-bold text-white shadow-sm flex items-center">
+                <div class="bg-gray-800/60 backdrop-blur-md rounded-xl border border-white/5 overflow-hidden card-hover animate-fade-in shadow-lg hover:shadow-[0_8px_25px_rgba(0,0,0,0.5)]" style="animation-delay: ${index * 0.1}s">
+                    <div class="${style.bg} p-3 flex justify-between items-center bg-opacity-80 backdrop-blur-sm">
+                        <span class="font-bold text-white drop-shadow-md flex items-center">
                             <i class="fas ${style.icon} mr-2"></i> ${match.category}
                         </span>
                     </div>
                     <div class="p-5">
                         <div class="flex justify-between items-start mb-3">
                             <div>
-                                <h3 class="text-xl font-bold text-white">${match.name}</h3>
-                                <span class="text-xs bg-gray-700 text-gray-300 px-2 py-1 rounded-full mt-1 inline-block">${match.archetype}</span>
+                                <h3 class="text-xl font-bold text-white drop-shadow-sm">${match.name}</h3>
+                                <span class="text-xs bg-gray-700/80 border border-gray-600 text-gray-200 px-2 py-1 rounded-full mt-1 inline-block shadow-sm">${match.archetype}</span>
                             </div>
                         </div>
-                        <div class="bg-gray-900/50 rounded-lg p-3 border border-gray-700/50">
+                        <div class="bg-gray-900/60 rounded-lg p-3 border border-white/5 shadow-inner">
                             <p class="text-sm text-gray-300 leading-relaxed">
-                                <span class="text-gray-500 font-semibold mb-1 block text-xs uppercase tracking-wider">Agent's Reasoning</span>
+                                <span class="text-gray-400 font-bold mb-1 block text-xs uppercase tracking-wider drop-shadow-sm">Agent's Reasoning</span>
                                 ${match.reasoning}
                             </p>
                         </div>

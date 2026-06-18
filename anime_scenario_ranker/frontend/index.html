@@ -25,9 +25,10 @@
     </script>
     <style>
         body {
-            background-image: radial-gradient(circle at top right, rgba(139, 92, 246, 0.1) 0%, transparent 40%),
-                              radial-gradient(circle at bottom left, rgba(59, 130, 246, 0.1) 0%, transparent 40%);
+            background-image: radial-gradient(circle at top right, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
+                              radial-gradient(circle at bottom left, rgba(59, 130, 246, 0.15) 0%, transparent 50%);
             background-color: #111827;
+            background-attachment: fixed;
         }
         .custom-scrollbar::-webkit-scrollbar { width: 6px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
@@ -305,8 +306,8 @@
                                     const delay = (rowChildCount * 0.1).toFixed(1);
                                     const charHtml = `
                                         <div class="tooltip relative cursor-help card-enter tier-card animate-pop-in" style="animation-delay: ${delay}s">
-                                            <div class="bg-gray-700 border border-gray-600 rounded px-3 py-2 flex items-center gap-2 hover:bg-gray-600 transition-colors shadow-sm">
-                                                <div class="w-6 h-6 rounded-full bg-gray-800 flex items-center justify-center text-xs font-bold text-gray-300">
+                                            <div class="bg-gray-700/60 backdrop-blur-md border border-gray-600/50 rounded px-3 py-2 flex items-center gap-2 hover:bg-gray-600/80 transition-all shadow-md hover:shadow-[0_0_15px_rgba(167,139,250,0.3)]">
+                                                <div class="w-6 h-6 rounded-full bg-gray-900/80 border border-gray-700 flex items-center justify-center text-xs font-bold text-gray-300">
                                                     ${getInitials(ranking.name)}
                                                 </div>
                                                 <span class="text-sm font-semibold text-gray-100 tracking-wide">${ranking.name}</span>

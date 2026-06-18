@@ -6,16 +6,20 @@ def test_frontend():
         browser = p.chromium.launch()
         page = browser.new_page()
 
-        # Construct path to local HTML file
-        filepath = f"file://{os.path.abspath('anime_power_scaler/frontend/index.html')}"
-        page.goto(filepath)
+        # Access via FastAPI static file serving (which runs on port 8006 based on earlier step)
+        page.goto("http://localhost:8006/")
+
+        # Wait for options to load
+        page.wait_for_function('document.querySelectorAll("#char1-select option").length > 1', timeout=10000)
 
         # Interact with UI
-        page.fill('#ability-input', 'Laser vision that cuts through anything')
-        page.click('#scale-btn')
+        page.select_option('#char1-select', index=1)
+        page.select_option('#char2-select', index=2)
+        page.fill('#context-input', 'Final Valley')
+        page.click('#simulate-btn')
 
         # Wait for results to be visible
-        page.wait_for_selector('#results-container:not(.hidden)', timeout=10000)
+        page.wait_for_selector('#results-card:not(.hidden)', timeout=15000)
 
         # Take screenshot
         os.makedirs('screenshots', exist_ok=True)
