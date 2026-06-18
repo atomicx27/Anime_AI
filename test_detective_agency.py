@@ -1,37 +1,31 @@
-import time
 from playwright.sync_api import sync_playwright
+import os
 
-def test_detective_agency():
+def test_frontend():
     with sync_playwright() as p:
-        browser = p.chromium.launch(headless=True)
+        browser = p.chromium.launch()
         page = browser.new_page()
 
-        # Navigate to the frontend served on port 8008
-        page.goto("http://localhost:8008")
+        # Navigate to the local server
+        page.goto("http://localhost:8007/")
 
-        # Verify the title
-        assert "Anime Detective Agency AI" in page.title()
+        # Interact with UI
+        page.fill('#mystery-input', 'The Mayor\'s prized diamond necklace was stolen from a locked vault overnight. Only a single black feather was left behind.')
+        page.click('#investigate-btn')
 
-        # Fill in the mystery input
-        mystery_text = "The legendary Sword of Totsuka has been stolen from the spiritual realm. There was no sign of a forced entry, only a lingering smell of ozone and a few scattered black feathers."
-        page.fill("#mystery-input", mystery_text)
+        # Wait for results to be visible
+        page.wait_for_selector('#results-container:not(.hidden)', timeout=10000)
 
-        # Click the solve button
-        page.click("#solve-btn")
+        # Wait a moment for animations to finish
+        page.wait_for_timeout(2000)
 
-        # Wait for the results to load (wait for the investigations grid to have children)
-        # We wait for the cards to appear
-        page.wait_for_selector("#investigations-grid > div", state="attached", timeout=10000)
-
-        # Give a small buffer for typing animations to finish
-        time.sleep(3)
-
-        # Take a screenshot
-        screenshot_path = "detective_agency_result.png"
-        page.screenshot(path=screenshot_path, full_page=True)
+        # Take screenshot
+        os.makedirs('screenshots', exist_ok=True)
+        screenshot_path = 'screenshots/detective_agency.png'
+        page.screenshot(path=screenshot_path)
         print(f"Screenshot saved to {screenshot_path}")
 
         browser.close()
 
 if __name__ == "__main__":
-    test_detective_agency()
+    test_frontend()

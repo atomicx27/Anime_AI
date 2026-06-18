@@ -1,34 +1,55 @@
 import os
-import re
 
-def parse_readme_characters(filepath=None):
-    if filepath is None:
-        filepath = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), "README.md")
+def parse_readme_characters(file_path="README.md"):
+    # If run from inside anime_group_chat/backend, look up 2 levels
+    if not os.path.exists(file_path):
+        file_path = "../../README.md"
 
-    characters = []
+    if not os.path.exists(file_path):
+        # fallback just in case we're running from root
+        file_path = "README.md"
 
-    if not os.path.exists(filepath):
-        print(f"Error: Could not find {filepath}")
-        return characters
+    if not os.path.exists(file_path):
+        print(f"Could not find {file_path}")
+        return []
 
-    with open(filepath, "r", encoding="utf-8") as f:
+    with open(file_path, "r", encoding="utf-8") as f:
         content = f.read()
 
-    table_pattern = re.compile(r'\| Character \| Archetype & MBTI \| Core Emotion \| Personality Profile \| Unique Quality & Philosophy \|\n\|---\|---\|---\|---\|---\|\n(.*?)(?=\n\n|\n---|$)', re.DOTALL)
-    match = table_pattern.search(content)
+    lines = content.split('\n')
 
-    if match:
-        table_content = match.group(1)
-        for line in table_content.strip().split('\n'):
-            if line.startswith('|') and line.endswith('|'):
-                parts = [p.strip() for p in line.strip('|').split('|')]
-                if len(parts) >= 5:
-                    characters.append({
-                        "name": parts[0],
-                        "archetype": parts[1],
-                        "core_emotion": parts[2],
-                        "personality_profile": parts[3],
-                        "unique_quality": parts[4]
-                    })
+    characters = []
+    in_table = False
+
+    for line in lines:
+        line = line.strip()
+        if line.startswith("| Character | Archetype & MBTI |"):
+            in_table = True
+            continue
+
+        if in_table and line.startswith("|---"):
+            continue
+
+        if in_table and not line.startswith("|"):
+            in_table = False
+            continue
+
+        if in_table and line.startswith("|"):
+            parts = [p.strip() for p in line.split('|')]
+            if len(parts) >= 7:
+                character = {
+                    "name": parts[1],
+                    "archetype": parts[2],
+                    "core_emotion": parts[3],
+                    "personality_profile": parts[4],
+                    "unique_quality": parts[5],
+                    "avatar": f"https://api.dicebear.com/7.x/bottts/svg?seed={parts[1].replace(' ', '')}"
+                }
+                characters.append(character)
 
     return characters
+
+if __name__ == "__main__":
+    chars = parse_readme_characters()
+    for c in chars:
+        print(f"Parsed: {c['name']}")
