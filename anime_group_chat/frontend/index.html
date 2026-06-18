@@ -5,20 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Anime Group Chat</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <script>
         tailwind.config = {
             theme: {
                 extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['Fira Code', 'monospace'],
+                    },
                     colors: {
                         discord: {
-                            darker: '#202225',
-                            dark: '#2f3136',
-                            base: '#36393f',
-                            light: '#40444b',
+                            darker: '#1e1f22',
+                            dark: '#2b2d31',
+                            base: '#313338',
+                            light: '#383a40',
                             primary: '#5865F2',
-                            text: '#dcddde',
-                            muted: '#72767d'
+                            text: '#dbdee1',
+                            muted: '#80848e'
                         }
                     }
                 }
@@ -26,7 +31,19 @@
         }
     </script>
     <style>
-        body { font-family: 'Inter', sans-serif; }
+        body {
+            background-color: #0f172a; /* slate-900 */
+            background-image: radial-gradient(circle at top right, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
+                              radial-gradient(circle at bottom left, rgba(168, 85, 247, 0.1) 0%, transparent 50%);
+            background-attachment: fixed;
+        }
+
+        .glass-panel {
+            background: rgba(47, 49, 54, 0.7); /* discord-dark but translucent */
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-left: 1px solid rgba(255, 255, 255, 0.05);
+        }
 
         .message-enter {
             animation: slideInAndScale 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
@@ -106,24 +123,24 @@
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
-<body class="bg-discord-base text-discord-text h-screen flex overflow-hidden font-sans">
+<body class="bg-[#2b2d31] text-discord-text h-screen flex overflow-hidden font-sans bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-[#3a3d42] via-[#2b2d31] to-[#1e1f22]">
 
     <!-- Sidebar: Servers (Mock) -->
-    <div class="w-18 bg-discord-darker flex flex-col items-center py-3 space-y-4">
-        <div class="w-12 h-12 bg-discord-primary rounded-2xl flex items-center justify-center text-white cursor-pointer hover:rounded-xl transition-all duration-300">
+    <div class="w-18 bg-discord-darker/80 backdrop-blur-md flex flex-col items-center py-3 space-y-4 border-r border-discord-dark shadow-xl z-20">
+        <div class="w-12 h-12 bg-discord-primary rounded-2xl flex items-center justify-center text-white cursor-pointer hover:rounded-xl transition-all duration-300 hover:shadow-[0_0_15px_rgba(88,101,242,0.6)]">
             <i class="fas fa-meteor fa-lg"></i>
         </div>
-        <div class="w-8 h-1 bg-discord-dark rounded-full"></div>
-        <div class="w-12 h-12 bg-discord-base rounded-[24px] hover:rounded-xl flex items-center justify-center text-discord-primary cursor-pointer transition-all duration-300 hover:bg-discord-primary hover:text-white">
+        <div class="w-8 h-1 bg-discord-dark/50 rounded-full"></div>
+        <div class="w-12 h-12 bg-discord-base/80 rounded-[24px] hover:rounded-xl flex items-center justify-center text-discord-primary cursor-pointer transition-all duration-300 hover:bg-discord-primary hover:text-white hover:shadow-[0_0_15px_rgba(88,101,242,0.4)]">
             <i class="fas fa-plus"></i>
         </div>
     </div>
 
     <!-- Sidebar: Channels/Online Users -->
-    <div class="w-60 bg-discord-dark flex flex-col border-l border-discord-darker">
+    <div class="w-60 bg-discord-dark/90 backdrop-blur-sm flex flex-col border-r border-discord-darker/50 shadow-2xl z-10">
         <!-- Header -->
-        <div class="h-12 border-b border-discord-darker flex items-center px-4 shadow-sm hover:bg-discord-light cursor-pointer transition-all duration-200 hover:pl-5">
-            <h1 class="font-bold text-white flex-1 truncate">Anime All-Stars</h1>
+        <div class="h-12 border-b border-black/20 flex items-center px-4 shadow-sm hover:bg-discord-light/50 cursor-pointer transition-all duration-300 hover:pl-5">
+            <h1 class="font-bold text-white flex-1 truncate drop-shadow-md">Anime All-Stars</h1>
             <i class="fas fa-chevron-down text-sm text-discord-muted transition-transform duration-200 group-hover:text-white"></i>
         </div>
 
@@ -158,9 +175,9 @@
         </div>
 
         <!-- User Area -->
-        <div class="h-14 bg-discord-darker flex items-center px-2 mt-auto">
-            <div class="flex items-center hover:bg-discord-light p-1 rounded cursor-pointer w-full group transition-colors duration-200">
-                <div class="w-8 h-8 rounded-full bg-indigo-500 flex items-center justify-center mr-2 relative hover:opacity-80 transition-opacity">
+        <div class="h-14 bg-black/40 backdrop-blur-md flex items-center px-2 mt-auto">
+            <div class="flex items-center hover:bg-discord-light/50 p-1 rounded cursor-pointer w-full group transition-all duration-300">
+                <div class="w-8 h-8 rounded-full bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center mr-2 relative shadow-lg shadow-indigo-500/40 hover:opacity-80 transition-opacity">
                     <i class="fas fa-user text-white text-xs"></i>
                     <div class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-discord-darker transition-transform group-hover:scale-110"></div>
                 </div>
@@ -180,9 +197,9 @@
     <!-- Main Chat Area -->
     <div class="flex-1 flex flex-col bg-transparent relative backdrop-blur-md bg-white/5">
         <!-- Header -->
-        <div class="h-12 border-b border-black/20 flex items-center px-4 shadow-[0_0_15px_rgba(0,0,0,0.5)] z-10 shrink-0">
+        <div class="h-12 border-b border-[#1e1f22] flex items-center px-4 shadow-md bg-[#2b2d31]/70 backdrop-blur-lg z-10 shrink-0 sticky top-0">
             <i class="fas fa-hashtag text-discord-muted text-xl mr-3"></i>
-            <h2 class="font-bold text-white flex-1">general-chat</h2>
+            <h2 class="font-bold text-white flex-1 drop-shadow-md">general-chat</h2>
             <div class="flex text-discord-muted space-x-4">
                 <i class="fas fa-bell cursor-pointer hover:text-white transition-colors"></i>
                 <i class="fas fa-thumbtack cursor-pointer hover:text-white transition-colors"></i>
@@ -197,19 +214,19 @@
         <!-- Chat History -->
         <div id="chat-history" class="flex-1 overflow-y-auto px-4 py-6 flex flex-col relative z-0">
             <!-- Background Decoration -->
-            <div class="absolute inset-0 pointer-events-none opacity-[0.03] bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4IiBoZWlnaHQ9IjgiPgo8cmVjdCB3aWR0aD0iOCIgaGVpZ2h0PSI4IiBmaWxsPSIjZmZmIj48L3JlY3Q+CjxwYXRoIGQ9Ik0wIDBMODggWk04IDBMMCA4IFoiIHN0cm9rZT0iIzAwMCIgc3Ryb2tlLXdpZHRoPSIxIj48L3BhdGg+Cjwvc3ZnPg==')] mix-blend-overlay"></div>
+            <div class="absolute inset-0 pointer-events-none opacity-[0.02] bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4IiBoZWlnaHQ9IjgiPgo8cmVjdCB3aWR0aD0iOCIgaGVpZ2h0PSI4IiBmaWxsPSIjZmZmIj48L3JlY3Q+CjxwYXRoIGQ9Ik0wIDBMODggWk04IDBMMCA4IFoiIHN0cm9rZT0iIzAwMCIgc3Ryb2tlLXdpZHRoPSIxIj48L3BhdGg+Cjwvc3ZnPg==')] mix-blend-overlay"></div>
 
             <!-- Welcome Message -->
             <div class="mt-auto mb-6 relative z-10">
-                <div class="w-[72px] h-[72px] bg-discord-dark rounded-full flex items-center justify-center mb-4 shadow-lg border border-discord-light/30">
-                    <i class="fas fa-hashtag text-white text-3xl"></i>
+                <div class="w-[72px] h-[72px] bg-discord-dark rounded-full flex items-center justify-center mb-4 shadow-[0_4px_15px_rgba(0,0,0,0.2)] border border-discord-light/30">
+                    <i class="fas fa-hashtag text-white text-3xl drop-shadow-md"></i>
                 </div>
-                <h1 class="text-white text-4xl font-extrabold mb-2 tracking-tight">Welcome to #general-chat!</h1>
-                <p class="text-discord-muted text-lg">This is the start of the #general-chat channel. Say hi to the anime council!</p>
+                <h1 class="text-white text-4xl font-black mb-2 tracking-tight">Welcome to #general-chat!</h1>
+                <p class="text-discord-muted text-[15px]">This is the start of the #general-chat channel. Say hi to the anime council!</p>
             </div>
 
             <div class="w-full border-t border-discord-dark/50 my-4 flex justify-center relative z-10">
-                <span class="px-2 text-xs text-discord-muted font-semibold -mt-2 bg-[#36393f] rounded-full">Today</span>
+                <span class="px-2 text-xs text-discord-muted font-semibold -mt-2 bg-slate-900 rounded-full">Today</span>
             </div>
 
             <div id="messages-container" class="space-y-1 relative z-10">
@@ -231,7 +248,7 @@
 
         <!-- Input Area -->
         <div class="px-4 pb-6 pt-2 relative">
-            <form id="chat-form" class="bg-discord-light rounded-lg flex items-center px-4 py-2 relative transition-all duration-300 focus-within:ring-1 focus-within:ring-discord-primary shadow-sm hover:shadow-md">
+            <form id="chat-form" class="bg-discord-light rounded-lg flex items-center px-4 py-2 relative transition-all duration-300 focus-within:ring-1 focus-within:ring-discord-primary shadow-sm hover:shadow-md hover:-translate-y-1">
                 <div class="text-discord-muted hover:text-white hover:bg-discord-primary transition-colors duration-200 cursor-pointer w-6 h-6 flex items-center justify-center mr-3 bg-discord-darker rounded-full">
                     <i class="fas fa-plus text-xs"></i>
                 </div>
@@ -243,9 +260,9 @@
                     autocomplete="off"
                 >
                 <div class="flex text-discord-muted space-x-3 ml-3">
-                    <i class="fas fa-gift cursor-pointer hover:text-white transition-colors duration-200 hover:-translate-y-0.5 transform"></i>
-                    <i class="fas fa-file-image cursor-pointer hover:text-white transition-colors duration-200 hover:-translate-y-0.5 transform"></i>
-                    <i class="fas fa-smile cursor-pointer hover:text-white transition-colors duration-200 hover:-translate-y-0.5 transform"></i>
+                    <i class="fas fa-gift cursor-pointer hover:text-white transition-colors duration-200 hover:-translate-y-0.5 transform drop-shadow-md"></i>
+                    <i class="fas fa-file-image cursor-pointer hover:text-white transition-colors duration-200 hover:-translate-y-0.5 transform drop-shadow-md"></i>
+                    <i class="fas fa-smile cursor-pointer hover:text-white transition-colors duration-200 hover:-translate-y-0.5 transform drop-shadow-md"></i>
                 </div>
             </form>
         </div>
@@ -322,34 +339,34 @@
                 hash = str.charCodeAt(i) + ((hash << 5) - hash);
             }
             const h = hash % 360;
-            return `hsl(${h}, 70%, 65%)`;
+            return `hsl(${h}, 80%, 75%)`;
         }
 
         function appendMessage(sender, content, avatarUrl = null, isBot = false, timeStr = null) {
             const div = document.createElement('div');
-            div.className = 'hover:bg-white/5 px-4 py-1 flex items-start group mt-3 message-enter hover:scale-[1.02] hover:-translate-y-1 hover:shadow-[0_0_15px_rgba(88,101,242,0.2)] transition-all duration-300 rounded';
+            div.className = 'hover:bg-[#2b2d31]/50 backdrop-blur-sm px-4 py-2 flex items-start group mt-3 message-enter hover:translate-x-2 hover:shadow-[0_4px_15px_rgba(0,0,0,0.2)] transition-all duration-300 rounded-xl border border-transparent hover:border-discord-light/30';
 
             const time = timeStr || formatTime();
             const avatar = avatarUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(sender)}&background=random`;
             const color = isBot ? getStringColor(sender) : 'white';
 
-            const botTag = isBot ? `<span class="bg-discord-primary text-white text-[10px] font-bold px-1 rounded ml-1 uppercase leading-tight relative top-[-1px] shadow-sm">Bot</span>` : '';
+            const botTag = isBot ? `<span class="bg-discord-primary text-white text-[10px] font-bold px-1.5 py-0.5 rounded ml-1.5 uppercase leading-tight relative top-[-1px] shadow-sm tracking-wide">Bot</span>` : '';
 
             // Highlight mentions
-            let formattedContent = content.replace(/@([a-zA-Z0-9_ ]+)/g, '<span class="bg-indigo-500/30 text-indigo-300 px-1 rounded cursor-pointer hover:bg-indigo-500/50 hover:underline transition-colors">@$1</span>');
+            let formattedContent = content.replace(/@([a-zA-Z0-9_ ]+)/g, '<span class="bg-indigo-500/20 text-indigo-300 px-1.5 py-0.5 rounded cursor-pointer hover:bg-indigo-500/40 hover:underline transition-colors font-medium">@$1</span>');
 
             // Highlight action text *...*
             formattedContent = formattedContent.replace(/\*(.*?)\*/g, '<span class="italic text-discord-muted group-hover:text-discord-muted/80 transition-colors">* $1 *</span>');
 
-            div.innerHTML = `
-                <img src="${avatar}" alt="${sender}" class="w-10 h-10 rounded-full bg-discord-darker object-cover mr-4 cursor-pointer mt-0.5 hover:scale-110 hover:shadow-lg transition-transform duration-300">
-                <div class="flex-1 group-hover:translate-x-1 transition-transform duration-200">
-                    <div class="flex items-baseline">
-                        <span class="font-medium text-[15px] cursor-pointer hover:underline" style="color: ${color}">${sender}</span>
+            div.innerHTML += `
+                <img src="${avatar}" alt="${sender}" class="w-10 h-10 rounded-full bg-discord-darker object-cover mr-4 cursor-pointer mt-0.5 hover:scale-[1.15] hover:shadow-[0_4px_15px_rgba(0,0,0,0.3)] transition-all duration-300 border border-transparent hover:border-white/10 z-10 relative">
+                <div class="flex-1 relative z-10">
+                    <div class="flex items-baseline mb-1">
+                        <span class="font-semibold text-[15px] cursor-pointer hover:underline tracking-wide" style="color: ${color}">${sender}</span>
                         ${botTag}
-                        <span class="text-xs text-discord-muted ml-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">${time}</span>
+                        <span class="text-[11px] font-medium text-discord-muted ml-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">${time}</span>
                     </div>
-                    <div class="text-[15px] text-discord-text leading-[1.375rem] whitespace-pre-wrap">${formattedContent}</div>
+                    <div class="text-[15px] text-discord-text leading-[1.4rem] whitespace-pre-wrap font-medium">${formattedContent}</div>
                 </div>
             `;
 
