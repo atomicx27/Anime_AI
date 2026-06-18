@@ -4,6 +4,7 @@ from parser import parse_readme_characters
 from agent import AnimeAgent
 from rich.console import Console
 from rich.panel import Panel
+from rich import box
 from rich.table import Table
 from rich.live import Live
 from rich.markdown import Markdown

@@ -1,4 +1,5 @@
 from fastapi import FastAPI, HTTPException
+from contextlib import asynccontextmanager
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
@@ -11,7 +12,21 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 from parser import parse_readme_characters
 from agent import AnimeMatchmakerAgent
 
-app = FastAPI(title="Anime Matchmaker API")
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    global CHARACTERS, AGENT
+    CHARACTERS = parse_readme_characters()
+    if CHARACTERS:
+        print(f"Loaded {len(CHARACTERS)} characters.")
+        AGENT = AnimeMatchmakerAgent(CHARACTERS)
+    else:
+        print("Warning: Could not load characters from README.md")
+
+    yield
+
+app = FastAPI(title="Anime Matchmaker API", lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,
@@ -24,15 +39,8 @@ app.add_middleware(
 CHARACTERS = []
 AGENT = None
 
-@app.on_event("startup")
-def startup_event():
-    global CHARACTERS, AGENT
-    CHARACTERS = parse_readme_characters()
-    if CHARACTERS:
-        print(f"Loaded {len(CHARACTERS)} characters.")
-        AGENT = AnimeMatchmakerAgent(CHARACTERS)
-    else:
-        print("Warning: Could not load characters from README.md")
+
+
 
 class MatchRequest(BaseModel):
     user_profile: str

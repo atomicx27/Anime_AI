@@ -102,6 +102,21 @@
             40% { transform: scale(1); }
         }
     </style>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+
+<script>
+    tailwind.config = {
+        theme: {
+            extend: {
+                fontFamily: {
+                    sans: ['Inter', 'sans-serif'],
+                    mono: ['"Fira Code"', 'monospace'],
+                }
+            }
+        }
+    }
+</script>
+
 </head>
 <body class="bg-discord-base text-discord-text h-screen flex overflow-hidden font-sans">
 

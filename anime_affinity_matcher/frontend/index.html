@@ -35,6 +35,21 @@
         .bg-gradient-category-acquaintance { background: linear-gradient(135deg, #10b981, #059669); }
         .bg-gradient-category-enemy { background: linear-gradient(135deg, #6b7280, #374151); }
     </style>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+
+<script>
+    tailwind.config = {
+        theme: {
+            extend: {
+                fontFamily: {
+                    sans: ['Inter', 'sans-serif'],
+                    mono: ['"Fira Code"', 'monospace'],
+                }
+            }
+        }
+    }
+</script>
+
 </head>
 <body class="bg-gray-900 text-white h-screen flex flex-col font-sans overflow-hidden">
 

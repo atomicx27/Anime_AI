@@ -4,7 +4,27 @@ from pydantic import BaseModel
 from parser import parse_readme_characters
 from agent import AffinityMatcherAgent
 
-app = FastAPI(title="Anime Affinity Matcher API")
+
+
+
+from contextlib import asynccontextmanager
+
+CHARACTERS = []
+AGENT = None
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    global CHARACTERS, AGENT
+    CHARACTERS = parse_readme_characters()
+    if CHARACTERS:
+        print(f"Loaded {len(CHARACTERS)} characters.")
+        AGENT = AffinityMatcherAgent(CHARACTERS)
+    else:
+        print("Warning: Could not load characters from README.md")
+
+    yield
+
+app = FastAPI(title="Anime Affinity Matcher API", lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,

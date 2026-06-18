@@ -76,6 +76,21 @@
             100% { transform: scale(1.5); opacity: 0; }
         }
     </style>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+
+<script>
+    tailwind.config = {
+        theme: {
+            extend: {
+                fontFamily: {
+                    sans: ['Inter', 'sans-serif'],
+                    mono: ['"Fira Code"', 'monospace'],
+                }
+            }
+        }
+    }
+</script>
+
 </head>
 <body class="min-h-screen p-8 bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 relative">
     <div class="particles"></div>
