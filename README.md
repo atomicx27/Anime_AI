@@ -323,3 +323,29 @@ python3 main.py
 # or open the anime_detective_agency/frontend/index.html file locally.
 # Open your browser and navigate to http://localhost:8007/
 ```
+
+### 9. Anime Startup Pitch AI
+
+The **Anime Startup Pitch AI** is a web-based, multi-agent application where you pitch your startup idea to a panel of iconic anime characters. Acting as "Investors", the AI dynamically selects characters to evaluate your pitch based on their "Core Emotion", "Personality Profile", and "Unique Quality & Philosophy" to decide if they will "Invest" or "Pass".
+
+#### Folder Location
+`anime_startup_pitch/`
+
+#### Features
+- **Dynamic Investor Selection**: Randomly selects 3-4 anime characters to act as a panel of venture capitalists.
+- **Agentic Evaluation**: Generates tailored feedback and an "Invest" or "Pass" decision based on whether the pitch aligns with the characters' unique traits and worldviews.
+- **Sleek, Modern UI/UX**: Features a visually stunning interface built with Tailwind CSS, incorporating glassmorphism (`glass-panel`), glowing effects (`text-glow`), radial gradients, and smooth hover animations.
+- **Dynamic Character Loading**: Backend API automatically parses the root `README.md` to load character details for the panel.
+
+#### How to Run
+```bash
+# Install dependencies
+cd anime_startup_pitch/backend
+pip install -r requirements.txt
+
+# Run the server
+python3 main.py
+
+# Access the UI
+# Open your browser and navigate to http://localhost:8009/
+```
