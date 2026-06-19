@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anime Startup Pitch AI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Fira+Code:wght@400;500&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+            color: #e2e8f0;
+            min-height: 100vh;
+        }
+
+        .font-mono {
+            font-family: 'Fira Code', monospace;
+        }
+
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+
+        .smooth-hover {
+            transition: all 0.3s ease;
+        }
+
+        .glass-hover:hover {
+            background: rgba(30, 41, 59, 0.9);
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 40px 0 rgba(0, 0, 0, 0.5);
+        }
+
+        .text-glow {
+            text-shadow: 0 0 10px rgba(167, 139, 250, 0.5);
+        }
+
+        .invest-glow {
+            box-shadow: 0 0 15px rgba(34, 197, 94, 0.4);
+            border-color: rgba(34, 197, 94, 0.5);
+        }
+
+        .pass-glow {
+            box-shadow: 0 0 15px rgba(239, 68, 68, 0.4);
+            border-color: rgba(239, 68, 68, 0.5);
+        }
+
+        @keyframes pulse-ring {
+            0% { transform: scale(0.8); box-shadow: 0 0 0 0 rgba(167, 139, 250, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(167, 139, 250, 0); }
+            100% { transform: scale(0.8); box-shadow: 0 0 0 0 rgba(167, 139, 250, 0); }
+        }
+
+        .loading-pulse {
+            animation: pulse-ring 2s infinite;
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+    <div class="max-w-6xl mx-auto">
+        <header class="text-center mb-10">
+            <h1 class="text-4xl md:text-5xl font-bold mb-4 text-glow bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-600">Anime Startup Pitch AI</h1>
+            <p class="text-lg text-slate-300">Pitch your startup idea to a panel of anime characters and see if they invest!</p>
+        </header>
+
+        <main class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Pitch Input Section -->
+            <div class="lg:col-span-1">
+                <div class="glass-panel rounded-2xl p-6">
+                    <h2 class="text-2xl font-semibold mb-4 text-purple-300">Your Pitch</h2>
+                    <form id="pitchForm" class="space-y-4">
+                        <div>
+                            <label for="pitchInput" class="block text-sm font-medium text-slate-400 mb-2">Describe your startup, product, or idea:</label>
+                            <textarea id="pitchInput" rows="6" class="w-full bg-slate-800/50 border border-slate-600 rounded-lg p-3 text-white focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 smooth-hover" placeholder="Example: An AI-powered training dummy that adapts to martial arts techniques..." required></textarea>
+                        </div>
+                        <button type="submit" id="submitBtn" class="w-full bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-bold py-3 px-4 rounded-lg smooth-hover shadow-lg shadow-purple-500/30 flex justify-center items-center">
+                            <span>Pitch to the Panel</span>
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Loading State -->
+                <div id="loadingState" class="hidden mt-8 text-center">
+                    <div class="inline-block w-12 h-12 bg-purple-500 rounded-full loading-pulse mb-4"></div>
+                    <p class="text-purple-300 font-mono animate-pulse">Panel is reviewing your pitch...</p>
+                </div>
+            </div>
+
+            <!-- Results Section -->
+            <div class="lg:col-span-2">
+                <div id="resultsContainer" class="hidden space-y-6">
+                    <div class="glass-panel rounded-2xl p-6 text-center">
+                        <h2 class="text-2xl font-bold mb-2">Overall Decision: <span id="overallDecision" class="text-glow"></span></h2>
+                    </div>
+
+                    <h3 class="text-xl font-semibold text-purple-300 mb-4 px-2">Investor Feedback</h3>
+                    <div id="investorCards" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- Cards injected here -->
+                    </div>
+                </div>
+
+                <div id="emptyState" class="h-full flex flex-col items-center justify-center text-slate-500 min-h-[300px] glass-panel rounded-2xl p-6 border-dashed">
+                    <svg class="w-16 h-16 mb-4 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+                    <p class="text-lg">Waiting for your pitch...</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        document.getElementById('pitchForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const pitchText = document.getElementById('pitchInput').value;
+            const submitBtn = document.getElementById('submitBtn');
+            const loadingState = document.getElementById('loadingState');
+            const resultsContainer = document.getElementById('resultsContainer');
+            const emptyState = document.getElementById('emptyState');
+
+            submitBtn.disabled = true;
+            submitBtn.classList.add('opacity-50', 'cursor-not-allowed');
+            loadingState.classList.remove('hidden');
+            resultsContainer.classList.add('hidden');
+            emptyState.classList.add('hidden');
+
+            try {
+                // Change to use absolute path for backend when possible, but relative fallback
+                const apiUrl = window.location.port === '8010' || window.location.port === '' ? 'http://localhost:8009/api/pitch' : '/api/pitch';
+
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ pitch: pitchText })
+                });
+
+                if (!response.ok) throw new Error('Network response was not ok');
+                const data = await response.json();
+
+                displayResults(data);
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Failed to submit pitch. Make sure the backend is running on port 8009.');
+                emptyState.classList.remove('hidden');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                loadingState.classList.add('hidden');
+            }
+        });
+
+        function displayResults(data) {
+            const resultsContainer = document.getElementById('resultsContainer');
+            const overallDecision = document.getElementById('overallDecision');
+            const investorCards = document.getElementById('investorCards');
+
+            // Set Overall Decision
+            overallDecision.textContent = data.overall_decision;
+            overallDecision.className = `text-glow ${data.overall_decision === 'Funded!' ? 'text-green-400' : 'text-red-400'}`;
+
+            // Clear previous cards
+            investorCards.innerHTML = '';
+
+            // Add new cards
+            data.investor_feedback.forEach(investor => {
+                const isInvest = investor.decision === 'Invest';
+                const glowClass = isInvest ? 'invest-glow' : 'pass-glow';
+                const statusColor = isInvest ? 'text-green-400' : 'text-red-400';
+                const icon = isInvest ?
+                    `<svg class="w-6 h-6 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>` :
+                    `<svg class="w-6 h-6 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>`;
+
+                const cardHTML = `
+                    <div class="glass-panel glass-hover rounded-xl p-5 ${glowClass} relative overflow-hidden group">
+                        <div class="flex justify-between items-start mb-3">
+                            <div>
+                                <h4 class="text-xl font-bold text-white group-hover:text-purple-300 transition-colors">${investor.name}</h4>
+                                <span class="text-xs text-slate-400 font-mono">${investor.archetype}</span>
+                            </div>
+                            <div class="flex items-center gap-2 bg-slate-800/50 px-3 py-1 rounded-full border border-slate-600">
+                                <span class="font-bold ${statusColor}">${investor.decision}</span>
+                                ${icon}
+                            </div>
+                        </div>
+                        <p class="text-sm text-slate-300 italic mb-3">"${investor.feedback}"</p>
+                    </div>
+                `;
+                investorCards.insertAdjacentHTML('beforeend', cardHTML);
+            });
+
+            resultsContainer.classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>

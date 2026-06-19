@@ -25,3 +25,6 @@ test-results/
 *.webm
 __pycache__/
 node_modules/
+test-results/
+backend_pitch.log
+frontend_pitch.log
