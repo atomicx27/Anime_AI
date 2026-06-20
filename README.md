@@ -245,6 +245,33 @@ python3 main.py
 # Open your browser and navigate to http://localhost:8006/
 # Open your browser and navigate to the frontend index.html file, or use a local HTTP server in the frontend directory.
 ```
+### 9. Anime Startup Pitch AI
+
+The **Anime Startup Pitch AI** is a web-based, multi-agent application that acts as a Venture Capital simulation. Users pitch their startup ideas, and the AI evaluates all characters from the database based on their Core Emotion, Personality Profile, and Unique Quality to form a VC panel of 4 distinct roles (e.g., Visionary, Pragmatist). The panel then evaluates the pitch and provides funding decisions and character-specific feedback.
+
+#### Folder Location
+`anime_startup_pitch/`
+
+#### Features
+- **Dynamic VC Panel**: Randomly selects 4 characters to act as Venture Capitalists with specific biases and evaluation criteria.
+- **Agentic Pitch Evaluation**: The agent analyzes the user's startup pitch and generates highly specific feedback rooted in the characters' unique traits.
+- **Sleek UI/UX**: Features a modern, glassmorphism interface built with Tailwind CSS, including a simulated terminal thought process and distinct outcome cards.
+- **Dynamic Character Loading**: Backend API automatically parses the root `README.md` to load character details dynamically.
+
+#### How to Run
+```bash
+# Install dependencies
+cd anime_startup_pitch/backend
+pip install -r requirements.txt
+
+# Run the server
+python3 main.py
+
+# Access the UI
+# Open your browser and navigate to http://localhost:8009/
+# using a local HTTP server in the frontend directory.
+```
+
 ### 8. Anime Detective Agency AI
 
 The **Anime Detective Agency AI** is a web-based, multi-agent application that acts as an orchestration system for solving mysteries. Users submit a "case file" or mystery description, and the AI evaluates all characters from the database based on their Core Emotion, Personality Profile, and Unique Quality to assign them specialized roles within the detective agency (e.g., Lead Detective, Forensics, Interrogator, Enforcer).
