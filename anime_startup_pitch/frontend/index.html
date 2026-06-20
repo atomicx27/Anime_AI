@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anime Startup Pitch AI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0f172a;
+            color: #e2e8f0;
+            background-image: radial-gradient(circle at 50% 0%, #1e293b 0%, #0f172a 70%);
+            min-height: 100vh;
+        }
+        .font-mono {
+            font-family: 'Fira Code', monospace;
+        }
+        .glass-panel {
+            background-color: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        .glass-hover {
+            transition: all 0.3s ease;
+        }
+        .glass-hover:hover {
+            background-color: rgba(30, 41, 59, 0.9);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2), 0 4px 6px -2px rgba(0, 0, 0, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+        .text-glow {
+            text-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
+        }
+        .terminal-cursor {
+            display: inline-block;
+            width: 8px;
+            height: 18px;
+            background-color: #38bdf8;
+            animation: blink 1s step-end infinite;
+            vertical-align: middle;
+            margin-left: 2px;
+        }
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+        .fund-decision {
+            color: #4ade80;
+            text-shadow: 0 0 8px rgba(74, 222, 128, 0.5);
+        }
+        .pass-decision {
+            color: #f87171;
+            text-shadow: 0 0 8px rgba(248, 113, 113, 0.5);
+        }
+        .loading-dot {
+            animation: bounce 1.4s infinite ease-in-out both;
+        }
+        .loading-dot:nth-child(1) { animation-delay: -0.32s; }
+        .loading-dot:nth-child(2) { animation-delay: -0.16s; }
+        @keyframes bounce {
+            0%, 80%, 100% { transform: scale(0); }
+            40% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+    <div class="max-w-6xl mx-auto space-y-8">
+
+        <!-- Header -->
+        <header class="text-center space-y-4 pt-8">
+            <h1 class="text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500 text-glow">Anime Startup Pitch AI</h1>
+            <p class="text-lg text-slate-400 max-w-2xl mx-auto">Pitch your startup idea to the Anime VC Panel. Four characters will evaluate your vision, execution, and ambition.</p>
+        </header>
+
+        <!-- Input Section -->
+        <section class="glass-panel rounded-2xl p-6 md:p-8 max-w-3xl mx-auto">
+            <div class="space-y-4">
+                <label for="pitch-input" class="block text-sm font-semibold text-slate-300">Your Startup Pitch (The Problem, Solution, and Market)</label>
+                <textarea id="pitch-input" rows="4" class="w-full bg-slate-800/50 border border-slate-600 rounded-xl p-4 text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent resize-none transition-all" placeholder="e.g., We are building a teleportation network using chakra relay stations to eliminate global shipping costs..."></textarea>
+                <div class="flex justify-end">
+                    <button id="pitch-btn" class="px-8 py-3 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-bold rounded-xl shadow-lg shadow-cyan-500/30 transition-all transform hover:scale-105 active:scale-95 flex items-center gap-2">
+                        <span>Pitch to Panel</span>
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Terminal Loading State -->
+        <section id="terminal-container" class="hidden max-w-3xl mx-auto">
+            <div class="glass-panel rounded-xl overflow-hidden border border-slate-700 shadow-2xl">
+                <div class="bg-slate-900 px-4 py-2 flex items-center gap-2 border-b border-slate-800">
+                    <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                    <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                    <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                    <span class="ml-2 text-xs text-slate-500 font-mono">vc_evaluation.sh</span>
+                </div>
+                <div class="p-6 font-mono text-sm text-green-400 h-48 overflow-y-auto" id="terminal-output">
+                    <!-- Logs will be injected here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Results Section -->
+        <section id="results-container" class="hidden space-y-6">
+            <h2 class="text-2xl font-bold text-center text-slate-200 border-b border-slate-700 pb-4">VC Panel Verdict</h2>
+            <div id="panel-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- VC Cards will be injected here -->
+            </div>
+
+            <div class="flex justify-center mt-8">
+                <button id="reset-btn" class="px-6 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg transition-colors border border-slate-600">Pitch Another Idea</button>
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        const pitchBtn = document.getElementById('pitch-btn');
+        const pitchInput = document.getElementById('pitch-input');
+        const terminalContainer = document.getElementById('terminal-container');
+        const terminalOutput = document.getElementById('terminal-output');
+        const resultsContainer = document.getElementById('results-container');
+        const panelGrid = document.getElementById('panel-grid');
+        const resetBtn = document.getElementById('reset-btn');
+
+        const loadingLines = [
+            "Initializing VC simulation environment...",
+            "Loading character database...",
+            "Evaluating pitch metrics...",
+            "Selecting VC Panel members...",
+            "Simulating personality matrices...",
+            "Calculating risk vs. reward algorithms...",
+            "Synthesizing final verdicts..."
+        ];
+
+        pitchBtn.addEventListener('click', async () => {
+            const pitch = pitchInput.value.trim();
+            if (!pitch) return;
+
+            // UI Reset
+            pitchBtn.disabled = true;
+            pitchBtn.classList.add('opacity-50', 'cursor-not-allowed');
+            resultsContainer.classList.add('hidden');
+            terminalContainer.classList.remove('hidden');
+            terminalOutput.innerHTML = '';
+            panelGrid.innerHTML = '';
+
+            // Simulate Terminal Loading
+            let lineIndex = 0;
+            const logInterval = setInterval(() => {
+                if (lineIndex < loadingLines.length) {
+                    const line = document.createElement('div');
+                    line.textContent = `> ${loadingLines[lineIndex]}`;
+                    line.className = "mb-2 opacity-0 animate-fade-in";
+                    line.style.animation = "fadeIn 0.3s forwards";
+                    terminalOutput.appendChild(line);
+                    terminalOutput.scrollTop = terminalOutput.scrollHeight;
+                    lineIndex++;
+                }
+            }, 600);
+
+            try {
+                // In production, use explicit absolute URL like http://localhost:8009/api/pitch
+                // For test environment, ensure we hit the correct port
+                const response = await fetch('http://localhost:8009/api/pitch', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ pitch })
+                });
+
+                if (!response.ok) throw new Error("Failed to get response from VC Panel");
+
+                const data = await response.json();
+
+                clearInterval(logInterval);
+                const completeLine = document.createElement('div');
+                completeLine.innerHTML = `> Simulation complete. Rendering results... <span class="terminal-cursor"></span>`;
+                completeLine.className = "mt-4 text-cyan-400 font-bold";
+                terminalOutput.appendChild(completeLine);
+                terminalOutput.scrollTop = terminalOutput.scrollHeight;
+
+                setTimeout(() => {
+                    renderResults(data.panel);
+                }, 1000);
+
+            } catch (error) {
+                clearInterval(logInterval);
+                terminalOutput.innerHTML += `<div class="text-red-500 mt-4">> ERROR: ${error.message}</div>`;
+                pitchBtn.disabled = false;
+                pitchBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+            }
+        });
+
+        function renderResults(panel) {
+            terminalContainer.classList.add('hidden');
+            resultsContainer.classList.remove('hidden');
+
+            panel.forEach((vc, index) => {
+                const isFund = vc.decision === "Fund";
+                const decisionClass = isFund ? 'fund-decision' : 'pass-decision';
+                const decisionIcon = isFund
+                    ? `<svg class="w-6 h-6 inline-block mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>`
+                    : `<svg class="w-6 h-6 inline-block mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>`;
+
+                const card = document.createElement('div');
+                card.className = "glass-panel glass-hover rounded-xl p-6 opacity-0";
+                card.style.animation = `fadeInUp 0.5s ease forwards ${index * 0.2}s`;
+
+                card.innerHTML = `
+                    <div class="flex justify-between items-start mb-4 border-b border-slate-700/50 pb-4">
+                        <div>
+                            <h3 class="text-xl font-bold text-cyan-400 text-glow">${vc.character_name}</h3>
+                            <p class="text-sm text-slate-400 font-mono mt-1">${vc.role}</p>
+                        </div>
+                        <div class="text-right">
+                            <span class="text-2xl font-black ${decisionClass} uppercase tracking-wider flex items-center">
+                                ${decisionIcon} ${vc.decision}
+                            </span>
+                            <p class="text-xs text-slate-500 mt-1 capitalize">${vc.core_emotion}</p>
+                        </div>
+                    </div>
+                    <div class="prose prose-invert prose-sm">
+                        <p class="text-slate-300 italic leading-relaxed">"${vc.feedback}"</p>
+                    </div>
+                `;
+                panelGrid.appendChild(card);
+            });
+        }
+
+        resetBtn.addEventListener('click', () => {
+            pitchInput.value = '';
+            resultsContainer.classList.add('hidden');
+            pitchBtn.disabled = false;
+            pitchBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+            pitchInput.focus();
+        });
+
+        // Add CSS animations dynamically
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+            @keyframes fadeInUp {
+                from { opacity: 0; transform: translateY(20px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
