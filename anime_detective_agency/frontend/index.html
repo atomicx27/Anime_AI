@@ -5,30 +5,53 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Anime Detective Agency AI</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['Fira Code', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
     <style>
         body {
             background-color: #0f172a;
             color: #f8fafc;
             font-family: 'Inter', sans-serif;
-            background-image: radial-gradient(circle at top right, #1e1b4b, #0f172a 60%);
+            background-image: radial-gradient(circle at top right, rgba(79, 70, 229, 0.15), transparent 40%),
+                              radial-gradient(circle at bottom left, rgba(124, 58, 237, 0.15), transparent 40%);
             min-height: 100vh;
+            background-attachment: fixed;
         }
 
         .glass-panel {
             background: rgba(30, 41, 59, 0.6);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06), 0 0 20px rgba(99, 102, 241, 0.15);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
             border-radius: 1rem;
         }
 
         .glow-effect {
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
         .glow-effect:hover {
-            box-shadow: 0 0 15px rgba(99, 102, 241, 0.5);
-            transform: translateY(-2px);
+            box-shadow: 0 0 20px rgba(99, 102, 241, 0.4);
+            transform: translateY(-4px) scale(1.02);
+            border-color: rgba(99, 102, 241, 0.5);
+            z-index: 10;
+        }
+
+        .text-glow {
+            text-shadow: 0 0 10px rgba(99, 102, 241, 0.5);
         }
 
         .loading-dots::after {
@@ -48,59 +71,109 @@
             color: white;
             padding: 0.25rem 0.75rem;
             border-radius: 9999px;
-            font-size: 0.875rem;
-            font-weight: 600;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
+
+        .terminal-log {
+            font-family: 'Fira Code', monospace;
+            background-color: rgba(15, 23, 42, 0.8);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .card-enter {
+            animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        @keyframes slideUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: rgba(0,0,0,0.3); border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(99, 102, 241, 0.5); border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(99, 102, 241, 0.8); }
+
     </style>
 </head>
-<body class="p-8">
-    <div class="max-w-5xl mx-auto">
-        <header class="text-center mb-12">
-            <h1 class="text-5xl font-extrabold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 to-purple-500 drop-shadow-[0_0_10px_rgba(99,102,241,0.5)]">Anime Detective Agency AI</h1>
-            <p class="text-xl text-slate-300">Submit a mystery and let our AI agents investigate</p>
+<body class="p-8 relative min-h-screen">
+    <!-- Ambient Background Decorations -->
+    <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-indigo-900/20 via-slate-900 to-slate-900 -z-10 pointer-events-none"></div>
+
+    <div class="max-w-6xl mx-auto relative z-10">
+        <header class="text-center mb-12 mt-4">
+            <h1 class="text-6xl font-black mb-4 tracking-tight">
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 text-glow">
+                    Anime Detective Agency AI
+                </span>
+            </h1>
+            <p class="text-xl text-slate-300/80 font-medium tracking-wide max-w-2xl mx-auto">Submit a complex mystery and let our AI agents analyze the scene.</p>
         </header>
 
         <main class="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <!-- Input Section -->
             <div class="lg:col-span-1 space-y-6">
-                <div class="glass-panel p-6">
-                    <h2 class="text-2xl font-bold mb-4 flex items-center">
-                        <svg class="w-6 h-6 mr-2 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                <div class="glass-panel p-6 shadow-xl relative overflow-hidden group">
+                    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-indigo-500 to-purple-500"></div>
+                    <div class="absolute inset-0 bg-gradient-to-b from-indigo-500/5 to-transparent pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity"></div>
+
+                    <h2 class="text-2xl font-bold mb-6 flex items-center text-white border-b border-white/10 pb-4 relative z-10">
+                        <i class="fa-solid fa-user-secret mr-3 text-indigo-400 text-glow"></i>
                         Report a Case
                     </h2>
-                    <textarea id="mysteryInput" rows="5" class="w-full bg-slate-800/50 border border-slate-600 rounded-lg p-4 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all" placeholder="Describe the mystery or crime..."></textarea>
-                    <button id="investigateBtn" class="w-full mt-4 bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-4 rounded-lg glow-effect flex justify-center items-center">
+                    <div class="relative z-10">
+                        <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Case Details</label>
+                        <textarea id="mysteryInput" rows="6" class="w-full bg-slate-800/60 border border-slate-600/50 rounded-xl p-4 text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all placeholder-slate-500 resize-none hover:bg-slate-800/80 shadow-inner" placeholder="E.g., The priceless Star of Kyoto diamond was stolen from a locked vault last night..."></textarea>
+                    </div>
+                    <button id="investigateBtn" class="w-full mt-6 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-bold py-3.5 px-4 rounded-xl flex justify-center items-center shadow-[0_0_15px_rgba(99,102,241,0.4)] hover:shadow-[0_0_25px_rgba(99,102,241,0.6)] transform hover:-translate-y-1 transition-all duration-300 relative z-10">
                         Assign Team & Investigate
+                        <i class="fa-solid fa-magnifying-glass ml-2"></i>
                     </button>
                 </div>
             </div>
 
             <!-- Results Section -->
-            <div class="lg:col-span-2 space-y-6" id="resultsSection" style="display: none;">
+            <div class="lg:col-span-2 flex flex-col gap-8" id="resultsSection" style="display: none;">
                 <!-- Team Section -->
-                <div class="glass-panel p-6">
-                    <h2 class="text-2xl font-bold mb-6">Assigned Investigation Team</h2>
-                    <div id="teamContainer" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="glass-panel p-6 relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-purple-500 to-pink-500"></div>
+                    <h2 class="text-2xl font-bold mb-6 text-white border-b border-white/10 pb-4 flex items-center">
+                        <i class="fa-solid fa-users-viewfinder mr-3 text-purple-400 text-glow"></i>
+                        Assigned Investigation Team
+                    </h2>
+                    <div id="teamContainer" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 relative z-10">
                         <!-- Team members will be inserted here -->
                     </div>
                 </div>
 
                 <!-- Investigation Log -->
-                <div class="glass-panel p-6">
-                    <h2 class="text-2xl font-bold mb-6">Investigation Log</h2>
-                    <div id="logContainer" class="space-y-4 max-h-96 overflow-y-auto pr-2">
+                <div class="terminal-log rounded-2xl flex flex-col flex-grow h-[450px] relative overflow-hidden">
+                    <div class="bg-white/5 px-4 py-3 border-b border-white/5 flex items-center justify-between shrink-0">
+                        <div class="flex items-center space-x-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-indigo-500 shadow-[0_0_8px_rgba(99,102,241,0.8)] animate-pulse"></span>
+                            <span class="text-xs font-mono text-indigo-400 uppercase tracking-wider">Investigation Log Terminal</span>
+                        </div>
+                    </div>
+                    <div id="logContainer" class="p-5 overflow-y-auto flex-grow space-y-4 custom-scrollbar text-sm opacity-90 relative">
                         <!-- Logs will be inserted here -->
                     </div>
                 </div>
             </div>
 
             <!-- Loading State -->
-            <div id="loadingSection" class="lg:col-span-2 glass-panel p-12 text-center" style="display: none;">
-                <svg class="animate-spin h-12 w-12 text-indigo-500 mx-auto mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                </svg>
-                <p class="text-xl text-indigo-300">Agents are analyzing the scene<span class="loading-dots"></span></p>
+            <div id="loadingSection" class="lg:col-span-2 glass-panel p-16 text-center" style="display: none;">
+                <div class="relative w-24 h-24 mx-auto mb-6">
+                    <div class="absolute inset-0 rounded-full border-4 border-indigo-500/20"></div>
+                    <div class="absolute inset-0 rounded-full border-4 border-t-indigo-500 animate-spin shadow-[0_0_15px_rgba(99,102,241,0.5)]"></div>
+                    <i class="fa-solid fa-user-ninja absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-2xl text-indigo-400"></i>
+                </div>
+                <p class="text-xl text-indigo-300 font-mono tracking-widest uppercase">Deploying Agents<span class="loading-dots"></span></p>
             </div>
         </main>
     </div>
@@ -118,6 +191,7 @@
             document.getElementById('loadingSection').style.display = 'block';
             document.getElementById('investigateBtn').disabled = true;
             document.getElementById('investigateBtn').classList.add('opacity-50', 'cursor-not-allowed');
+            document.getElementById('investigateBtn').innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i> Investigating...';
 
             try {
                 const response = await fetch('/api/investigate', {
@@ -137,22 +211,27 @@
                 document.getElementById('loadingSection').style.display = 'none';
                 document.getElementById('investigateBtn').disabled = false;
                 document.getElementById('investigateBtn').classList.remove('opacity-50', 'cursor-not-allowed');
+                document.getElementById('investigateBtn').innerHTML = 'Assign Team & Investigate <i class="fa-solid fa-magnifying-glass ml-2"></i>';
             }
         });
 
         function renderResults(data) {
-            document.getElementById('resultsSection').style.display = 'block';
+            document.getElementById('resultsSection').style.display = 'flex';
 
             // Render Team
             const teamContainer = document.getElementById('teamContainer');
             teamContainer.innerHTML = '';
-            data.team.forEach(member => {
+            data.team.forEach((member, index) => {
+                const delay = index * 0.15;
                 teamContainer.innerHTML += `
-                    <div class="bg-slate-800/80 rounded-lg p-4 text-center border border-slate-700 glow-effect">
-                        <img src="${member.character.avatar}" alt="${member.character.name}" class="w-20 h-20 mx-auto rounded-full mb-3 bg-slate-700">
-                        <h3 class="font-bold text-lg text-white mb-1">${member.character.name}</h3>
-                        <span class="role-badge mb-2 inline-block">${member.role}</span>
-                        <p class="text-xs text-slate-400 mt-2 line-clamp-2">${member.character.unique_quality}</p>
+                    <div class="card-enter bg-white/5 backdrop-blur-sm rounded-xl p-5 text-center border border-white/10 glow-effect relative overflow-hidden group shadow-[0_4px_15px_rgba(0,0,0,0.2)]" style="animation-delay: ${delay}s">
+                        <div class="absolute inset-0 bg-gradient-to-br from-indigo-500/10 to-transparent pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <img src="${member.character.avatar}" alt="${member.character.name}" class="w-20 h-20 mx-auto rounded-full mb-4 bg-slate-800 object-cover border-2 border-indigo-500/50 shadow-[0_0_10px_rgba(99,102,241,0.3)] group-hover:scale-110 transition-transform duration-300">
+                        <h3 class="font-bold text-lg text-white mb-2 group-hover:text-indigo-300 transition-colors">${member.character.name}</h3>
+                        <span class="role-badge mb-3 inline-block">${member.role}</span>
+                        <div class="bg-black/30 rounded-lg p-3 border border-white/5 shadow-inner mt-2">
+                            <p class="text-xs text-slate-300 line-clamp-3 leading-relaxed">"${member.character.unique_quality}"</p>
+                        </div>
                     </div>
                 `;
             });
@@ -162,27 +241,27 @@
             logContainer.innerHTML = '';
 
             // Simulate typing effect by adding logs sequentially
-            let delay = 0;
+            let cumulativeDelay = 0;
             data.logs.forEach((log, index) => {
                 setTimeout(() => {
                     const logElement = document.createElement('div');
-                    logElement.className = 'bg-slate-800/60 rounded-lg p-4 border-l-4 border-indigo-500 animate-[fadeIn_0.5s_ease-out]';
+                    logElement.className = 'card-enter bg-slate-900/50 rounded-xl p-4 border border-slate-700/50 border-l-4 border-l-indigo-500 hover:bg-slate-800/80 transition-colors shadow-sm';
                     logElement.innerHTML = `
                         <div class="flex items-start">
-                            <img src="${log.character.avatar}" alt="${log.character.name}" class="w-10 h-10 rounded-full mr-4 bg-slate-700">
-                            <div>
-                                <div class="flex items-baseline space-x-2">
-                                    <h4 class="font-bold text-indigo-300">${log.character.name}</h4>
-                                    <span class="text-xs text-slate-500">[${log.action}]</span>
+                            <img src="${log.character.avatar}" alt="${log.character.name}" class="w-10 h-10 rounded-full mr-4 bg-slate-800 border border-white/10 shrink-0 object-cover mt-1">
+                            <div class="flex-grow">
+                                <div class="flex items-baseline justify-between mb-1">
+                                    <h4 class="font-bold text-indigo-300 tracking-wide">${log.character.name}</h4>
+                                    <span class="text-[10px] text-slate-400 font-mono uppercase bg-black/40 px-2 py-0.5 rounded shadow-inner border border-white/5">${log.action}</span>
                                 </div>
-                                <p class="text-slate-200 mt-1">${log.message}</p>
+                                <p class="text-slate-300 text-[13px] leading-relaxed font-sans">${log.message}</p>
                             </div>
                         </div>
                     `;
                     logContainer.appendChild(logElement);
-                    logContainer.scrollTop = logContainer.scrollHeight;
-                }, delay);
-                delay += 1000; // 1 second delay between each log
+                    logContainer.parentElement.scrollTop = logContainer.parentElement.scrollHeight; // Scroll to bottom of terminal
+                }, cumulativeDelay);
+                cumulativeDelay += 800; // 800ms delay between each log
             });
         }
     </script>

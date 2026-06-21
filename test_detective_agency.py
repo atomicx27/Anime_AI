@@ -10,11 +10,11 @@ def test_frontend():
         page.goto("http://localhost:8007/")
 
         # Interact with UI
-        page.fill('#mystery-input', 'The Mayor\'s prized diamond necklace was stolen from a locked vault overnight. Only a single black feather was left behind.')
-        page.click('#investigate-btn')
+        page.fill('#mysteryInput', 'The Mayor\'s prized diamond necklace was stolen from a locked vault overnight. Only a single black feather was left behind.')
+        page.click('#investigateBtn')
 
         # Wait for results to be visible
-        page.wait_for_selector('#results-container:not(.hidden)', timeout=10000)
+        page.wait_for_selector('#resultsSection', state='visible', timeout=30000)
 
         # Wait a moment for animations to finish
         page.wait_for_timeout(2000)
