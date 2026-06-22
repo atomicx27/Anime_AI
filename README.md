@@ -323,3 +323,15 @@ python3 main.py
 # or open the anime_detective_agency/frontend/index.html file locally.
 # Open your browser and navigate to http://localhost:8007/
 ```
+### 9. Anime Life Coach AI
+
+The **Anime Life Coach AI** is a web-based, multi-agent application where you can submit your personal problems or goals. The AI dynamically evaluates the characters from the database and assigns them into four coaching roles (Motivational, Strategic, Empathetic, and Tough Love) to give you distinct, personalized advice based on their core emotion and philosophy.
+
+#### Folder Location
+`anime_life_coach/`
+
+#### Features
+- **Dynamic Role Assignment**: The agent analyzes characters to assign them to specialized coaching roles.
+- **In-Character Advice**: Generates in-character responses tailored to the user's situation.
+- **Sleek UI/UX**: Features a modern, glassmorphism interface built with Tailwind CSS.
+- **Dynamic Character Loading**: Backend API automatically parses the root `README.md` to load character details dynamically.
