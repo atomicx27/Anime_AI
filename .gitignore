@@ -25,3 +25,6 @@ test-results/
 *.webm
 __pycache__/
 node_modules/
+backend_life_coach.log
+screenshots/life_coach.png
+test_life_coach.py
