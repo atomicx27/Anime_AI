@@ -33,33 +33,34 @@
     <style>
         body {
             background-color: #0f172a; /* slate-900 */
-            background-image: radial-gradient(circle at top right, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
-                              radial-gradient(circle at bottom left, rgba(168, 85, 247, 0.1) 0%, transparent 50%);
+            background-image: radial-gradient(circle at top right, rgba(88, 101, 242, 0.15) 0%, transparent 60%),
+                              radial-gradient(circle at bottom left, rgba(168, 85, 247, 0.15) 0%, transparent 60%);
             background-attachment: fixed;
         }
 
         .glass-panel {
-            background: rgba(47, 49, 54, 0.7); /* discord-dark but translucent */
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border-left: 1px solid rgba(255, 255, 255, 0.05);
+            background: rgba(43, 45, 49, 0.75);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-left: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: -5px 0 20px rgba(0, 0, 0, 0.2);
         }
 
         .message-enter {
-            animation: slideInAndScale 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+            animation: slideUpFadeIn 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
             opacity: 0;
-            transform: translateY(10px) scale(0.98);
+            transform: translateY(15px);
         }
-        @keyframes slideInAndScale {
-            to { opacity: 1; transform: translateY(0) scale(1); }
+        @keyframes slideUpFadeIn {
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .channel-enter {
-            animation: slideRight 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+            animation: slideRightFade 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
-        @keyframes slideRight {
-            from { opacity: 0; transform: translateX(-10px); }
+        @keyframes slideRightFade {
+            from { opacity: 0; transform: translateX(-15px); }
             to { opacity: 1; transform: translateX(0); }
         }
 
@@ -195,9 +196,9 @@
     </div>
 
     <!-- Main Chat Area -->
-    <div class="flex-1 flex flex-col bg-transparent relative backdrop-blur-md bg-white/5">
+        <div class="flex-1 flex flex-col bg-transparent relative backdrop-blur-md bg-white/[0.03]">
         <!-- Header -->
-        <div class="h-12 border-b border-[#1e1f22] flex items-center px-4 shadow-md bg-[#2b2d31]/70 backdrop-blur-lg z-10 shrink-0 sticky top-0">
+            <div class="h-12 border-b border-[#1e1f22] flex items-center px-4 shadow-md bg-[#2b2d31]/80 backdrop-blur-xl z-10 shrink-0 sticky top-0">
             <i class="fas fa-hashtag text-discord-muted text-xl mr-3"></i>
             <h2 class="font-bold text-white flex-1 drop-shadow-md">general-chat</h2>
             <div class="flex text-discord-muted space-x-4">
@@ -371,11 +372,22 @@
             `;
 
             DOM.messagesContainer.appendChild(div);
-            scrollToBottom();
+
+            // Check if user is scrolled up before auto-scrolling
+            const history = document.getElementById('chat-history');
+            const isScrolledToBottom = history.scrollHeight - history.clientHeight <= history.scrollTop + 100;
+
+            if (isScrolledToBottom || sender === "You") {
+                scrollToBottom();
+            }
         }
 
         function scrollToBottom() {
-            DOM.bottomAnchor.scrollIntoView({ behavior: 'smooth' });
+            const history = document.getElementById('chat-history');
+            history.scrollTo({
+                top: history.scrollHeight,
+                behavior: 'smooth'
+            });
         }
 
         function setTyping(state, characterName = null) {
@@ -406,6 +418,7 @@
                 : null;
 
             setTyping(true);
+            scrollToBottom(); // Ensure view scrolls to typing indicator
 
             try {
                 const res = await fetch('/api/chat', {
