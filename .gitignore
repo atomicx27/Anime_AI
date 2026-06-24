@@ -25,3 +25,6 @@ test-results/
 *.webm
 __pycache__/
 node_modules/
+verify_ui.py
+backend_sr.log
+backend_gc.log
