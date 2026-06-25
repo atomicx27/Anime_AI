@@ -141,7 +141,24 @@
         .tier-b-bg { background: linear-gradient(135deg, #eab308, #a16207); }
         .tier-c-bg { background: linear-gradient(135deg, #22c55e, #15803d); }
         .tier-d-bg { background: linear-gradient(135deg, #3b82f6, #1d4ed8); }
-    </style>
+
+        .smooth-hover {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .glass-hover:hover {
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        }
+        .text-glow {
+            text-shadow: 0 0 10px currentColor;
+        }
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+</style>
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body class="text-slate-100 h-screen flex flex-col font-sans overflow-hidden relative">
@@ -182,8 +199,8 @@
             <div class="p-4 bg-gray-900/80 backdrop-blur-md border-t border-gray-800/50 shadow-inner">
                 <form id="scenario-form" class="flex flex-col gap-3">
                     <label class="text-xs text-gray-400 font-semibold uppercase tracking-wider flex items-center gap-2"><i class="fa-solid fa-pen-nib text-purple-400"></i> Enter Scenario for Evaluation</label>
-                    <textarea id="scenario-input" rows="3" class="w-full bg-gray-950/50 border border-gray-700 rounded-lg p-3 text-sm focus:ring-2 focus:ring-purple-500/50 focus:border-purple-500 outline-none resize-none transition-all placeholder-gray-600 shadow-inner" placeholder="e.g. A high-stakes diplomatic negotiation to prevent a galactic war..."></textarea>
-                    <button type="submit" id="submit-btn" class="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-medium py-2.5 px-4 rounded-lg transition-all flex items-center justify-center gap-2 shadow-lg shadow-purple-900/20 active:scale-[0.98]">
+                    <textarea id="scenario-input" rows="3" class="w-full bg-gray-950/50 border border-gray-700 rounded-lg p-3 text-sm focus:ring-2 focus:ring-purple-500/50 focus:border-purple-500 outline-none resize-none transition-all placeholder-gray-600 shadow-inner smooth-hover" placeholder="e.g. A high-stakes diplomatic negotiation to prevent a galactic war..."></textarea>
+                    <button type="submit" id="submit-btn" class="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-medium py-2.5 px-4 rounded-lg transition-all flex items-center justify-center gap-2 shadow-lg shadow-purple-900/20 active:scale-[0.98] smooth-hover">
                         <i class="fa-solid fa-bolt"></i> Evaluate & Rank
                     </button>
                 </form>

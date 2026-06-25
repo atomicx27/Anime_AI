@@ -60,7 +60,24 @@
             font-family: 'Fira Code', monospace;
             color: #4ade80;
         }
-    </style>
+
+        .smooth-hover {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .glass-hover:hover {
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        }
+        .text-glow {
+            text-shadow: 0 0 10px currentColor;
+        }
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+</style>
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body class="bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-gray-900 via-gray-800 to-black text-white min-h-screen font-sans relative overflow-hidden">
@@ -78,8 +95,8 @@
             <h2 class="text-xl font-bold mb-4 text-purple-400">Propose a Debate Topic</h2>
             <div class="flex space-x-4">
                 <input type="text" id="topicInput" placeholder="e.g., Is true peace achievable without sacrifice?"
-                       class="flex-1 bg-gray-700/50 text-white px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 placeholder-gray-400 border border-gray-600/50">
-                <button id="debateBtn" class="bg-purple-600 hover:bg-purple-500 hover:scale-105 hover:shadow-[0_0_15px_rgba(168,85,247,0.5)] text-white px-8 py-3 rounded-lg font-bold transition-all duration-200">
+                       class="flex-1 bg-gray-700/50 text-white px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 placeholder-gray-400 border border-gray-600/50 smooth-hover">
+                <button id="debateBtn" class="bg-purple-600 hover:bg-purple-500 hover:scale-105 hover:shadow-[0_0_15px_rgba(168,85,247,0.5)] text-white px-8 py-3 rounded-lg font-bold transition-all duration-200 smooth-hover">
                     Host Debate
                 </button>
             </div>

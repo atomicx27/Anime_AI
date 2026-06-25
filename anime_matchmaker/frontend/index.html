@@ -115,7 +115,24 @@
             transform: none;
             box-shadow: none;
         }
-    </style>
+
+        .smooth-hover {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .glass-hover:hover {
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        }
+        .text-glow {
+            text-shadow: 0 0 10px currentColor;
+        }
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+</style>
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body class="min-h-screen flex flex-col items-center py-10 px-4 md:px-8 relative font-sans">
@@ -150,12 +167,12 @@
 
                     <div class="mb-4 relative z-10">
                         <label for="profileInput" class="block text-sm font-medium text-slate-300 mb-2">Describe yourself (Personality, hobbies, goals):</label>
-                        <textarea id="profileInput" rows="4" class="w-full bg-slate-800/60 border border-slate-600/50 rounded-xl p-3 text-slate-100 focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all placeholder-slate-500 resize-none hover:bg-slate-800/80 shadow-inner" placeholder="E.g., I'm a quiet introvert who enjoys reading and peace, but I deeply admire people with strong ambition and drive..."></textarea>
+                        <textarea id="profileInput" rows="4" class="w-full bg-slate-800/60 border border-slate-600/50 rounded-xl p-3 text-slate-100 focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all placeholder-slate-500 resize-none hover:bg-slate-800/80 shadow-inner smooth-hover" placeholder="E.g., I'm a quiet introvert who enjoys reading and peace, but I deeply admire people with strong ambition and drive..."></textarea>
                     </div>
 
                     <div class="mb-6 relative z-10">
                         <label for="relationshipType" class="block text-sm font-medium text-slate-300 mb-2">Looking for:</label>
-                        <select id="relationshipType" class="w-full bg-slate-800/60 border border-slate-600/50 rounded-xl p-3 text-slate-100 focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all hover:bg-slate-800/80 shadow-inner">
+                        <select id="relationshipType" class="w-full bg-slate-800/60 border border-slate-600/50 rounded-xl p-3 text-slate-100 focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all hover:bg-slate-800/80 shadow-inner smooth-hover">
                             <option value="friendship">Friendship / Best Friend</option>
                             <option value="romantic">Romantic Partner</option>
                             <option value="rival">Rival / Competitor</option>
@@ -163,7 +180,7 @@
                         </select>
                     </div>
 
-                    <button id="findMatchesBtn" class="w-full bg-gradient-to-r from-pink-500 to-violet-500 hover:from-pink-400 hover:to-violet-400 text-white font-bold py-3.5 px-4 rounded-xl flex justify-center items-center shadow-[0_0_15px_rgba(236,72,153,0.4)] hover:shadow-[0_0_25px_rgba(236,72,153,0.6)] transform hover:-translate-y-0.5 transition-all">
+                    <button id="findMatchesBtn" class="w-full bg-gradient-to-r from-pink-500 to-violet-500 hover:from-pink-400 hover:to-violet-400 text-white font-bold py-3.5 px-4 rounded-xl flex justify-center items-center shadow-[0_0_15px_rgba(236,72,153,0.4)] hover:shadow-[0_0_25px_rgba(236,72,153,0.6)] transform hover:-translate-y-0.5 transition-all smooth-hover">
                         <span>Find My Match</span>
                         <i class="fas fa-heart ml-2"></i>
                     </button>
@@ -191,7 +208,7 @@
 
             <!-- Right Column: Results -->
             <div class="lg:col-span-2">
-                <div class="glass-panel rounded-2xl p-6 shadow-inner min-h-full relative overflow-hidden">
+                <div class="glass-panel glass-hover rounded-2xl p-6 shadow-inner min-h-full relative overflow-hidden glass-hover">
                     <div class="flex items-center justify-between mb-8 border-b border-slate-700/50 pb-4">
                         <h2 class="text-2xl font-bold flex items-center text-white">
                             <i class="fas fa-star mr-3 text-yellow-400"></i> Top Matches
