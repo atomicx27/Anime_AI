@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anime Survival Game AI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0f172a;
+            color: #e2e8f0;
+            background-image: radial-gradient(circle at 50% 0%, #1e293b 0%, #0f172a 100%);
+            min-height: 100vh;
+        }
+        .glass-panel {
+            background-color: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06), 0 0 20px rgba(59, 130, 246, 0.1);
+        }
+        .smooth-hover {
+            transition: all 0.3s ease;
+        }
+        .smooth-hover:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 0 20px rgba(59, 130, 246, 0.2);
+            border-color: rgba(96, 165, 250, 0.3);
+        }
+        .terminal-text {
+            font-family: 'Fira Code', monospace;
+        }
+        .text-glow {
+            text-shadow: 0 0 10px rgba(96, 165, 250, 0.5);
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in {
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+        .typing-line {
+            overflow: hidden;
+            border-right: .15em solid orange;
+            white-space: nowrap;
+            margin: 0 auto;
+            letter-spacing: .15em;
+            animation:
+                typing 3.5s steps(40, end),
+                blink-caret .75s step-end infinite;
+        }
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: orange; }
+        }
+    </style>
+</head>
+<body class="p-8">
+    <div class="max-w-5xl mx-auto space-y-8">
+        <header class="text-center space-y-4">
+            <h1 class="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400 text-glow">Anime Survival Game AI</h1>
+            <p class="text-slate-400 text-lg">Enter a survival scenario. The AI will assemble a team of 5 and simulate their fate based on their core traits.</p>
+        </header>
+
+        <main class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Input Section -->
+            <div class="lg:col-span-1 space-y-6">
+                <div class="glass-panel rounded-2xl p-6">
+                    <h2 class="text-xl font-semibold mb-4 text-blue-300">Survival Scenario</h2>
+                    <textarea id="scenarioInput" rows="5" class="w-full bg-slate-800/50 border border-slate-700 rounded-xl p-4 text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all resize-none" placeholder="e.g., A zombie outbreak in a deserted shopping mall..."></textarea>
+                    <button id="simulateBtn" class="mt-4 w-full bg-gradient-to-r from-blue-600 to-emerald-600 hover:from-blue-500 hover:to-emerald-500 text-white font-semibold py-3 px-6 rounded-xl shadow-lg hover:shadow-blue-500/25 smooth-hover transition-all duration-300">
+                        Start Simulation
+                    </button>
+                </div>
+            </div>
+
+            <!-- Results Section -->
+            <div class="lg:col-span-2 space-y-6">
+
+                <!-- Roles Panel -->
+                <div id="rolesPanel" class="glass-panel rounded-2xl p-6 hidden">
+                    <h2 class="text-xl font-semibold mb-4 text-emerald-300">Team Roles Assigned</h2>
+                    <div id="rolesContainer" class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                        <!-- Roles will be dynamically injected here -->
+                    </div>
+                </div>
+
+                <!-- Simulation Log -->
+                <div class="glass-panel rounded-2xl p-6 h-[500px] flex flex-col relative overflow-hidden">
+                    <div class="absolute inset-0 bg-slate-900/50 z-0"></div>
+                    <div class="relative z-10 flex flex-col h-full">
+                        <div class="flex items-center space-x-2 mb-4 border-b border-slate-700 pb-2">
+                            <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                            <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                            <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                            <span class="text-xs text-slate-400 font-mono ml-2">survival_log.sh</span>
+                        </div>
+                        <div id="simulationLog" class="terminal-text text-sm text-green-400 space-y-2 overflow-y-auto flex-1 pr-2 custom-scrollbar">
+                            <p class="text-slate-500 italic">Awaiting scenario input...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        document.getElementById('simulateBtn').addEventListener('click', async () => {
+            const scenario = document.getElementById('scenarioInput').value.trim();
+            if (!scenario) return;
+
+            const btn = document.getElementById('simulateBtn');
+            const logContainer = document.getElementById('simulationLog');
+            const rolesPanel = document.getElementById('rolesPanel');
+            const rolesContainer = document.getElementById('rolesContainer');
+
+            btn.disabled = true;
+            btn.innerHTML = `<span class="animate-pulse">Simulating...</span>`;
+
+            logContainer.innerHTML = '<p class="text-blue-400">Initializing survival protocol...</p>';
+            rolesPanel.classList.add('hidden');
+            rolesContainer.innerHTML = '';
+
+            try {
+                const response = await fetch('/api/survive', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ scenario })
+                });
+
+                if (!response.ok) throw new Error('Simulation failed');
+
+                const data = await response.json();
+
+                // Render Roles
+                rolesPanel.classList.remove('hidden');
+                rolesPanel.classList.add('animate-fade-in');
+
+                const roleColors = {
+                    "Leader": "border-yellow-500/50 text-yellow-300",
+                    "Medic/Support": "border-green-500/50 text-green-300",
+                    "Scout": "border-blue-500/50 text-blue-300",
+                    "Wildcard": "border-purple-500/50 text-purple-300",
+                    "First Casualty": "border-red-500/50 text-red-300"
+                };
+
+                for (const [role, name] of Object.entries(data.roles)) {
+                    const colorClass = roleColors[role] || "border-slate-500/50 text-slate-300";
+                    rolesContainer.innerHTML += `
+                        <div class="bg-slate-800/80 border ${colorClass} rounded-lg p-3 text-center smooth-hover">
+                            <div class="text-xs text-slate-400 font-semibold mb-1 uppercase tracking-wider">${role}</div>
+                            <div class="font-bold">${name}</div>
+                        </div>
+                    `;
+                }
+
+                // Render Log sequentially
+                logContainer.innerHTML = '';
+                for (let i = 0; i < data.log.length; i++) {
+                    setTimeout(() => {
+                        const p = document.createElement('p');
+                        p.className = 'animate-fade-in';
+
+                        let text = data.log[i];
+                        if (text.startsWith('---')) {
+                            p.classList.add('text-yellow-400', 'font-bold', 'mt-4');
+                        } else if (text.includes('sole survivor') || text.includes('makes it out alive') || text.includes('safety')) {
+                             p.classList.add('text-emerald-400', 'font-bold');
+                        } else if (text.includes('casualty') || text.includes('dead') || text.includes('snaps')) {
+                            p.classList.add('text-red-400');
+                        }
+
+                        p.textContent = `> ${text}`;
+                        logContainer.appendChild(p);
+                        logContainer.scrollTop = logContainer.scrollHeight;
+                    }, i * 800); // 800ms delay between log lines
+                }
+
+            } catch (error) {
+                logContainer.innerHTML = `<p class="text-red-500">Error: ${error.message}</p>`;
+            } finally {
+                setTimeout(() => {
+                    btn.disabled = false;
+                    btn.textContent = 'Run Another Simulation';
+                }, 1000);
+            }
+        });
+    </script>
+</body>
+</html>

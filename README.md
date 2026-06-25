@@ -323,3 +323,28 @@ python3 main.py
 # or open the anime_detective_agency/frontend/index.html file locally.
 # Open your browser and navigate to http://localhost:8007/
 ```
+### 9. Anime Survival Game AI
+
+The **Anime Survival Game AI** is a web-based, multi-agent application that simulates a survival scenario. Users input a dangerous situation, and the AI assembles a team of 5 characters, dynamically assigning them roles (Leader, Medic, Scout, Wildcard, First Casualty) based on their traits, and generates a day-by-day survival log detailing their fate.
+
+#### Folder Location
+`anime_survival_game/`
+
+#### Features
+- **Dynamic Role Assignment**: Characters are assigned to specific survival roles based on their Core Emotion and Personality Profile.
+- **Agentic Simulation**: Generates a sequential, day-by-day survival log reflecting each character's unique philosophy and actions.
+- **Modern UI/UX**: A sleek, dark-themed interface built with Tailwind CSS featuring an animated terminal log and visually distinct role cards.
+- **Dynamic Character Loading**: Backend API automatically parses the root `README.md` to load character details dynamically.
+
+#### How to Run
+```bash
+# Install dependencies
+cd anime_survival_game/backend
+pip install -r requirements.txt
+
+# Run the server
+python3 main.py
+
+# Access the UI
+# Open your browser and navigate to http://localhost:8009/
+```
