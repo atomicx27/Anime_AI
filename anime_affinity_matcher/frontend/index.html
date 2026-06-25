@@ -36,7 +36,24 @@
         .bg-gradient-category-mentor { background: linear-gradient(135deg, #3b82f6, #6366f1); }
         .bg-gradient-category-acquaintance { background: linear-gradient(135deg, #10b981, #059669); }
         .bg-gradient-category-enemy { background: linear-gradient(135deg, #6b7280, #374151); }
-    </style>
+
+        .smooth-hover {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .glass-hover:hover {
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        }
+        .text-glow {
+            text-shadow: 0 0 10px currentColor;
+        }
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+</style>
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body class="bg-gray-900 text-white h-screen flex flex-col font-sans overflow-hidden relative">
@@ -78,14 +95,12 @@
                 <p class="text-sm text-slate-400 mb-4 leading-relaxed">
                     Enter a brief description of your personality, goals, and values. The Agent will analyze your traits and match you with characters from the database.
                 </p>
-                <textarea
-                    id="descriptionInput"
-                    class="w-full flex-1 bg-slate-900/80 border border-slate-600/50 rounded-xl p-4 text-white placeholder-slate-500 focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/50 resize-none transition-all custom-scrollbar shadow-inner hover:bg-slate-800/80"
+                <textarea id="descriptionInput"
+                    class="w-full flex-1 bg-slate-900/80 border border-slate-600/50 rounded-xl p-4 text-white placeholder-slate-500 focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/50 resize-none transition-all custom-scrollbar shadow-inner hover:bg-slate-800/80 smooth-hover"
                     placeholder="E.g., I am very calm, calculating, and prefer diplomacy over fighting. I like peace and hate unnecessary conflict..."></textarea>
 
-                <button
-                    id="matchBtn"
-                    class="mt-5 w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white font-bold py-3.5 px-4 rounded-xl shadow-[0_0_15px_rgba(236,72,153,0.3)] hover:shadow-[0_0_25px_rgba(236,72,153,0.5)] transition-all flex justify-center items-center gap-2 transform hover:-translate-y-0.5 active:scale-95">
+                <button id="matchBtn"
+                    class="mt-5 w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white font-bold py-3.5 px-4 rounded-xl shadow-[0_0_15px_rgba(236,72,153,0.3)] hover:shadow-[0_0_25px_rgba(236,72,153,0.5)] transition-all flex justify-center items-center gap-2 transform hover:-translate-y-0.5 active:scale-95 smooth-hover">
                     <i class="fas fa-magic mr-2"></i> Find My Matches
                 </button>
             </div>
