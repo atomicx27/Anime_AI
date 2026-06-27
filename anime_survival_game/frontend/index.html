@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anime Survival Game AI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background-color: #0f172a; /* slate-900 */
+            color: #f8fafc; /* slate-50 */
+            font-family: 'Inter', sans-serif;
+            background-image: radial-gradient(circle at 50% 0%, #1e293b 0%, #0f172a 100%);
+            min-height: 100vh;
+        }
+
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.7); /* slate-800 with opacity */
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .text-glow {
+            text-shadow: 0 0 10px rgba(56, 189, 248, 0.5); /* sky-400 glow */
+        }
+
+        .smooth-hover {
+            transition: all 0.3s ease;
+        }
+
+        .glass-hover:hover {
+            background: rgba(51, 65, 85, 0.8); /* slate-700 with opacity */
+            border-color: rgba(56, 189, 248, 0.4);
+            box-shadow: 0 0 15px rgba(56, 189, 248, 0.2);
+        }
+
+        /* Tier Colors */
+        .tier-S { color: #f59e0b; text-shadow: 0 0 10px rgba(245, 158, 11, 0.5); } /* amber-500 */
+        .tier-A { color: #ef4444; text-shadow: 0 0 10px rgba(239, 68, 68, 0.5); } /* red-500 */
+        .tier-B { color: #3b82f6; text-shadow: 0 0 10px rgba(59, 130, 246, 0.5); } /* blue-500 */
+        .tier-C { color: #22c55e; text-shadow: 0 0 10px rgba(34, 197, 94, 0.5); } /* green-500 */
+        .tier-F { color: #94a3b8; text-shadow: 0 0 10px rgba(148, 163, 184, 0.5); } /* slate-400 */
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease forwards;
+        }
+    </style>
+</head>
+<body class="p-8">
+
+    <div class="max-w-6xl mx-auto">
+        <header class="text-center mb-12 fade-in">
+            <h1 class="text-5xl font-bold mb-4 text-glow text-sky-400">Anime Survival Game AI</h1>
+            <p class="text-slate-400 text-lg">Input a survival scenario (e.g., zombie apocalypse, deserted island, death game) and watch the AI simulate how each character would fare.</p>
+        </header>
+
+        <main>
+            <!-- Input Section -->
+            <section class="glass-panel rounded-2xl p-8 mb-12 fade-in" style="animation-delay: 0.1s;">
+                <h2 class="text-2xl font-semibold mb-4 text-sky-300">Set the Scenario</h2>
+                <div class="flex flex-col md:flex-row gap-4">
+                    <input type="text" id="scenarioInput" class="flex-grow bg-slate-900/50 border border-slate-700 rounded-lg p-4 text-slate-200 placeholder-slate-500 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 smooth-hover" placeholder="Describe the survival scenario...">
+                    <button id="simulateBtn" class="bg-sky-600 hover:bg-sky-500 text-white font-bold py-4 px-8 rounded-lg smooth-hover shadow-[0_0_15px_rgba(2,132,199,0.5)]">
+                        Simulate Survival
+                    </button>
+                </div>
+            </section>
+
+            <!-- Loading State -->
+            <div id="loadingState" class="hidden text-center py-12">
+                <div class="inline-block animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-sky-400 mb-4"></div>
+                <p class="text-sky-300 text-lg animate-pulse font-mono">Simulating outcomes across all characters...</p>
+            </div>
+
+            <!-- Results Section -->
+            <section id="resultsSection" class="hidden">
+                <h2 class="text-3xl font-bold mb-6 text-center text-slate-200">Simulation Results</h2>
+                <div id="resultsContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Cards will be injected here -->
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        document.getElementById('simulateBtn').addEventListener('click', async () => {
+            const scenario = document.getElementById('scenarioInput').value.trim();
+            if (!scenario) return alert('Please enter a scenario.');
+
+            const btn = document.getElementById('simulateBtn');
+            const loading = document.getElementById('loadingState');
+            const resultsSection = document.getElementById('resultsSection');
+            const resultsContainer = document.getElementById('resultsContainer');
+
+            btn.disabled = true;
+            btn.classList.add('opacity-50', 'cursor-not-allowed');
+            loading.classList.remove('hidden');
+            resultsSection.classList.add('hidden');
+            resultsContainer.innerHTML = '';
+
+            try {
+                // Using absolute URL for local testing with FastAPI backend
+                const response = await fetch('http://localhost:8009/api/simulate', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ scenario: scenario })
+                });
+
+                if (!response.ok) throw new Error('Network response was not ok');
+
+                const data = await response.json();
+
+                loading.classList.add('hidden');
+                resultsSection.classList.remove('hidden');
+
+                // Sort by Tier roughly (S, A, B, C, F)
+                const tierOrder = { 'S-Tier Survivor': 1, 'A-Tier Survivor': 2, 'B-Tier Survivor': 3, 'C-Tier Survivor': 4, 'F-Tier Survivor': 5 };
+                data.sort((a, b) => (tierOrder[a.tier] || 99) - (tierOrder[b.tier] || 99));
+
+                data.forEach((result, index) => {
+                    const card = document.createElement('div');
+                    card.className = `glass-panel rounded-xl p-6 glass-hover fade-in flex flex-col h-full`;
+                    card.style.animationDelay = `${index * 0.05}s`;
+
+                    const tierClass = `tier-${result.tier.charAt(0)}`;
+
+                    card.innerHTML = `
+                        <div class="flex justify-between items-start mb-4">
+                            <h3 class="text-xl font-bold text-sky-100">${result.character}</h3>
+                            <span class="font-mono font-bold ${tierClass} bg-slate-900/50 px-2 py-1 rounded text-sm border border-slate-700">
+                                ${result.tier}
+                            </span>
+                        </div>
+                        <div class="mb-4 flex-grow">
+                            <p class="text-slate-300 text-sm italic">"${result.survival_strategy}"</p>
+                        </div>
+                        <div class="mt-auto pt-4 border-t border-slate-700/50">
+                            <span class="text-sm font-semibold text-slate-400 uppercase tracking-wider">Status: </span>
+                            <span class="text-slate-100">${result.survival_status}</span>
+                        </div>
+                    `;
+                    resultsContainer.appendChild(card);
+                });
+
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred during simulation.');
+                loading.classList.add('hidden');
+            } finally {
+                btn.disabled = false;
+                btn.classList.remove('opacity-50', 'cursor-not-allowed');
+            }
+        });
+    </script>
+</body>
+</html>
