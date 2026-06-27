@@ -25,3 +25,4 @@ test-results/
 *.webm
 __pycache__/
 node_modules/
+screenshots/survival_game_*.png
