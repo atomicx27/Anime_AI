@@ -25,3 +25,5 @@ test-results/
 *.webm
 __pycache__/
 node_modules/
+backend_survival.log
+survival_game.png
