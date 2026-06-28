@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anime Survival Game AI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0f172a;
+            color: #e2e8f0;
+            background-image:
+                radial-gradient(circle at 15% 50%, rgba(59, 130, 246, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 85% 30%, rgba(236, 72, 153, 0.15) 0%, transparent 50%);
+            background-attachment: fixed;
+        }
+
+        .font-mono { font-family: 'Fira Code', monospace; }
+
+        .glass-panel {
+            background-color: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        .glass-card {
+            background-color: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-2px);
+            background-color: rgba(30, 41, 59, 0.8);
+            border-color: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 0 15px rgba(59, 130, 246, 0.2);
+        }
+
+        .text-glow {
+            text-shadow: 0 0 10px rgba(96, 165, 250, 0.5);
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate-fade-in {
+            animation: fadeIn 0.4s ease-out forwards;
+        }
+
+        .delay-100 { animation-delay: 100ms; }
+        .delay-200 { animation-delay: 200ms; }
+        .delay-300 { animation-delay: 300ms; }
+
+        .typing-indicator span {
+            display: inline-block;
+            width: 4px;
+            height: 4px;
+            background-color: #60a5fa;
+            border-radius: 50%;
+            margin: 0 2px;
+            animation: bounce 1.4s infinite ease-in-out both;
+        }
+        .typing-indicator span:nth-child(1) { animation-delay: -0.32s; }
+        .typing-indicator span:nth-child(2) { animation-delay: -0.16s; }
+        @keyframes bounce {
+            0%, 80%, 100% { transform: scale(0); }
+            40% { transform: scale(1); }
+        }
+
+        /* Role Colors */
+        .role-badge-leader { background-color: rgba(234, 179, 8, 0.2); color: #fef08a; border: 1px solid rgba(234, 179, 8, 0.4); }
+        .role-badge-scavenger { background-color: rgba(34, 197, 94, 0.2); color: #bbf7d0; border: 1px solid rgba(34, 197, 94, 0.4); }
+        .role-badge-defender { background-color: rgba(239, 68, 68, 0.2); color: #fecaca; border: 1px solid rgba(239, 68, 68, 0.4); }
+        .role-badge-medic { background-color: rgba(59, 130, 246, 0.2); color: #bfdbfe; border: 1px solid rgba(59, 130, 246, 0.4); }
+    </style>
+</head>
+<body class="min-h-screen p-4 md:p-8 flex flex-col items-center">
+
+    <div class="max-w-6xl w-full">
+        <!-- Header -->
+        <header class="text-center mb-10 animate-fade-in">
+            <h1 class="text-4xl md:text-5xl font-bold mb-4 text-glow bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-400">
+                Anime Survival Game AI
+            </h1>
+            <p class="text-slate-400 max-w-2xl mx-auto text-lg">
+                Enter a survival scenario. The AI will assemble a specialized squad from the character database and simulate a 24-hour survival log.
+            </p>
+        </header>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Left Column: Input -->
+            <div class="lg:col-span-1 space-y-6">
+                <div class="glass-panel p-6 rounded-2xl animate-fade-in delay-100">
+                    <h2 class="text-xl font-semibold mb-4 flex items-center text-blue-300">
+                        <i data-lucide="compass" class="mr-2 h-5 w-5"></i> Scenario Input
+                    </h2>
+
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-slate-400 mb-1">Describe the Crisis</label>
+                            <textarea id="scenarioInput" rows="5" class="w-full bg-slate-800/50 border border-slate-600 rounded-xl p-3 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all placeholder-slate-500 resize-none font-mono" placeholder="e.g., A zombie outbreak in a deserted metropolitan city with limited supplies..."></textarea>
+                        </div>
+
+                        <button id="surviveBtn" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-medium py-3 px-4 rounded-xl transition-all shadow-[0_0_15px_rgba(37,99,235,0.4)] hover:shadow-[0_0_25px_rgba(37,99,235,0.6)] flex justify-center items-center">
+                            <span>Simulate Survival</span>
+                            <i data-lucide="play" class="ml-2 h-4 w-4"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Squad Preview (Shows after sim) -->
+                <div id="squadContainer" class="glass-panel p-6 rounded-2xl hidden opacity-0 transition-opacity duration-500">
+                    <h2 class="text-xl font-semibold mb-4 flex items-center text-purple-300">
+                        <i data-lucide="users" class="mr-2 h-5 w-5"></i> Squad Assigned
+                    </h2>
+                    <div id="squadList" class="space-y-3">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: Simulation Log -->
+            <div class="lg:col-span-2">
+                <div class="glass-panel rounded-2xl h-full min-h-[600px] flex flex-col animate-fade-in delay-200">
+                    <div class="p-4 border-b border-slate-700/50 bg-slate-800/30 rounded-t-2xl flex items-center justify-between">
+                        <h2 class="font-semibold text-emerald-300 flex items-center">
+                            <i data-lucide="terminal" class="mr-2 h-5 w-5"></i> AI Survival Log
+                        </h2>
+                        <div class="flex space-x-2">
+                            <div class="w-3 h-3 rounded-full bg-red-500/50"></div>
+                            <div class="w-3 h-3 rounded-full bg-yellow-500/50"></div>
+                            <div class="w-3 h-3 rounded-full bg-green-500/50"></div>
+                        </div>
+                    </div>
+
+                    <div id="logContainer" class="p-6 flex-1 overflow-y-auto space-y-6 font-mono text-sm">
+
+                        <div id="welcomeMessage" class="text-center text-slate-500 mt-20 flex flex-col items-center">
+                            <i data-lucide="moon" class="h-12 w-12 mb-4 opacity-50"></i>
+                            <p>Awaiting scenario input to begin simulation...</p>
+                        </div>
+
+                        <!-- Logs go here -->
+                        <div id="loadingIndicator" class="hidden flex items-center text-blue-400">
+                            <span class="mr-3 text-xs">INITIALIZING AGENT SIMULATION</span>
+                            <div class="typing-indicator"><span></span><span></span><span></span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize Icons
+        lucide.createIcons();
+
+        const surviveBtn = document.getElementById('surviveBtn');
+        const scenarioInput = document.getElementById('scenarioInput');
+        const squadContainer = document.getElementById('squadContainer');
+        const squadList = document.getElementById('squadList');
+        const logContainer = document.getElementById('logContainer');
+        const loadingIndicator = document.getElementById('loadingIndicator');
+        const welcomeMessage = document.getElementById('welcomeMessage');
+
+        surviveBtn.addEventListener('click', async () => {
+            const scenario = scenarioInput.value.trim();
+            if (!scenario) {
+                alert("Please describe a survival scenario.");
+                return;
+            }
+
+            // UI Reset & Loading State
+            surviveBtn.disabled = true;
+            surviveBtn.innerHTML = '<i data-lucide="loader-2" class="animate-spin h-5 w-5"></i>';
+            lucide.createIcons();
+
+            squadContainer.classList.add('hidden');
+            squadContainer.classList.remove('opacity-100');
+            welcomeMessage.classList.add('hidden');
+
+            // Clear existing logs
+            Array.from(logContainer.children).forEach(child => {
+                if(child !== loadingIndicator && child !== welcomeMessage) {
+                    child.remove();
+                }
+            });
+
+            loadingIndicator.classList.remove('hidden');
+
+            try {
+                // Must use absolute URL for local testing with separate ports
+                const response = await fetch('http://localhost:8009/api/survive', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ scenario: scenario })
+                });
+
+                if (!response.ok) throw new Error('API Request Failed');
+
+                const data = await response.json();
+
+                loadingIndicator.classList.add('hidden');
+
+                // Render Squad
+                renderSquad(data.team);
+
+                // Render Logs sequentially
+                await renderLogsSequentially(data.logs);
+
+            } catch (error) {
+                console.error(error);
+                loadingIndicator.classList.add('hidden');
+                alert("An error occurred during simulation.");
+            } finally {
+                surviveBtn.disabled = false;
+                surviveBtn.innerHTML = '<span>Simulate Survival</span><i data-lucide="play" class="ml-2 h-4 w-4"></i>';
+                lucide.createIcons();
+            }
+        });
+
+        function renderSquad(team) {
+            squadList.innerHTML = '';
+            team.forEach((member, index) => {
+                const char = member.character;
+                const roleClass = `role-badge-${member.role.toLowerCase()}`;
+
+                const card = document.createElement('div');
+                card.className = `glass-card p-3 rounded-xl flex items-center space-x-4 opacity-0`;
+                card.style.animation = `fadeIn 0.3s ease-out ${index * 0.1}s forwards`;
+
+                card.innerHTML = `
+                    <img src="${char.avatar}" alt="${char.name}" class="w-10 h-10 rounded-full bg-slate-800">
+                    <div class="flex-1 min-w-0">
+                        <p class="text-sm font-semibold text-white truncate">${char.name}</p>
+                        <span class="inline-block text-[10px] uppercase font-bold px-2 py-0.5 rounded-full mt-1 ${roleClass}">
+                            ${member.role}
+                        </span>
+                    </div>
+                `;
+                squadList.appendChild(card);
+            });
+
+            squadContainer.classList.remove('hidden');
+            // Small delay to allow display:block to apply before changing opacity
+            setTimeout(() => {
+                squadContainer.classList.add('opacity-100');
+            }, 50);
+        }
+
+        async function renderLogsSequentially(logs) {
+            for (let i = 0; i < logs.length; i++) {
+                const log = logs[i];
+                const char = log.character;
+
+                const logEntry = document.createElement('div');
+                logEntry.className = 'animate-fade-in flex space-x-4';
+
+                // Setup Icon based on event type
+                let iconName = "message-square";
+                if(log.event.includes("Morning")) iconName = "sunrise";
+                if(log.event.includes("Resource")) iconName = "package-search";
+                if(log.event.includes("Defense")) iconName = "shield";
+                if(log.event.includes("Wounds")) iconName = "cross";
+                if(log.event.includes("End")) iconName = "moon";
+
+                logEntry.innerHTML = `
+                    <div class="flex-shrink-0 flex flex-col items-center">
+                        <div class="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center border border-slate-600 mb-1">
+                            <i data-lucide="${iconName}" class="w-4 h-4 text-slate-400"></i>
+                        </div>
+                        <div class="w-px h-full bg-slate-700/50"></div>
+                    </div>
+                    <div class="flex-1 pb-6">
+                        <div class="flex items-baseline space-x-2 mb-1">
+                            <span class="text-blue-400 font-semibold">[${log.time}]</span>
+                            <span class="text-purple-300 font-bold">${char.name}</span>
+                            <span class="text-slate-500 text-xs">(${log.event})</span>
+                        </div>
+                        <div class="bg-slate-800/40 border border-slate-700/50 rounded-lg p-3 text-slate-300">
+                            > "${log.message}"
+                        </div>
+                    </div>
+                `;
+
+                logContainer.appendChild(logEntry);
+                lucide.createIcons();
+
+                // Scroll to bottom
+                logContainer.scrollTop = logContainer.scrollHeight;
+
+                // Wait before showing next log for effect
+                if (i < logs.length - 1) {
+                    await new Promise(r => setTimeout(r, 1200));
+                }
+            }
+        }
+    </script>
+</body>
+</html>
