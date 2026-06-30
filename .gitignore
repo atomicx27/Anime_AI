@@ -25,3 +25,8 @@ test-results/
 *.webm
 __pycache__/
 node_modules/
+__pycache__
+backend.log
+frontend.log
+test-results
+screenshots
