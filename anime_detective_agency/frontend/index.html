@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Anime Detective Agency AI</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         body {
             background-color: #0f172a;
@@ -43,6 +44,16 @@
             80%, 100% { content: '...'; }
         }
 
+        .fade-in {
+            animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
         .role-badge {
             background: linear-gradient(135deg, #4f46e5, #7c3aed);
             color: white;
@@ -69,7 +80,7 @@
                         Report a Case
                     </h2>
                     <textarea id="mysteryInput" rows="5" class="w-full bg-slate-800/50 border border-slate-600 rounded-lg p-4 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all" placeholder="Describe the mystery or crime..."></textarea>
-                    <button id="investigateBtn" class="w-full mt-4 bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-4 rounded-lg glow-effect flex justify-center items-center">
+                    <button id="investigateBtn" class="w-full mt-4 bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-4 rounded-lg glow-effect flex justify-center items-center hover:shadow-[0_0_15px_rgba(99,102,241,0.5)] transition-shadow">
                         Assign Team & Investigate
                     </button>
                 </div>
@@ -88,7 +99,7 @@
                 <!-- Investigation Log -->
                 <div class="glass-panel p-6">
                     <h2 class="text-2xl font-bold mb-6">Investigation Log</h2>
-                    <div id="logContainer" class="space-y-4 max-h-96 overflow-y-auto pr-2">
+                    <div id="logContainer" class="space-y-4 max-h-96 overflow-y-auto pr-2 font-mono text-sm">
                         <!-- Logs will be inserted here -->
                     </div>
                 </div>
