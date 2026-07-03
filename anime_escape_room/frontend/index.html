@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anime Escape Room AI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: radial-gradient(circle at center, #1a202c 0%, #000000 100%);
+            color: #e2e8f0;
+            min-height: 100vh;
+        }
+        .fira-code {
+            font-family: 'Fira Code', monospace;
+        }
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        .glass-hover:hover {
+            background: rgba(51, 65, 85, 0.8);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+        .text-glow {
+            text-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .fade-in {
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+        .delay-1 { animation-delay: 0.1s; }
+        .delay-2 { animation-delay: 0.2s; }
+        .delay-3 { animation-delay: 0.3s; }
+
+        /* Loader */
+        .loader {
+            border: 3px solid rgba(255, 255, 255, 0.1);
+            border-top: 3px solid #38bdf8;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="p-6 md:p-12">
+    <div class="max-w-6xl mx-auto">
+
+        <!-- Header -->
+        <header class="text-center mb-12 fade-in">
+            <h1 class="text-4xl md:text-6xl font-bold mb-4 text-glow bg-clip-text text-transparent bg-gradient-to-r from-sky-400 to-indigo-500">
+                Anime Escape Room AI
+            </h1>
+            <p class="text-lg text-slate-400">Describe a deadly escape room scenario. The AI will assemble a team and simulate their attempt to survive.</p>
+        </header>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+            <!-- Input Column -->
+            <div class="lg:col-span-1 space-y-6 fade-in delay-1">
+                <div class="glass-panel rounded-xl p-6">
+                    <h2 class="text-2xl font-semibold mb-4 text-sky-400">Escape Room Scenario</h2>
+                    <p class="text-sm text-slate-400 mb-4">Set the scene. Are they trapped in a sinking submarine? A haunted mansion? A cyberpunk vault?</p>
+                    <textarea id="scenarioInput" rows="5" class="w-full bg-slate-800/50 border border-slate-600 rounded-lg p-3 text-white focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 transition-colors mb-4 resize-none" placeholder="e.g., A high-tech laboratory rapidly filling with toxic gas. The only exit requires deciphering a shifting holographic code while fending off automated security drones..."></textarea>
+
+                    <button id="simulateBtn" class="w-full bg-gradient-to-r from-sky-600 to-indigo-600 hover:from-sky-500 hover:to-indigo-500 text-white font-bold py-3 px-4 rounded-lg shadow-lg transform transition-all duration-200 hover:-translate-y-1 hover:shadow-cyan-500/25 flex justify-center items-center gap-2">
+                        <span>Initiate Simulation</span>
+                    </button>
+
+                    <div id="loadingState" class="hidden mt-4 flex justify-center items-center gap-3 text-sky-400">
+                        <div class="loader"></div>
+                        <span class="fira-code text-sm">Simulating escape attempt...</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Results Column -->
+            <div class="lg:col-span-2 space-y-6 fade-in delay-2">
+
+                <!-- Team Roster -->
+                <div id="teamContainer" class="hidden glass-panel rounded-xl p-6">
+                    <h3 class="text-xl font-semibold mb-4 text-indigo-400 flex items-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                        Assembled Team
+                    </h3>
+                    <div id="teamGrid" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <!-- Team cards inserted here -->
+                    </div>
+                </div>
+
+                <!-- Simulation Terminal -->
+                <div id="terminalContainer" class="hidden glass-panel rounded-xl p-0 overflow-hidden border border-slate-700">
+                    <div class="bg-slate-900 px-4 py-2 flex items-center gap-2 border-b border-slate-700">
+                        <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                        <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                        <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                        <span class="fira-code text-xs text-slate-500 ml-2">system@escape-room:~/simulation$</span>
+                    </div>
+                    <div class="p-6 h-[400px] overflow-y-auto fira-code text-sm" id="terminalOutput">
+                        <!-- Terminal output goes here -->
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const simulateBtn = document.getElementById('simulateBtn');
+            const scenarioInput = document.getElementById('scenarioInput');
+            const loadingState = document.getElementById('loadingState');
+            const teamContainer = document.getElementById('teamContainer');
+            const teamGrid = document.getElementById('teamGrid');
+            const terminalContainer = document.getElementById('terminalContainer');
+            const terminalOutput = document.getElementById('terminalOutput');
+
+            simulateBtn.addEventListener('click', async () => {
+                const scenario = scenarioInput.value.trim();
+                if (!scenario) {
+                    alert('Please describe a scenario first.');
+                    return;
+                }
+
+                // UI Reset
+                simulateBtn.disabled = true;
+                simulateBtn.classList.add('opacity-50', 'cursor-not-allowed');
+                loadingState.classList.remove('hidden');
+                teamContainer.classList.add('hidden');
+                terminalContainer.classList.add('hidden');
+                teamGrid.innerHTML = '';
+                terminalOutput.innerHTML = '';
+
+                try {
+                    const response = await fetch('http://localhost:8010/api/simulate', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ scenario: scenario })
+                    });
+
+                    if (!response.ok) throw new Error('Network response was not ok');
+                    const data = await response.json();
+
+                    renderTeam(data.team);
+                    renderTerminal(data.narrative, data.outcome);
+
+                } catch (error) {
+                    console.error('Error:', error);
+                    terminalContainer.classList.remove('hidden');
+                    terminalOutput.innerHTML = `<span class="text-red-500">Error connecting to Simulation Core: ${error.message}</span>`;
+                } finally {
+                    simulateBtn.disabled = false;
+                    simulateBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                    loadingState.classList.add('hidden');
+                }
+            });
+
+            function renderTeam(team) {
+                teamContainer.classList.remove('hidden');
+                team.forEach((member, index) => {
+                    const card = document.createElement('div');
+                    card.className = `bg-slate-800/60 rounded-lg p-4 border border-slate-700 glass-hover fade-in delay-${(index%3)+1}`;
+
+                    let roleColor = 'text-sky-400';
+                    if (member.role.includes('Leader')) roleColor = 'text-yellow-400';
+                    if (member.role.includes('Breaker')) roleColor = 'text-red-400';
+                    if (member.role.includes('Puzzle')) roleColor = 'text-emerald-400';
+                    if (member.role.includes('Support')) roleColor = 'text-purple-400';
+
+                    card.innerHTML = `
+                        <div class="flex flex-col h-full justify-between">
+                            <div>
+                                <h4 class="font-bold text-lg text-white mb-1">${member.character.name}</h4>
+                                <div class="text-xs ${roleColor} fira-code mb-2 px-2 py-1 bg-slate-900/50 rounded inline-block border border-slate-700">
+                                    [ ${member.role} ]
+                                </div>
+                            </div>
+                            <p class="text-xs text-slate-400 mt-2 line-clamp-3" title="${member.action}">${member.action}</p>
+                        </div>
+                    `;
+                    teamGrid.appendChild(card);
+                });
+            }
+
+            function renderTerminal(narrative, outcome) {
+                terminalContainer.classList.remove('hidden');
+
+                let i = 0;
+                terminalOutput.innerHTML = ''; // Clear previous
+
+                function typeNextLine() {
+                    if (i < narrative.length) {
+                        const line = narrative[i];
+                        const lineDiv = document.createElement('div');
+                        lineDiv.className = 'mb-2 opacity-0 fade-in';
+
+                        // Basic syntax highlighting for terminal output
+                        let formattedLine = line;
+                        if (line.includes('---')) {
+                            lineDiv.className += ' text-sky-400 mt-4 font-bold';
+                        } else if (line.includes('SUCCESS') || line.includes('successfully')) {
+                            lineDiv.className += ' text-emerald-400';
+                        } else if (line.includes('FAILURE') || line.includes('struggled')) {
+                            lineDiv.className += ' text-red-400';
+                        } else if (line.includes('NARROW ESCAPE')) {
+                            lineDiv.className += ' text-yellow-400';
+                        } else {
+                            lineDiv.className += ' text-slate-300';
+                        }
+
+                        // highlight role tags
+                        formattedLine = formattedLine.replace(/\[(.*?)\]/g, '<span class="text-indigo-400">[$1]</span>');
+
+                        lineDiv.innerHTML = `> ${formattedLine}`;
+                        terminalOutput.appendChild(lineDiv);
+                        terminalOutput.scrollTop = terminalOutput.scrollHeight;
+
+                        i++;
+                        setTimeout(typeNextLine, 400); // typing speed
+                    }
+                }
+
+                typeNextLine();
+            }
+        });
+    </script>
+</body>
+</html>

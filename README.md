@@ -323,3 +323,29 @@ python3 main.py
 # or open the anime_detective_agency/frontend/index.html file locally.
 # Open your browser and navigate to http://localhost:8007/
 ```
+
+### 9. Anime Escape Room AI
+
+The **Anime Escape Room AI** is a web-based, multi-agent application that simulates a tense escape room scenario. Users provide a deadly or puzzling situation, and the AI selects four anime characters, assigning them roles like Leader, Puzzle Solver, or Physical Breaker based on their psychological profiles to generate a simulated escape narrative.
+
+#### Folder Location
+`anime_escape_room/`
+
+#### Features
+- **Dynamic Role Assignment**: Characters are automatically assigned specific survival roles based on their traits (e.g., highly logical characters become Puzzle Solvers).
+- **Agentic Escape Simulation**: Generates a step-by-step narrative of the team's escape attempt, factoring in their unique qualities and calculating a final success or failure outcome.
+- **Cinematic UI/UX**: A modern, dark-themed interface built with Tailwind CSS featuring glassmorphism, animated team cards, and a real-time typing simulation terminal.
+- **Dynamic Character Loading**: Backend API automatically parses the root `README.md` to load character details dynamically.
+
+#### How to Run
+```bash
+# Install dependencies
+cd anime_escape_room/backend
+pip install -r requirements.txt
+
+# Run the server
+python3 main.py
+
+# Access the UI
+# Open your browser and navigate to http://localhost:8010/
+```
