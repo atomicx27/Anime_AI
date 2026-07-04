@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anime Escape Room AI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0f172a;
+            color: #f8fafc;
+            background-image: radial-gradient(circle at 50% 0%, #1e293b 0%, #0f172a 100%);
+            min-height: 100vh;
+        }
+        .code-font {
+            font-family: 'Fira Code', monospace;
+        }
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        .text-glow {
+            text-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
+        }
+        .shadow-glow {
+            box-shadow: 0 0 15px rgba(56, 189, 248, 0.3);
+        }
+        .smooth-hover {
+            transition: all 0.3s ease;
+        }
+        .smooth-hover:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px -5px rgba(56, 189, 248, 0.4);
+            border-color: rgba(56, 189, 248, 0.5);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in {
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        #terminal-content p {
+            margin-bottom: 0.5rem;
+            opacity: 0;
+            animation: fadeIn 0.3s ease forwards;
+        }
+
+        /* Staggered animation delays for terminal lines */
+        #terminal-content p:nth-child(1) { animation-delay: 0.1s; }
+        #terminal-content p:nth-child(2) { animation-delay: 0.3s; }
+        #terminal-content p:nth-child(3) { animation-delay: 0.5s; }
+        #terminal-content p:nth-child(4) { animation-delay: 0.7s; }
+        #terminal-content p:nth-child(5) { animation-delay: 0.9s; }
+        #terminal-content p:nth-child(6) { animation-delay: 1.1s; }
+        #terminal-content p:nth-child(7) { animation-delay: 1.3s; }
+        #terminal-content p:nth-child(8) { animation-delay: 1.5s; }
+        #terminal-content p:nth-child(9) { animation-delay: 1.7s; }
+        #terminal-content p:nth-child(10) { animation-delay: 1.9s; }
+    </style>
+</head>
+<body class="p-8">
+
+    <div class="max-w-5xl mx-auto">
+        <header class="text-center mb-12 animate-fade-in">
+            <h1 class="text-5xl font-bold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-indigo-500 text-glow">Anime Escape Room AI</h1>
+            <p class="text-slate-400 text-lg">Provide an escape room theme and watch the AI assemble a team and simulate their escape attempt.</p>
+        </header>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Left Column: Input -->
+            <div class="lg:col-span-1 space-y-6 animate-fade-in" style="animation-delay: 0.2s;">
+                <div class="glass-panel p-6 rounded-2xl shadow-glow">
+                    <h2 class="text-2xl font-semibold mb-4 text-sky-400">Configure Room</h2>
+                    <div class="mb-4">
+                        <label for="themeInput" class="block text-sm font-medium text-slate-300 mb-2">Escape Room Theme</label>
+                        <textarea id="themeInput" rows="4" class="w-full bg-slate-800/50 border border-slate-600 rounded-xl p-3 text-white placeholder-slate-500 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 transition-colors" placeholder="e.g., An abandoned space station with failing life support, a haunted Victorian mansion, or a trapped submarine..."></textarea>
+                    </div>
+                    <button id="startBtn" class="w-full py-3 px-4 bg-gradient-to-r from-sky-500 to-indigo-600 hover:from-sky-400 hover:to-indigo-500 text-white font-semibold rounded-xl shadow-lg transform transition hover:-translate-y-1">
+                        Start Simulation
+                    </button>
+
+                    <div id="loadingState" class="hidden mt-4 text-center">
+                        <div class="inline-block animate-spin rounded-full h-6 w-6 border-t-2 border-b-2 border-sky-400"></div>
+                        <p class="text-sky-400 mt-2 text-sm font-medium">Assembling team and initializing simulation...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: Output -->
+            <div class="lg:col-span-2 space-y-6">
+                <!-- Roles Panel -->
+                <div id="rolesPanel" class="hidden animate-fade-in">
+                    <h3 class="text-xl font-semibold mb-4 text-slate-200">Assigned Operatives</h3>
+                    <div id="rolesContainer" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- Role cards injected here -->
+                    </div>
+                </div>
+
+                <!-- Simulation Terminal -->
+                <div id="terminalPanel" class="hidden glass-panel rounded-2xl overflow-hidden border border-slate-700 shadow-glow animate-fade-in" style="animation-delay: 0.4s;">
+                    <div class="bg-slate-800/80 px-4 py-2 border-b border-slate-700 flex items-center">
+                        <div class="flex space-x-2 mr-4">
+                            <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                            <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                            <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                        </div>
+                        <span class="text-xs text-slate-400 font-medium tracking-wider">ESCAPE_LOG.EXE</span>
+                    </div>
+                    <div class="p-6 h-[400px] overflow-y-auto code-font text-sm">
+                        <div id="terminal-content" class="space-y-2">
+                            <!-- Terminal logs injected here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('startBtn').addEventListener('click', async () => {
+            const theme = document.getElementById('themeInput').value.trim();
+            if (!theme) {
+                alert("Please enter an escape room theme.");
+                return;
+            }
+
+            const btn = document.getElementById('startBtn');
+            const loading = document.getElementById('loadingState');
+            const rolesPanel = document.getElementById('rolesPanel');
+            const terminalPanel = document.getElementById('terminalPanel');
+            const rolesContainer = document.getElementById('rolesContainer');
+            const terminalContent = document.getElementById('terminal-content');
+
+            btn.disabled = true;
+            btn.classList.add('opacity-50', 'cursor-not-allowed');
+            loading.classList.remove('hidden');
+            rolesPanel.classList.add('hidden');
+            terminalPanel.classList.add('hidden');
+            rolesContainer.innerHTML = '';
+            terminalContent.innerHTML = '';
+
+            try {
+                // Ensure absolute URL for fetch as per memory constraints
+                const response = await fetch('http://localhost:8010/api/escape', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ theme: theme })
+                });
+
+                if (!response.ok) throw new Error("Failed to fetch simulation data.");
+
+                const data = await response.json();
+
+                // Populate Roles
+                data.roles.forEach((r, index) => {
+                    const card = document.createElement('div');
+                    card.className = `glass-panel p-4 rounded-xl border border-slate-700 smooth-hover animate-fade-in`;
+                    card.style.animationDelay = `${index * 0.1}s`;
+
+                    let roleColor = 'text-sky-400';
+                    if (r.role === 'Leader') roleColor = 'text-yellow-400';
+                    if (r.role === 'Scout') roleColor = 'text-green-400';
+                    if (r.role === 'Muscle') roleColor = 'text-red-400';
+
+                    card.innerHTML = `
+                        <div class="flex justify-between items-start mb-2">
+                            <h4 class="font-bold text-lg text-white">${r.name}</h4>
+                            <span class="text-xs font-semibold px-2 py-1 rounded bg-slate-800 border border-slate-600 ${roleColor}">${r.role}</span>
+                        </div>
+                        <p class="text-xs text-slate-400 mb-1"><span class="text-slate-500">Trait:</span> ${r.trait}</p>
+                        <p class="text-xs text-slate-400 line-clamp-2" title="${r.quality}"><span class="text-slate-500">Quality:</span> ${r.quality}</p>
+                    `;
+                    rolesContainer.appendChild(card);
+                });
+
+                // Populate Terminal Log
+                data.log.forEach(line => {
+                    const p = document.createElement('p');
+
+                    if (line.includes("---")) {
+                        p.className = 'text-sky-400 font-bold my-4 text-center';
+                    } else if (line.includes("successfully escaped")) {
+                        p.className = 'text-green-400 font-bold';
+                    } else if (line.includes("failed to escape")) {
+                        p.className = 'text-red-400 font-bold';
+                    } else if (line.includes("[")) {
+                         p.className = 'text-slate-300';
+                         // Highlight character names
+                         p.innerHTML = line.replace(/\[(.*?)\]/g, '<span class="text-indigo-400 font-semibold">[$1]</span>');
+                    } else {
+                        p.className = 'text-slate-400';
+                        p.textContent = `> ${line}`;
+                    }
+
+                    // Fallback if innerHTML wasn't set
+                    if (!p.innerHTML) {
+                        p.textContent = line.startsWith('>') ? line : `> ${line}`;
+                    }
+
+                    terminalContent.appendChild(p);
+                });
+
+                rolesPanel.classList.remove('hidden');
+                terminalPanel.classList.remove('hidden');
+
+                // Auto-scroll terminal to bottom after animations complete
+                setTimeout(() => {
+                    const termObj = document.querySelector('#terminalPanel .overflow-y-auto');
+                    termObj.scrollTop = termObj.scrollHeight;
+                }, 2500);
+
+            } catch (error) {
+                alert("An error occurred: " + error.message);
+            } finally {
+                btn.disabled = false;
+                btn.classList.remove('opacity-50', 'cursor-not-allowed');
+                loading.classList.add('hidden');
+            }
+        });
+    </script>
+</body>
+</html>
