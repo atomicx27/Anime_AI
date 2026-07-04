@@ -17,6 +17,8 @@ class DetectiveAgent:
             keywords = ["logic", "calculating", "smart", "analytical", "adaptability", "observation", "knowledge"]
         elif role == "Interrogator/Enforcer":
             keywords = ["combat", "intense", "intimidating", "power", "loud", "gritty", "aggressive"]
+        elif role == "Psychological Profiler":
+            keywords = ["empathetic", "compassionate", "emotion", "feeling", "nurturing", "manipulative", "psychology", "understanding"]
         else:
             keywords = []
 
@@ -29,7 +31,7 @@ class DetectiveAgent:
         return score
 
     def assemble_team(self, mystery_description):
-        roles = ["Lead Detective", "Forensics/Analyst", "Interrogator/Enforcer"]
+        roles = ["Lead Detective", "Forensics/Analyst", "Interrogator/Enforcer", "Psychological Profiler"]
         team = []
         available_chars = self.characters.copy()
 
@@ -71,11 +73,19 @@ class DetectiveAgent:
             "message": f"I'll handle the suspects! My {enforcer['core_emotion']} will make sure they spill everything they know!"
         })
 
+        # Profiling
+        profiler = team[3]["character"]
+        logs.append({
+            "character": profiler,
+            "action": "Psychological Profiling",
+            "message": f"Let's look deeper... Based on the psychological state, my {profiler['unique_quality']} tells me the motive is hidden in plain sight."
+        })
+
         # Conclusion
         logs.append({
             "character": lead,
             "action": "Case Closed",
-            "message": f"Based on the evidence and confessions, we've solved it. Another mystery unraveled by the Anime Detective Agency."
+            "message": f"Based on the evidence, the suspect's profile, and the confessions, we've solved it. Another mystery unraveled by the Anime Detective Agency."
         })
 
         return {
