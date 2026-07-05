@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anime Therapy Clinic AI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0f172a;
+            color: #e2e8f0;
+            background-image: radial-gradient(circle at 50% 50%, #1e293b 0%, #0f172a 100%);
+            min-height: 100vh;
+        }
+        .font-mono {
+            font-family: 'Fira Code', monospace;
+        }
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        .glass-hover {
+            transition: all 0.3s ease;
+        }
+        .glass-hover:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+        .text-glow {
+            text-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
+        }
+        .fade-in {
+            animation: fadeIn 0.5s ease-out forwards;
+            opacity: 0;
+            transform: translateY(10px);
+        }
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .stagger-1 { animation-delay: 0.1s; }
+        .stagger-2 { animation-delay: 0.2s; }
+        .stagger-3 { animation-delay: 0.3s; }
+    </style>
+</head>
+<body class="p-8">
+    <div class="max-w-4xl mx-auto">
+        <header class="text-center mb-12 fade-in stagger-1">
+            <h1 class="text-4xl font-bold text-sky-400 mb-4 text-glow">Anime Therapy Clinic AI</h1>
+            <p class="text-slate-400">Where iconic characters unpack their trauma and philosophical differences.</p>
+        </header>
+
+        <div class="glass-panel rounded-xl p-8 mb-8 text-center fade-in stagger-2">
+            <p class="mb-6 text-slate-300">Initiate a random group therapy session between three characters.</p>
+            <button id="startBtn" class="bg-sky-500 hover:bg-sky-600 text-white font-bold py-3 px-8 rounded-lg transition-colors shadow-lg shadow-sky-500/30">
+                Start Session
+            </button>
+        </div>
+
+        <div id="loading" class="hidden text-center fade-in mb-8">
+            <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-sky-400 mb-2"></div>
+            <p class="text-sky-400 font-mono text-sm">Agent initializing session...</p>
+        </div>
+
+        <div id="results" class="hidden fade-in stagger-3">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8" id="rolesContainer">
+                <!-- Roles will be inserted here -->
+            </div>
+
+            <div class="glass-panel rounded-xl p-6 mb-8">
+                <h3 class="text-xl font-semibold text-sky-400 mb-6 border-b border-slate-700 pb-2">Session Log</h3>
+                <div id="logContainer" class="space-y-6">
+                    <!-- Logs will be inserted here -->
+                </div>
+            </div>
+
+            <div class="glass-panel rounded-xl p-6 bg-slate-800/50">
+                <h3 class="text-lg font-semibold text-sky-400 mb-2">Session Conclusion</h3>
+                <p id="conclusionText" class="text-slate-300 italic"></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('startBtn').addEventListener('click', async () => {
+            const btn = document.getElementById('startBtn');
+            const loading = document.getElementById('loading');
+            const results = document.getElementById('results');
+            const rolesContainer = document.getElementById('rolesContainer');
+            const logContainer = document.getElementById('logContainer');
+            const conclusionText = document.getElementById('conclusionText');
+
+            btn.disabled = true;
+            btn.classList.add('opacity-50', 'cursor-not-allowed');
+            results.classList.add('hidden');
+            loading.classList.remove('hidden');
+
+            try {
+                const response = await fetch('http://localhost:8011/api/session', {
+                    method: 'POST'
+                });
+                const data = await response.json();
+
+                if (data.error) {
+                    alert(data.error);
+                    return;
+                }
+
+                // Populate Roles
+                rolesContainer.innerHTML = '';
+                data.roles.forEach(roleData => {
+                    let roleColor = 'text-sky-400';
+                    if (roleData.role === 'Patient') roleColor = 'text-rose-400';
+                    if (roleData.role === 'Observer') roleColor = 'text-emerald-400';
+
+                    rolesContainer.innerHTML += `
+                        <div class="glass-panel rounded-xl p-4 glass-hover text-center">
+                            <h4 class="${roleColor} font-bold text-lg mb-1">${roleData.role}</h4>
+                            <p class="text-white font-semibold mb-2">${roleData.character.name}</p>
+                            <p class="text-xs text-slate-400">Core: ${roleData.character.core_emotion}</p>
+                        </div>
+                    `;
+                });
+
+                // Populate Logs
+                logContainer.innerHTML = '';
+                data.log.forEach(entry => {
+                    let badgeColor = 'bg-sky-500/20 text-sky-400 border-sky-500/30';
+                    if (entry.role === 'Patient') badgeColor = 'bg-rose-500/20 text-rose-400 border-rose-500/30';
+                    if (entry.role === 'Observer') badgeColor = 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30';
+
+                    logContainer.innerHTML += `
+                        <div class="border-l-2 border-slate-700 pl-4 py-2">
+                            <div class="flex items-center gap-3 mb-2">
+                                <span class="font-bold text-white">${entry.speaker}</span>
+                                <span class="text-xs px-2 py-0.5 rounded border ${badgeColor}">${entry.role}</span>
+                            </div>
+                            <p class="text-slate-300 mb-2">"${entry.message}"</p>
+                            <p class="text-sm font-mono text-slate-500 italic">> Agent Thought: ${entry.thought}</p>
+                        </div>
+                    `;
+                });
+
+                // Populate Conclusion
+                conclusionText.textContent = data.conclusion;
+
+                loading.classList.add('hidden');
+                results.classList.remove('hidden');
+
+            } catch (error) {
+                console.error("Error fetching session:", error);
+                alert("Failed to connect to backend server.");
+                loading.classList.add('hidden');
+            } finally {
+                btn.disabled = false;
+                btn.classList.remove('opacity-50', 'cursor-not-allowed');
+            }
+        });
+    </script>
+</body>
+</html>
