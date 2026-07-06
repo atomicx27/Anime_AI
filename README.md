@@ -323,3 +323,29 @@ python3 main.py
 # or open the anime_detective_agency/frontend/index.html file locally.
 # Open your browser and navigate to http://localhost:8007/
 ```
+
+### 9. Anime Therapy Clinic AI
+
+The **Anime Therapy Clinic AI** is a web-based, multi-agent application where users can submit their personal problems or dilemmas. The AI dynamically assigns anime characters to specialized therapy roles (e.g., Lead Therapist, Empathetic Support, Harsh Truth Realist) based on their Core Emotion and Personality Profile, providing diverse, in-character advice to help the user.
+
+#### Folder Location
+`anime_therapy_clinic/`
+
+#### Features
+- **Dynamic Therapist Assignment**: Characters are assigned to specific therapeutic roles that match their psychological traits (e.g., mentors as Lead Therapists, logical/cynical characters as Harsh Truth Realists).
+- **In-Character Advice**: Generates simulated, character-specific advice directly influenced by their unique philosophies and core emotions.
+- **Sleek UI/UX**: Built with Vanilla HTML, JS, and Tailwind CSS, featuring a beautiful dark theme with glassmorphism, radial gradients, shadow glows, and smooth hover animations.
+- **Dynamic Character Loading**: Backend API automatically parses the root `README.md` to dynamically load character details.
+
+#### How to Run
+```bash
+# Install dependencies
+cd anime_therapy_clinic/backend
+pip install -r requirements.txt
+
+# Run the server
+python3 main.py
+
+# Access the UI
+# Open your browser and navigate to the frontend index.html file locally, or use a local HTTP server in the frontend directory (e.g. port 8012).
+```

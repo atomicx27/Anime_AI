@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anime Therapy Clinic AI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0f172a;
+            color: #f8fafc;
+        }
+
+        .font-mono {
+            font-family: 'Fira Code', monospace;
+        }
+
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        .glass-hover:hover {
+            background: rgba(30, 41, 59, 0.9);
+            border-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        .text-glow {
+            text-shadow: 0 0 10px rgba(147, 197, 253, 0.5);
+        }
+
+        .shadow-glow {
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.3);
+        }
+
+        .smooth-hover {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(15, 23, 42, 0.5);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(71, 85, 105, 0.8);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(100, 116, 139, 1);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate-fade-in {
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+    </style>
+</head>
+<body class="min-h-screen relative overflow-hidden flex flex-col">
+    <!-- Background Effects -->
+    <div class="absolute inset-0 z-0">
+        <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-indigo-900/40 via-slate-900 to-slate-900"></div>
+        <div class="absolute bottom-0 left-0 right-0 h-64 bg-gradient-to-t from-slate-900 to-transparent"></div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="relative z-10 flex-grow container mx-auto px-4 py-8 max-w-5xl flex flex-col items-center">
+        <!-- Header -->
+        <header class="text-center mb-12 animate-fade-in w-full">
+            <h1 class="text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-indigo-300 text-glow">
+                Anime Therapy Clinic AI
+            </h1>
+            <p class="text-slate-400 text-lg max-w-2xl mx-auto">
+                Submit your problem or dilemma, and our specialized AI anime character therapists will provide unique perspectives and advice based on their core philosophies.
+            </p>
+        </header>
+
+        <!-- Input Section -->
+        <div class="w-full max-w-2xl mb-12 animate-fade-in" style="animation-delay: 0.1s;">
+            <div class="glass-panel rounded-xl p-6 shadow-glow">
+                <form id="therapyForm" class="flex flex-col gap-4">
+                    <label for="problemInput" class="text-sm font-medium text-slate-300">Describe your problem:</label>
+                    <textarea
+                        id="problemInput"
+                        rows="4"
+                        class="w-full bg-slate-800/50 border border-slate-700 rounded-lg p-4 text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50 smooth-hover font-mono text-sm resize-none"
+                        placeholder="E.g., I'm feeling overwhelmed with my responsibilities and don't know how to balance everything..."
+                        required
+                    ></textarea>
+
+                    <button
+                        type="submit"
+                        id="submitBtn"
+                        class="mt-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-semibold py-3 px-6 rounded-lg smooth-hover shadow-glow flex justify-center items-center gap-2"
+                    >
+                        <span>Start Therapy Session</span>
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Loading State -->
+        <div id="loadingState" class="hidden flex-col items-center justify-center py-12 w-full">
+            <div class="w-12 h-12 border-4 border-slate-700 border-t-blue-500 rounded-full animate-spin mb-4"></div>
+            <p class="text-slate-400 font-mono text-sm animate-pulse">The council is reviewing your case...</p>
+        </div>
+
+        <!-- Results Section -->
+        <div id="resultsContainer" class="w-full hidden flex-col gap-6 animate-fade-in pb-12">
+            <!-- Dynamic Content Injected Here -->
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="relative z-10 py-6 border-t border-slate-800/50 text-center text-slate-500 text-sm mt-auto">
+        <p>Anime Therapy Clinic AI • Powered by Character Data</p>
+    </footer>
+
+    <script>
+        document.getElementById('therapyForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const problem = document.getElementById('problemInput').value.trim();
+            if (!problem) return;
+
+            const submitBtn = document.getElementById('submitBtn');
+            const loadingState = document.getElementById('loadingState');
+            const resultsContainer = document.getElementById('resultsContainer');
+
+            // UI Reset
+            submitBtn.disabled = true;
+            submitBtn.classList.add('opacity-50', 'cursor-not-allowed');
+            resultsContainer.classList.add('hidden');
+            resultsContainer.innerHTML = '';
+            loadingState.classList.remove('hidden');
+            loadingState.classList.add('flex');
+
+            try {
+                // Ensure absolute URL points to the backend server port (8011)
+                const response = await fetch('http://localhost:8011/api/therapy_session', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ problem })
+                });
+
+                if (!response.ok) throw new Error('Failed to fetch therapy session');
+
+                const data = await response.json();
+
+                // Hide loading, show results
+                loadingState.classList.add('hidden');
+                loadingState.classList.remove('flex');
+                resultsContainer.classList.remove('hidden');
+                resultsContainer.classList.add('flex');
+
+                if (data.length === 0) {
+                    resultsContainer.innerHTML = '<div class="glass-panel p-6 rounded-xl text-center text-slate-400">No characters available to provide therapy.</div>';
+                    return;
+                }
+
+                // Render Results
+                data.forEach((session, index) => {
+                    // Mapping roles to colors for visual flair
+                    const roleColors = {
+                        "Lead Therapist": "text-emerald-400 border-emerald-500/30",
+                        "Empathetic Support": "text-pink-400 border-pink-500/30",
+                        "Harsh Truth Realist": "text-orange-400 border-orange-500/30"
+                    };
+
+                    const roleStyle = roleColors[session.role] || "text-blue-400 border-blue-500/30";
+                    const delay = index * 0.15;
+
+                    const card = document.createElement('div');
+                    card.className = `glass-panel rounded-xl p-6 glass-hover smooth-hover animate-fade-in flex flex-col md:flex-row gap-6 border-l-4 ${roleStyle.split(' ')[1]}`;
+                    card.style.animationDelay = `${delay}s`;
+
+                    card.innerHTML = `
+                        <div class="flex-shrink-0 flex flex-col items-center gap-3">
+                            <div class="w-20 h-20 rounded-full overflow-hidden border-2 border-slate-700 shadow-glow bg-slate-800">
+                                <img src="${session.avatar_url}" alt="${session.character}" class="w-full h-full object-cover">
+                            </div>
+                            <div class="text-center">
+                                <h3 class="font-bold text-slate-200">${session.character}</h3>
+                                <span class="text-xs font-mono px-2 py-1 rounded bg-slate-800/80 border border-slate-700 ${roleStyle.split(' ')[0]}">${session.role}</span>
+                            </div>
+                        </div>
+                        <div class="flex-grow flex flex-col justify-center">
+                            <div class="relative">
+                                <svg class="absolute -top-2 -left-4 w-8 h-8 text-slate-700/50 transform -scale-x-100" fill="currentColor" viewBox="0 0 24 24"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
+                                <p class="text-slate-300 leading-relaxed italic relative z-10 pl-6 border-l-2 border-slate-700/50">
+                                    "${session.advice}"
+                                </p>
+                            </div>
+                        </div>
+                    `;
+                    resultsContainer.appendChild(card);
+                });
+
+            } catch (error) {
+                console.error(error);
+                loadingState.classList.add('hidden');
+                loadingState.classList.remove('flex');
+                resultsContainer.classList.remove('hidden');
+                resultsContainer.classList.add('flex');
+                resultsContainer.innerHTML = `<div class="glass-panel p-6 rounded-xl border-red-500/30 text-red-400 text-center">Error connecting to the Therapy Clinic backend. Ensure the server is running.</div>`;
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+            }
+        });
+    </script>
+</body>
+</html>

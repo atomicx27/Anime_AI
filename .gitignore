@@ -25,3 +25,6 @@ test-results/
 *.webm
 __pycache__/
 node_modules/
+backend_therapy.log
+frontend_therapy.log
+therapy_clinic.png
