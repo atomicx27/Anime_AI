@@ -12,14 +12,62 @@
             font-family: 'Inter', sans-serif;
             background-image: radial-gradient(circle at top right, #1e1b4b, #0f172a 60%);
             min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Floating Background Orbs */
+        .bg-orbs {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: -1;
+            overflow: hidden;
+        }
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.4;
+            animation: float 20s infinite ease-in-out alternate;
+        }
+        .orb-1 {
+            width: 400px;
+            height: 400px;
+            background: rgba(99, 102, 241, 0.3);
+            top: -100px;
+            left: -100px;
+            animation-delay: 0s;
+        }
+        .orb-2 {
+            width: 500px;
+            height: 500px;
+            background: rgba(168, 85, 247, 0.2);
+            bottom: -200px;
+            right: -100px;
+            animation-delay: -5s;
+        }
+
+        @keyframes float {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(50px, 50px) scale(1.1); }
         }
 
         .glass-panel {
             background: rgba(30, 41, 59, 0.6);
-            backdrop-filter: blur(12px);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06), 0 0 20px rgba(99, 102, 241, 0.15);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
             border-radius: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .glass-panel:hover {
+             box-shadow: 0 8px 32px 0 rgba(99, 102, 241, 0.3);
+             border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
         .glow-effect {
@@ -50,10 +98,25 @@
             border-radius: 9999px;
             font-size: 0.875rem;
             font-weight: 600;
+            box-shadow: 0 0 10px rgba(99, 102, 241, 0.4);
+        }
+
+        .log-enter {
+            animation: slideInFade 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        @keyframes slideInFade {
+            to { opacity: 1; transform: translateY(0); }
         }
     </style>
 </head>
-<body class="p-8">
+<body class="p-8 relative">
+    <div class="bg-orbs">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+    </div>
     <div class="max-w-5xl mx-auto">
         <header class="text-center mb-12">
             <h1 class="text-5xl font-extrabold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 to-purple-500 drop-shadow-[0_0_10px_rgba(99,102,241,0.5)]">Anime Detective Agency AI</h1>
@@ -166,7 +229,7 @@
             data.logs.forEach((log, index) => {
                 setTimeout(() => {
                     const logElement = document.createElement('div');
-                    logElement.className = 'bg-slate-800/60 rounded-lg p-4 border-l-4 border-indigo-500 animate-[fadeIn_0.5s_ease-out]';
+                    logElement.className = 'bg-slate-800/60 backdrop-blur-sm rounded-lg p-4 border-l-4 border-indigo-500 log-enter shadow-md hover:shadow-indigo-500/20 transition-all';
                     logElement.innerHTML = `
                         <div class="flex items-start">
                             <img src="${log.character.avatar}" alt="${log.character.name}" class="w-10 h-10 rounded-full mr-4 bg-slate-700">

@@ -11,8 +11,16 @@
             background-color: #0f172a;
             color: #f8fafc;
             background-image: radial-gradient(circle at 50% 50%, #1e293b 0%, #0f172a 100%);
+            background-size: 200% 200%;
+            animation: gradientMove 15s ease infinite;
             min-height: 100vh;
             font-family: 'Inter', sans-serif;
+        }
+
+        @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
         .glass-panel {
@@ -22,10 +30,24 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
             box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
             border-radius: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .glass-panel:hover {
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.15);
         }
 
         .glow-text {
             text-shadow: 0 0 10px rgba(96, 165, 250, 0.5);
+        }
+
+        .role-title {
+            animation: pulse-glow 2s infinite alternate;
+        }
+        @keyframes pulse-glow {
+            from { text-shadow: 0 0 5px currentColor; }
+            to { text-shadow: 0 0 15px currentColor; }
         }
 
         .input-glow:focus {
@@ -40,14 +62,14 @@
 
         .message-card {
             opacity: 0;
-            transform: translateY(20px);
-            animation: fadeInUp 0.5s ease forwards;
+            transform: translateY(20px) scale(0.95);
+            animation: fadeInUpScale 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
-        @keyframes fadeInUp {
+        @keyframes fadeInUpScale {
             to {
                 opacity: 1;
-                transform: translateY(0);
+                transform: translateY(0) scale(1);
             }
         }
 
@@ -119,15 +141,15 @@
             <div class="glass-panel p-6 mb-6 flex flex-wrap justify-between items-center text-sm border-l-4 border-l-blue-500">
                 <div class="text-center w-full md:w-1/3 mb-4 md:mb-0">
                     <p class="text-slate-400 uppercase tracking-wider text-xs">Judge</p>
-                    <p id="judgeName" class="font-bold text-yellow-400 text-lg"></p>
+                    <p id="judgeName" class="font-bold text-yellow-400 text-lg role-title"></p>
                 </div>
                 <div class="text-center w-full md:w-1/3 mb-4 md:mb-0">
                     <p class="text-slate-400 uppercase tracking-wider text-xs">Prosecutor</p>
-                    <p id="prosecutorName" class="font-bold text-red-400 text-lg"></p>
+                    <p id="prosecutorName" class="font-bold text-red-400 text-lg role-title"></p>
                 </div>
                 <div class="text-center w-full md:w-1/3">
                     <p class="text-slate-400 uppercase tracking-wider text-xs">Defense</p>
-                    <p id="defenseName" class="font-bold text-blue-400 text-lg"></p>
+                    <p id="defenseName" class="font-bold text-blue-400 text-lg role-title"></p>
                 </div>
             </div>
 
