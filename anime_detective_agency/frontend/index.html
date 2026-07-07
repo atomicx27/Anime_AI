@@ -10,16 +10,31 @@
             background-color: #0f172a;
             color: #f8fafc;
             font-family: 'Inter', sans-serif;
-            background-image: radial-gradient(circle at top right, #1e1b4b, #0f172a 60%);
+            background-image: radial-gradient(circle at 10% 20%, rgba(99, 102, 241, 0.1), transparent 40%);
             min-height: 100vh;
+            background-attachment: fixed;
         }
 
         .glass-panel {
             background: rgba(30, 41, 59, 0.6);
             backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06), 0 0 20px rgba(99, 102, 241, 0.15);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
             border-radius: 1rem;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background-color: rgba(75, 85, 99, 0.4); border-radius: 10px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background-color: rgba(75, 85, 99, 0.6); }
+
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
         }
 
         .glow-effect {
@@ -68,15 +83,15 @@
                         <svg class="w-6 h-6 mr-2 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
                         Report a Case
                     </h2>
-                    <textarea id="mysteryInput" rows="5" class="w-full bg-slate-800/50 border border-slate-600 rounded-lg p-4 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all" placeholder="Describe the mystery or crime..."></textarea>
-                    <button id="investigateBtn" class="w-full mt-4 bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-4 rounded-lg glow-effect flex justify-center items-center">
+                    <textarea id="mystery-input" rows="5" class="w-full bg-slate-800/50 border border-slate-600 rounded-lg p-4 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all custom-scrollbar" placeholder="Describe the mystery or crime..."></textarea>
+                    <button id="investigate-btn" class="w-full mt-4 bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-4 rounded-lg glow-effect flex justify-center items-center">
                         Assign Team & Investigate
                     </button>
                 </div>
             </div>
 
             <!-- Results Section -->
-            <div class="lg:col-span-2 space-y-6" id="resultsSection" style="display: none;">
+            <div class="lg:col-span-2 space-y-6" id="results-container" style="display: none;">
                 <!-- Team Section -->
                 <div class="glass-panel p-6">
                     <h2 class="text-2xl font-bold mb-6">Assigned Investigation Team</h2>
@@ -88,7 +103,7 @@
                 <!-- Investigation Log -->
                 <div class="glass-panel p-6">
                     <h2 class="text-2xl font-bold mb-6">Investigation Log</h2>
-                    <div id="logContainer" class="space-y-4 max-h-96 overflow-y-auto pr-2">
+                    <div id="logContainer" class="space-y-4 max-h-96 overflow-y-auto pr-2 custom-scrollbar">
                         <!-- Logs will be inserted here -->
                     </div>
                 </div>
@@ -106,18 +121,18 @@
     </div>
 
     <script>
-        document.getElementById('investigateBtn').addEventListener('click', async () => {
-            const mystery = document.getElementById('mysteryInput').value.trim();
+        document.getElementById('investigate-btn').addEventListener('click', async () => {
+            const mystery = document.getElementById('mystery-input').value.trim();
             if (!mystery) {
                 alert('Please describe a mystery first!');
                 return;
             }
 
             // UI updates for loading
-            document.getElementById('resultsSection').style.display = 'none';
+            document.getElementById('results-container').style.display = 'none';
             document.getElementById('loadingSection').style.display = 'block';
-            document.getElementById('investigateBtn').disabled = true;
-            document.getElementById('investigateBtn').classList.add('opacity-50', 'cursor-not-allowed');
+            document.getElementById('investigate-btn').disabled = true;
+            document.getElementById('investigate-btn').classList.add('opacity-50', 'cursor-not-allowed');
 
             try {
                 const response = await fetch('/api/investigate', {
@@ -135,20 +150,20 @@
                 alert('Failed to investigate. Check console for details.');
             } finally {
                 document.getElementById('loadingSection').style.display = 'none';
-                document.getElementById('investigateBtn').disabled = false;
-                document.getElementById('investigateBtn').classList.remove('opacity-50', 'cursor-not-allowed');
+                document.getElementById('investigate-btn').disabled = false;
+                document.getElementById('investigate-btn').classList.remove('opacity-50', 'cursor-not-allowed');
             }
         });
 
         function renderResults(data) {
-            document.getElementById('resultsSection').style.display = 'block';
+            document.getElementById('results-container').style.display = 'block';
 
             // Render Team
             const teamContainer = document.getElementById('teamContainer');
             teamContainer.innerHTML = '';
             data.team.forEach(member => {
                 teamContainer.innerHTML += `
-                    <div class="bg-slate-800/80 rounded-lg p-4 text-center border border-slate-700 glow-effect">
+                    <div class="bg-slate-800/80 rounded-lg p-4 text-center border border-slate-700 glow-effect card-hover">
                         <img src="${member.character.avatar}" alt="${member.character.name}" class="w-20 h-20 mx-auto rounded-full mb-3 bg-slate-700">
                         <h3 class="font-bold text-lg text-white mb-1">${member.character.name}</h3>
                         <span class="role-badge mb-2 inline-block">${member.role}</span>

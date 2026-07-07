@@ -5,7 +5,7 @@ def test_courtroom():
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=True)
         page = browser.new_page()
-        page.goto("http://localhost:8007/")
+        page.goto("http://localhost:8008/")
 
         page.fill("#crimeInput", "Eating the last slice of pizza")
         page.click("#submitBtn")

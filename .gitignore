@@ -25,3 +25,5 @@ test-results/
 *.webm
 __pycache__/
 node_modules/
+courtroom.log
+detective.log

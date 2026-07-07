@@ -10,17 +10,17 @@
         body {
             background-color: #0f172a;
             color: #f8fafc;
-            background-image: radial-gradient(circle at 50% 50%, #1e293b 0%, #0f172a 100%);
+            background-image: radial-gradient(circle at top right, #1e1b4b, #0f172a 60%);
             min-height: 100vh;
             font-family: 'Inter', sans-serif;
+            background-attachment: fixed;
         }
 
         .glass-panel {
-            background: rgba(30, 41, 59, 0.7);
+            background: rgba(30, 41, 59, 0.6);
             backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06), 0 0 20px rgba(96, 165, 250, 0.15);
             border-radius: 1rem;
         }
 
@@ -40,14 +40,20 @@
 
         .message-card {
             opacity: 0;
-            transform: translateY(20px);
+            transform: translateY(10px);
             animation: fadeInUp 0.5s ease forwards;
+            transition: all 0.3s ease;
+        }
+
+        .message-card:hover {
+            transform: translateY(-2px) scale(1.01);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4);
         }
 
         @keyframes fadeInUp {
             to {
                 opacity: 1;
-                transform: translateY(0);
+                transform: translateY(0) scale(1);
             }
         }
 
@@ -69,7 +75,13 @@
             40% { transform: scale(1); }
         }
 
-        /* Scrollbar styles */
+        /* Custom Scrollbar */
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background-color: rgba(75, 85, 99, 0.4); border-radius: 10px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background-color: rgba(75, 85, 99, 0.6); }
+
+        /* Global Scrollbar */
         ::-webkit-scrollbar {
             width: 8px;
         }
@@ -86,7 +98,7 @@
         }
     </style>
 </head>
-<body class="p-6 md:p-12 flex flex-col items-center">
+<body class="p-6 md:p-12 flex flex-col items-center custom-scrollbar">
 
     <div class="max-w-4xl w-full">
         <header class="text-center mb-10">
@@ -167,7 +179,7 @@
 
             try {
                 // Determine API URL based on environment
-                let apiUrl = 'http://localhost:8007/api/trial';
+                let apiUrl = 'http://localhost:8008/api/trial';
                 if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
                     apiUrl = '/api/trial'; // Use relative path if running served by FastAPI directly
                 }
