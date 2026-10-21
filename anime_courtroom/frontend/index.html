@@ -167,7 +167,7 @@
 
             try {
                 // Determine API URL based on environment
-                let apiUrl = 'http://localhost:8007/api/trial';
+                let apiUrl = '/api/trial';
                 if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
                     apiUrl = '/api/trial'; // Use relative path if running served by FastAPI directly
                 }
