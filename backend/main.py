@@ -1,3 +1,4 @@
+from contextlib import asynccontextmanager
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
@@ -10,7 +11,22 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 from parser import parse_readme_characters
 from agent import AnimeAgent
 
-app = FastAPI(title="Anime Agents API")
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+
+    global CHARACTERS, AGENTS
+    # Look for README.md in the parent directory
+    readme_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "README.md")
+    CHARACTERS = parse_readme_characters(readme_path)
+    print(f"Loaded {len(CHARACTERS)} characters.")
+
+    # Initialize agents
+    for char in CHARACTERS:
+        name = char["name"]
+        AGENTS[name] = AnimeAgent(char)
+    yield
+
+app = FastAPI(title="Anime Agents API", lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,
@@ -23,19 +39,6 @@ app.add_middleware(
 # Load characters once on startup
 CHARACTERS = []
 AGENTS = {}
-
-@app.on_event("startup")
-def startup_event():
-    global CHARACTERS, AGENTS
-    # Look for README.md in the parent directory
-    readme_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "README.md")
-    CHARACTERS = parse_readme_characters(readme_path)
-    print(f"Loaded {len(CHARACTERS)} characters.")
-
-    # Initialize agents
-    for char in CHARACTERS:
-        name = char["name"]
-        AGENTS[name] = AnimeAgent(char)
 
 class ChatRequest(BaseModel):
     agent_name: str
