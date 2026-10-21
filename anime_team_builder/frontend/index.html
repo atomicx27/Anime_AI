@@ -34,6 +34,17 @@
             border: 1px solid rgba(255, 255, 255, 0.15);
             box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
         }
+
+        .typing-text {
+            display: inline-block;
+            overflow: hidden;
+            /* white-space: nowrap; removed to allow wrapping */
+            animation: typing 1s steps(40, end);
+        }
+        @keyframes typing {
+            from { max-width: 0; }
+            to { max-width: 100%; }
+        }
         .card-enter {
             animation: slideUp 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
             opacity: 0;
@@ -226,7 +237,7 @@
                 for (let i = 0; i < data.logs.length; i++) {
                     setTimeout(() => {
                         const logEntry = document.createElement('div');
-                        logEntry.textContent = `> ${data.logs[i]}`;
+                        logEntry.innerHTML = `<span class=\"text-purple-500\">></span> <span class=\"typing-text\">${data.logs[i]}</span>`;
                         logsContainer.appendChild(logEntry);
                         logsContainer.parentElement.scrollTop = logsContainer.parentElement.scrollHeight;
                     }, i * 300);

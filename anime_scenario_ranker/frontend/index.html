@@ -349,7 +349,7 @@
 
                         logIndex++;
                         // Speed up logging artificially
-                        setTimeout(processNext, 100);
+                        setTimeout(processNext, Math.random() * 200 + 50);
                     } else {
                         addLog("Evaluation complete.", false);
                         input.disabled = false;

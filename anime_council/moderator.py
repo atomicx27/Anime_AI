@@ -10,6 +10,14 @@ import time
 
 console = Console()
 
+def type_text(text, style="magenta", delay=0.02):
+    for char in text:
+        sys.stdout.write(char)
+        sys.stdout.flush()
+        time.sleep(delay)
+    sys.stdout.write("\n")
+
+
 class ModeratorAgent:
     def __init__(self, character_data_list):
         self.agents = [CharacterAgent(data) for data in character_data_list]

@@ -11,6 +11,15 @@ from rich.progress import Progress, SpinnerColumn, TextColumn
 
 console = Console()
 
+def type_text(text, style="magenta", delay=0.03):
+    sys.stdout.write(f"\033[35m")
+    for char in text:
+        sys.stdout.write(char)
+        sys.stdout.flush()
+        time.sleep(delay)
+    sys.stdout.write(f"\033[0m\n")
+
+
 def main():
     console.print(Panel.fit("[bold cyan]Welcome to Anime Agents CLI![/bold cyan]"))
 
